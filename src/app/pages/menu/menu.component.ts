@@ -20,6 +20,7 @@ export class MenuComponent implements OnInit {
     selectedCategory = 'All';
     isLoading = true;
     addingToCart: string | null = null;
+    failedImages = new Set<string>();
 
     constructor(
         private menuService: MenuService,
@@ -83,6 +84,10 @@ export class MenuComponent implements OnInit {
                 alert('Failed to add item to cart');
             }
         });
+    }
+
+    handleImageError(itemId: string): void {
+        this.failedImages.add(itemId);
     }
 
     formatPrice(price: number): string {

@@ -32,14 +32,23 @@
         @for (item of filteredItems; track item._id) {
         <div class="menu-card" [class.unavailable]="!item.isAvailable">
             <div class="card-header">
-                <span class="category-tag">{{ item.category }}</span>
-                <div class="badges">
-                    @if (item.isVeg) {
-                    <span class="veg-badge">Veg</span>
+                <div class="card-image">
+                    @if (item.image) {
+                    <img [src]="item.image" [alt]="item.name">
+                    } @else {
+                    <div class="image-placeholder">{{ item.name.charAt(0) }}</div>
                     }
-                    @if (!item.isAvailable) {
-                    <span class="unavailable-badge">Unavailable</span>
-                    }
+                </div>
+                <div class="card-badges-overlay">
+                    <span class="category-tag">{{ item.category }}</span>
+                    <div class="badges">
+                        @if (item.isVeg) {
+                        <span class="veg-badge">Veg</span>
+                        }
+                        @if (!item.isAvailable) {
+                        <span class="unavailable-badge">Unavailable</span>
+                        }
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -81,6 +90,22 @@
                 <div class="form-group">
                     <label>Description *</label>
                     <textarea formControlName="description" placeholder="Description" rows="3"></textarea>
+                </div>
+
+                <div class="form-row preview-section">
+                    <div class="form-group">
+                        <label>Image URL</label>
+                        <input type="text" formControlName="image" placeholder="https://images.unsplash.com/...">
+                        <small class="help-text">Paste a direct image link from Unsplash or other sites.</small>
+                    </div>
+                    <div class="image-preview-container">
+                        @if (menuForm.get('image')?.value) {
+                        <img [src]="menuForm.get('image')?.value" alt="Preview" class="admin-preview-img">
+                        <span class="image-preview-label">Live Preview</span>
+                        } @else {
+                        <div class="preview-placeholder">No Photo</div>
+                        }
+                    </div>
                 </div>
 
                 <div class="form-row">

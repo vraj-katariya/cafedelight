@@ -23,7 +23,11 @@
             @for (item of cart.items; track item.menuItem._id) {
             <div class="cart-item">
                 <div class="item-image">
+                    @if (item.menuItem.image) {
+                    <img [src]="item.menuItem.image" [alt]="item.menuItem.name">
+                    } @else {
                     {{ item.menuItem.name.charAt(0) }}
+                    }
                 </div>
                 <div class="item-details">
                     <h3>{{ item.menuItem.name }}</h3>
