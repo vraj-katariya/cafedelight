@@ -33,6 +33,7 @@ export class MenuManagementComponent implements OnInit {
             description: ['', [Validators.required]],
             price: ['', [Validators.required, Validators.min(0)]],
             category: ['Coffee', Validators.required],
+            image: [''],
             isAvailable: [true],
             isVeg: [true]
         });
@@ -93,6 +94,7 @@ export class MenuManagementComponent implements OnInit {
             description: item.description,
             price: item.price,
             category: item.category,
+            image: item.image,
             isAvailable: item.isAvailable,
             isVeg: item.isVeg
         });

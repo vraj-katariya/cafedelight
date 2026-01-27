@@ -33,7 +33,11 @@
                 } @else {
                 <span class="non-veg-badge">🍖 Non-Veg</span>
                 }
+                @if (item.image && !failedImages.has(item._id)) {
+                <img [src]="item.image" [alt]="item.name" class="menu-item-image" (error)="handleImageError(item._id)">
+                } @else {
                 <div class="image-placeholder">{{ item.name.charAt(0) }}</div>
+                }
             </div>
             <div class="menu-card-content">
                 <h3>{{ item.name }}</h3>

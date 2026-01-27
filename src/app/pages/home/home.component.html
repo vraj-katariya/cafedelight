@@ -24,10 +24,13 @@
         <h2>Our <span class="highlight">Categories</span></h2>
         <div class="categories-grid">
             @for (category of categories; track category.name) {
-            <a [routerLink]="['/menu']" [queryParams]="{category: category.name}" class="category-card">
-                <span class="category-icon">{{ category.icon }}</span>
-                <h3>{{ category.name }}</h3>
-                <p>{{ category.description }}</p>
+            <a [routerLink]="['/menu']" [queryParams]="{category: category.name}" class="category-card"
+                [style.background-image]="'url(' + category.image + ')'">
+                <div class="category-overlay">
+                    <span class="category-icon">{{ category.icon }}</span>
+                    <h3>{{ category.name }}</h3>
+                    <p>{{ category.description }}</p>
+                </div>
             </a>
             }
         </div>
