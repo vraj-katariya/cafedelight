@@ -1,0 +1,139 @@
+<div class="orders-page">
+    <h1>My <span class="highlight">Orders</span></h1>
+
+    @if (isLoading) {
+    <div class="loading">
+        <div class="spinner-large"></div>
+        <p>Loading orders...</p>
+    </div>
+    }
+
+    @if (!isLoading && orders.length === 0) {
+    <div class="empty-state">
+        <span class="empty-icon">📦</span>
+        <h3>No orders yet</h3>
+        <p>You haven't placed any orders. Start ordering now!</p>
+        <a routerLink="/menu" class="btn-browse">Browse Menu</a>
+    </div>
+    }
+
+    @if (!isLoading && orders.length > 0) {
+    <div class="orders-list">
+        @for (order of orders; track order._id) {
+        <div class="order-card">
+            <div class="order-header">
+                <div class="order-id">
+                    <span class="label">Order ID</span>
+                    <span class="value">{{ order._id.slice(-8).toUpperCase() }}</span>
+                </div>
+                <div class="order-date">
+                    {{ formatDate(order.createdAt) }}
+                </div>
+            </div>
+
+            <div class="order-items">
+                @for (item of order.items; track item.menuItem) {
+                <div class="order-item">
+                    <span class="item-name">{{ item.name }} × {{ item.quantity }}</span>
+                    <span class="item-price">{{ formatPrice(item.price * item.quantity) }}</span>
+                </div>
+                }
+            </div>
+
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>{{ formatPrice(order.subtotal) }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>GST ({{ order.gstRate }}%)</span>
+                    <span>{{ formatPrice(order.gstAmount) }}</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>{{ formatPrice(order.total) }}</span>
+                </div>
+            </div>
+
+            <div class="order-footer">
+                <div class="status-badges">
+                    <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+                        {{ order.status | titlecase }}
+                    </span>
+                    <span class="payment-badge" [class.paid]="order.paymentStatus === 'paid'">
+                        {{ order.paymentStatus | titlecase }}
+                    </span>
+                </div>
+                <div class="order-actions">
+                    @if (order.paymentStatus === 'pending' && order.status !== 'cancelled') {
+                    <button class="btn-pay" (click)="openPaymentModal(order)">Pay Now</button>
+                    }
+                    @if (order.status === 'pending') {
+                    <button class="btn-cancel" (click)="cancelOrder(order._id)">Cancel</button>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    }
+
+    <!-- Payment Modal -->
+    @if (showPaymentModal && selectedOrder) {
+    <div class="modal-overlay" (click)="closePaymentModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Complete Payment</h2>
+                <button class="close-btn" (click)="closePaymentModal()">✕</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="payment-amount">
+                    <span class="label">Amount to Pay</span>
+                    <span class="amount">{{ formatPrice(selectedOrder.total) }}</span>
+                </div>
+
+                <div class="payment-methods">
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="upi" [(ngModel)]="paymentMethod">
+                        <span class="option-content">
+                            <span class="icon">📱</span>
+                            <span class="text">UPI</span>
+                        </span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="card" [(ngModel)]="paymentMethod">
+                        <span class="option-content">
+                            <span class="icon">💳</span>
+                            <span class="text">Card</span>
+                        </span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="cash" [(ngModel)]="paymentMethod">
+                        <span class="option-content">
+                            <span class="icon">💵</span>
+                            <span class="text">Cash</span>
+                        </span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="wallet" [(ngModel)]="paymentMethod">
+                        <span class="option-content">
+                            <span class="icon">👛</span>
+                            <span class="text">Wallet</span>
+                        </span>
+                    </label>
+                </div>
+
+                <button class="btn-process-payment" (click)="processPayment()"
+                    [disabled]="!paymentMethod || isProcessingPayment">
+                    @if (isProcessingPayment) {
+                    <span class="spinner"></span> Processing...
+                    } @else {
+                    Pay {{ formatPrice(selectedOrder.total) }}
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+</div>

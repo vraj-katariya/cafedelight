@@ -1,0 +1,183 @@
+<div class="admin-dashboard">
+    <div class="admin-header">
+        <h1>Admin <span class="highlight">Dashboard</span></h1>
+        <div class="admin-nav">
+            <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Overview</a>
+            <a routerLink="/admin/users" routerLinkActive="active">Users</a>
+            <a routerLink="/admin/menu" routerLinkActive="active">Menu</a>
+            <a routerLink="/admin/tables" routerLinkActive="active">Tables</a>
+            <a routerLink="/admin/bookings" routerLinkActive="active">Bookings</a>
+        </div>
+    </div>
+
+    @if (isLoading) {
+    <div class="loading">
+        <div class="spinner-large"></div>
+        <p>Loading dashboard...</p>
+    </div>
+    }
+
+    @if (!isLoading && stats) {
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-icon">👥</span>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.totalUsers }}</span>
+                <span class="stat-label">Total Users</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-icon">📦</span>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.totalOrders }}</span>
+                <span class="stat-label">Total Orders</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-icon">🍽️</span>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.totalMenuItems }}</span>
+                <span class="stat-label">Menu Items</span>
+            </div>
+        </div>
+        <div class="stat-card revenue">
+            <span class="stat-icon">💰</span>
+            <div class="stat-info">
+                <span class="stat-value">{{ formatPrice(stats.totalRevenue) }}</span>
+                <span class="stat-label">Total Revenue</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-icon">📅</span>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.todaysBookings }}</span>
+                <span class="stat-label">Today's Bookings</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-icon">🪑</span>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.availableTables }}/{{ stats.totalTables }}</span>
+                <span class="stat-label">Tables Available</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- Recent Orders -->
+        <div class="section-card">
+            <h2>Recent Orders</h2>
+            @if (recentOrders.length === 0) {
+            <p class="empty-text">No orders yet</p>
+            } @else {
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (order of recentOrders.slice(0, 5); track order._id) {
+                        <tr>
+                            <td class="order-id">{{ order._id.slice(-8).toUpperCase() }}</td>
+                            <td>{{ getUserName(order.user) }}</td>
+                            <td class="price">{{ formatPrice(order.total) }}</td>
+                            <td>
+                                <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+                                    {{ order.status | titlecase }}
+                                </span>
+                            </td>
+                            <td class="date">{{ formatDate(order.createdAt) }}</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+        </div>
+
+        <!-- Recent Bookings -->
+        <div class="section-card">
+            <h2>Recent Table Bookings</h2>
+            @if (recentBookings.length === 0) {
+            <p class="empty-text">No bookings yet</p>
+            } @else {
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Table</th>
+                            <th>Customer</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (booking of recentBookings; track booking._id) {
+                        <tr>
+                            <td>{{ booking.date | date:'shortDate' }}</td>
+                            <td>{{ booking.timeSlot }}</td>
+                            <td>Table {{ booking.table?.tableNumber }}</td>
+                            <td>{{ booking.user?.name || 'Guest' }}</td>
+                            <td>
+                                <span class="status-badge" [class]="'status-' + booking.status.toLowerCase()">
+                                    {{ booking.status }}
+                                </span>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+        </div>
+
+        <!-- Recent Orders -->
+
+        <!-- Top Items & Recent Users -->
+        <div class="side-sections">
+            <div class="section-card">
+                <h3>Top Selling Items</h3>
+                @if (topItems.length === 0) {
+                <p class="empty-text">No sales data yet</p>
+                } @else {
+                <div class="top-items-list">
+                    @for (item of topItems; track item._id) {
+                    <div class="top-item">
+                        <span class="item-name">{{ item._id }}</span>
+                        <span class="item-qty">{{ item.totalQuantity }} sold</span>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="section-card">
+                <h3>Recent Users</h3>
+                @if (recentUsers.length === 0) {
+                <p class="empty-text">No users yet</p>
+                } @else {
+                <div class="users-list">
+                    @for (user of recentUsers; track user) {
+                    <div class="user-item">
+                        <div class="user-avatar">{{ user.name.charAt(0) }}</div>
+                        <div class="user-info">
+                            <span class="user-name">{{ user.name }}</span>
+                            <span class="user-email">{{ user.email }}</span>
+                        </div>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    }
+</div>

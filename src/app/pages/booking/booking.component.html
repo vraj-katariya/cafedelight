@@ -1,0 +1,67 @@
+<div class="booking-container fade-in">
+    <h2 class="page-title">Book the <span>Table</span></h2>
+
+    <div *ngIf="message" class="alert" [class.alert-danger]="true">
+        {{ message }}
+    </div>
+
+    <!-- Booking Form -->
+    <form [formGroup]="bookingForm" (ngSubmit)="checkAvailability()" class="booking-form">
+        <div class="form-group">
+            <label>Select Date</label>
+            <input type="date" formControlName="date" class="form-control" [min]="minDate">
+        </div>
+
+        <div class="form-group">
+            <label>Time Slot</label>
+            <select formControlName="timeSlot" class="form-control">
+                <option value="" disabled>Choose a time...</option>
+                <option *ngFor="let slot of timeSlots" [value]="slot">{{ slot }}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Number of Guests</label>
+            <input type="number" formControlName="guests" class="form-control" min="1" max="20" placeholder="e.g. 2">
+        </div>
+
+        <button type="submit" class="btn-check" [disabled]="bookingForm.invalid || loading">
+            {{ loading ? 'Checking...' : 'Check Availability' }}
+        </button>
+    </form>
+
+    <!-- Available Tables -->
+    <div *ngIf="availableTables.length > 0; else noTables" class="tables-section">
+        <h3>Available Tables for Selected Slot</h3>
+        <div class="tables-grid">
+            <div *ngFor="let table of availableTables" class="table-card"
+                [class.selected]="selectedTable?._id === table._id" (click)="selectTable(table)">
+
+                <span class="table-badge">{{ table.location }}</span>
+                <span class="table-icon">🪑</span>
+
+                <div class="table-info">
+                    <h4>Table {{ table.tableNumber }}</h4>
+                    <p>Capacity: {{ table.capacity }} People</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-area" *ngIf="selectedTable">
+            <button (click)="confirmBooking()" class="btn-confirm">
+                Confirm Reservation ➔
+            </button>
+        </div>
+    </div>
+
+    <ng-template #noTables>
+        <div *ngIf="!loading && searched && availableTables.length === 0" class="alert alert-danger">
+            <span *ngIf="totalTablesCount === 0">System Error: No tables have been setup by the Admin yet.</span>
+            <span *ngIf="totalTablesCount > 0">No tables available for this date and time. Please try a different
+                slot.</span>
+        </div>
+        <div *ngIf="loading" class="loading-spinner">
+            Searching for best tables...
+        </div>
+    </ng-template>
+</div>

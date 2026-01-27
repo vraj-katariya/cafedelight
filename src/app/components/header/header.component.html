@@ -1,0 +1,54 @@
+<header class="header">
+    <div class="header-container">
+        <a routerLink="/" class="logo">
+            <span class="logo-icon">☕</span>
+            <span class="logo-text">Cafe Delight</span>
+        </a>
+
+        <button class="menu-toggle" (click)="toggleMenu()">
+            <span class="hamburger"></span>
+        </button>
+
+        <nav class="nav" [class.open]="isMenuOpen">
+            @if (!authService.isLoggedIn) {
+            <!-- Guest View -->
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                (click)="isMenuOpen = false">Home</a>
+            <a routerLink="/login" routerLinkActive="active" (click)="isMenuOpen = false">Login</a>
+            <a routerLink="/register" routerLinkActive="active" (click)="isMenuOpen = false"
+                class="btn-register">Register</a>
+            } @else {
+            <!-- Admin View -->
+            @if (authService.isAdmin) {
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                (click)="isMenuOpen = false">Home</a>
+            <a routerLink="/admin" routerLinkActive="active" (click)="isMenuOpen = false" class="admin-link">Admin
+                Panel</a>
+            <a routerLink="/menu" routerLinkActive="active" (click)="isMenuOpen = false">Menu</a>
+            <button class="btn-logout" (click)="logout()">Logout</button>
+            } @else {
+            <!-- Client View -->
+            @if (!authService.hasBooking) {
+            <!-- Restricted View (No Booking Yet) -->
+            <a routerLink="/booking" routerLinkActive="active" (click)="isMenuOpen = false">Book the Table</a>
+            <button class="btn-logout" (click)="logout()">Logout</button>
+            } @else {
+            <!-- Full View (After Booking) -->
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                (click)="isMenuOpen = false">Home</a>
+            <a routerLink="/menu" routerLinkActive="active" (click)="isMenuOpen = false">Menu</a>
+            <a routerLink="/cart" routerLinkActive="active" (click)="isMenuOpen = false" class="cart-link">
+                Cart
+                @if (cartService.itemCount > 0) {
+                <span class="cart-badge">{{ cartService.itemCount }}</span>
+                }
+            </a>
+            <a routerLink="/orders" routerLinkActive="active" (click)="isMenuOpen = false">Orders</a>
+            <a routerLink="/dashboard" routerLinkActive="active" (click)="isMenuOpen = false">Dashboard</a>
+            <button class="btn-logout" (click)="logout()">Logout</button>
+            }
+            }
+            }
+        </nav>
+    </div>
+</header>

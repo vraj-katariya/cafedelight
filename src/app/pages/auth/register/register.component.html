@@ -1,0 +1,96 @@
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Create Account</h1>
+            <p>Join Cafe Delight today</p>
+        </div>
+
+        @if (errorMessage) {
+        <div class="error-alert">
+            {{ errorMessage }}
+        </div>
+        }
+
+        @if (successMessage) {
+        <div class="success-alert">
+            {{ successMessage }}
+        </div>
+        }
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" formControlName="name" placeholder="Enter your full name"
+                    [class.error]="f['name'].touched && f['name'].invalid">
+                @if (f['name'].touched && f['name'].invalid) {
+                <span class="error-text">
+                    @if (f['name'].errors?.['required']) { Name is required }
+                    @else if (f['name'].errors?.['minlength']) { Name must be at least 2 characters }
+                </span>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" formControlName="email" placeholder="Enter your email"
+                    [class.error]="f['email'].touched && f['email'].invalid">
+                @if (f['email'].touched && f['email'].invalid) {
+                <span class="error-text">
+                    @if (f['email'].errors?.['required']) { Email is required }
+                    @else if (f['email'].errors?.['email']) { Please enter a valid email }
+                </span>
+                }
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" formControlName="password" placeholder="Create password"
+                        [class.error]="f['password'].touched && f['password'].invalid">
+                    @if (f['password'].touched && f['password'].invalid) {
+                    <span class="error-text">
+                        @if (f['password'].errors?.['required']) { Password is required }
+                        @else if (f['password'].errors?.['minlength']) { Min 6 characters }
+                        @else if (f['password'].errors?.['pattern']) { Must contain letter & number }
+                    </span>
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" formControlName="confirmPassword"
+                        placeholder="Confirm password"
+                        [class.error]="f['confirmPassword'].touched && f['confirmPassword'].invalid">
+                    @if (f['confirmPassword'].touched && f['confirmPassword'].invalid) {
+                    <span class="error-text">
+                        @if (f['confirmPassword'].errors?.['required']) { Confirm password }
+                        @else if (f['confirmPassword'].errors?.['mismatch']) { Passwords don't match }
+                    </span>
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone (Optional)</label>
+                <input type="tel" id="phone" formControlName="phone" placeholder="Enter phone number">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address (Optional)</label>
+                <input type="text" id="address" formControlName="address" placeholder="Enter your address">
+            </div>
+
+            <button type="submit" class="btn-submit" [disabled]="isLoading">
+                @if (isLoading) {
+                <span class="spinner"></span> Creating Account...
+                } @else {
+                Create Account
+                }
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a routerLink="/login">Sign in</a></p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="menu-page">
+    <div class="menu-header">
+        <h1>Our <span class="highlight">Menu</span></h1>
+        <p>Explore our delicious selection of coffees, beverages, snacks, and desserts</p>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="category-filter">
+        @for (category of categories; track category) {
+        <button class="category-btn" [class.active]="selectedCategory === category" (click)="selectCategory(category)">
+            {{ category }}
+        </button>
+        }
+    </div>
+
+    <!-- Loading State -->
+    @if (isLoading) {
+    <div class="loading">
+        <div class="spinner-large"></div>
+        <p>Loading menu...</p>
+    </div>
+    }
+
+    <!-- Menu Grid -->
+    @if (!isLoading && filteredItems.length > 0) {
+    <div class="menu-grid">
+        @for (item of filteredItems; track item._id) {
+        <div class="menu-card" [class.unavailable]="!item.isAvailable">
+            <div class="menu-card-image">
+                <span class="category-tag">{{ item.category }}</span>
+                @if (item.isVeg) {
+                <span class="veg-badge">🥬 Veg</span>
+                } @else {
+                <span class="non-veg-badge">🍖 Non-Veg</span>
+                }
+                <div class="image-placeholder">{{ item.name.charAt(0) }}</div>
+            </div>
+            <div class="menu-card-content">
+                <h3>{{ item.name }}</h3>
+                <p class="description">{{ item.description }}</p>
+                <div class="menu-card-footer">
+                    <span class="price">{{ formatPrice(item.price) }}</span>
+                    @if (item.isAvailable) {
+                    <button class="btn-add" (click)="addToCart(item)" [disabled]="addingToCart === item._id">
+                        @if (addingToCart === item._id) {
+                        <span class="spinner-small"></span>
+                        } @else {
+                        Add to Cart
+                        }
+                    </button>
+                    } @else {
+                    <span class="unavailable-text">Unavailable</span>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    }
+
+    <!-- Empty State -->
+    @if (!isLoading && filteredItems.length === 0) {
+    <div class="empty-state">
+        <span class="empty-icon">🍽️</span>
+        <h3>No items found</h3>
+        <p>No items available in this category</p>
+    </div>
+    }
+</div>

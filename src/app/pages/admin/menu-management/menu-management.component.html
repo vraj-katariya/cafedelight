@@ -1,0 +1,122 @@
+<div class="menu-management">
+    <div class="admin-header">
+        <h1>Menu <span class="highlight">Management</span></h1>
+        <div class="admin-nav">
+            <a routerLink="/admin">Overview</a>
+            <a routerLink="/admin/users">Users</a>
+            <a routerLink="/admin/menu" class="active">Menu</a>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <div class="filter-group">
+            <input type="text" placeholder="Search items..." [(ngModel)]="searchTerm" (input)="filterItems()">
+            <select [(ngModel)]="selectedCategory" (change)="filterItems()">
+                <option value="All">All Categories</option>
+                @for (cat of categories; track cat) {
+                <option [value]="cat">{{ cat }}</option>
+                }
+            </select>
+        </div>
+        <button class="btn-add" (click)="openAddModal()">+ Add Item</button>
+    </div>
+
+    @if (isLoading) {
+    <div class="loading">
+        <div class="spinner-large"></div>
+    </div>
+    }
+
+    @if (!isLoading && filteredItems.length > 0) {
+    <div class="menu-grid">
+        @for (item of filteredItems; track item._id) {
+        <div class="menu-card" [class.unavailable]="!item.isAvailable">
+            <div class="card-header">
+                <span class="category-tag">{{ item.category }}</span>
+                <div class="badges">
+                    @if (item.isVeg) {
+                    <span class="veg-badge">Veg</span>
+                    }
+                    @if (!item.isAvailable) {
+                    <span class="unavailable-badge">Unavailable</span>
+                    }
+                </div>
+            </div>
+            <div class="card-body">
+                <h3>{{ item.name }}</h3>
+                <p>{{ item.description }}</p>
+                <span class="price">{{ formatPrice(item.price) }}</span>
+            </div>
+            <div class="card-actions">
+                <button class="btn-edit" (click)="openEditModal(item)">Edit</button>
+                <button class="btn-delete" (click)="deleteItem(item)">Delete</button>
+            </div>
+        </div>
+        }
+    </div>
+    }
+
+    @if (!isLoading && filteredItems.length === 0) {
+    <div class="empty-state">
+        <span>🍽️</span>
+        <h3>No items found</h3>
+    </div>
+    }
+
+    <!-- Modal -->
+    @if (showModal) {
+    <div class="modal-overlay" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2>{{ editingItem ? 'Edit Item' : 'Add Item' }}</h2>
+                <button class="close-btn" (click)="closeModal()">✕</button>
+            </div>
+
+            <form [formGroup]="menuForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label>Name *</label>
+                    <input type="text" formControlName="name" placeholder="Item name">
+                </div>
+
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea formControlName="description" placeholder="Description" rows="3"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Price (₹) *</label>
+                        <input type="number" formControlName="price" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select formControlName="category">
+                            @for (cat of categories; track cat) {
+                            <option [value]="cat">{{ cat }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row checkboxes">
+                    <label class="checkbox-label">
+                        <input type="checkbox" formControlName="isAvailable">
+                        Available
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" formControlName="isVeg">
+                        Vegetarian
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+                    <button type="submit" class="btn-submit" [disabled]="isSubmitting">
+                        {{ editingItem ? 'Update' : 'Create' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    }
+</div>

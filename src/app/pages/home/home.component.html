@@ -1,0 +1,71 @@
+<div class="home">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to <span class="highlight">Cafe Delight</span></h1>
+            <p>Experience the perfect blend of quality coffee, delicious food, and cozy ambiance. Your favorite cafe
+                destination in the heart of the city.</p>
+            <div class="hero-buttons">
+                <a routerLink="/menu" class="btn btn-primary">Explore Menu</a>
+                @if (!authService.isLoggedIn) {
+                <a routerLink="/register" class="btn btn-secondary">Join Us</a>
+                }
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="floating-card card-1">☕</div>
+            <div class="floating-card card-2">🍰</div>
+            <div class="floating-card card-3">🧇</div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <h2>Our <span class="highlight">Categories</span></h2>
+        <div class="categories-grid">
+            @for (category of categories; track category.name) {
+            <a [routerLink]="['/menu']" [queryParams]="{category: category.name}" class="category-card">
+                <span class="category-icon">{{ category.icon }}</span>
+                <h3>{{ category.name }}</h3>
+                <p>{{ category.description }}</p>
+            </a>
+            }
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <h2>Why Choose <span class="highlight">Us</span></h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🌟</span>
+                <h3>Premium Quality</h3>
+                <p>Only the finest ingredients in every cup and every bite</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <h3>Fast Service</h3>
+                <p>Quick preparation without compromising on quality</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">💝</span>
+                <h3>Made with Love</h3>
+                <p>Every dish crafted with passion and care</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🚚</span>
+                <h3>Easy Ordering</h3>
+                <p>Order online and pick up or get it delivered</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Order?</h2>
+            <p>Browse our menu and treat yourself to something delicious today!</p>
+            <a routerLink="/menu" class="btn btn-primary btn-large">View Full Menu</a>
+        </div>
+    </section>
+</div>

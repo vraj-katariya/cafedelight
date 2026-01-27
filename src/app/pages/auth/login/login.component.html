@@ -1,0 +1,58 @@
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Welcome Back</h1>
+            <p>Sign in to continue to Cafe Delight</p>
+        </div>
+
+        @if (errorMessage) {
+        <div class="error-alert">
+            {{ errorMessage }}
+        </div>
+        }
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" formControlName="email" placeholder="Enter your email"
+                    [class.error]="f['email'].touched && f['email'].invalid">
+                @if (f['email'].touched && f['email'].invalid) {
+                <span class="error-text">
+                    @if (f['email'].errors?.['required']) { Email is required }
+                    @else if (f['email'].errors?.['email']) { Please enter a valid email }
+                </span>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" formControlName="password" placeholder="Enter your password"
+                    [class.error]="f['password'].touched && f['password'].invalid">
+                @if (f['password'].touched && f['password'].invalid) {
+                <span class="error-text">
+                    @if (f['password'].errors?.['required']) { Password is required }
+                    @else if (f['password'].errors?.['minlength']) { Password must be at least 6 characters }
+                </span>
+                }
+            </div>
+
+            <button type="submit" class="btn-submit" [disabled]="isLoading">
+                @if (isLoading) {
+                <span class="spinner"></span> Signing in...
+                } @else {
+                Sign In
+                }
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Don't have an account? <a routerLink="/register">Create one</a></p>
+        </div>
+
+        <div class="demo-credentials">
+            <h4>Demo Credentials</h4>
+            <p><strong>Admin:</strong> admin&#64;cafedelight.com / Admin&#64;123</p>
+            <p><strong>User:</strong> john&#64;example.com / User&#64;123</p>
+        </div>
+    </div>
+</div>

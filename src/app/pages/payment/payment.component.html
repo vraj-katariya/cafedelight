@@ -1,0 +1,27 @@
+<div class="container">
+    <h2>Payment</h2>
+    <div *ngIf="message" class="alert alert-danger">{{ message }}</div>
+
+    <div *ngIf="order" class="order-summary">
+        <h4>Order Summary</h4>
+        <p>Order ID: {{ order._id }}</p>
+        <p><strong>Total Amount: ${{ order.total }}</strong></p>
+    </div>
+
+    <div class="payment-methods">
+        <h4>Select Payment Method</h4>
+        <div class="method-card" [class.selected]="selectedMethod === 'card'" (click)="selectMethod('card')">
+            Credit/Debit Card
+        </div>
+        <div class="method-card" [class.selected]="selectedMethod === 'upi'" (click)="selectMethod('upi')">
+            UPI
+        </div>
+        <div class="method-card" [class.selected]="selectedMethod === 'wallet'" (click)="selectMethod('wallet')">
+            Wallet
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-lg btn-block mt-4" [disabled]="isLoading || !order" (click)="processPayment()">
+        {{ isLoading ? 'Processing...' : 'Pay Now' }}
+    </button>
+</div>

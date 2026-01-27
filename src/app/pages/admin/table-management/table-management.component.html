@@ -1,0 +1,69 @@
+<div class="admin-container">
+    <div class="admin-header">
+        <h2>Table <span>Setup</span></h2>
+    </div>
+
+    <div class="management-wrapper">
+        <!-- Form Side -->
+        <div class="form-card">
+            <h3>Add New Table</h3>
+            <form [formGroup]="tableForm" (ngSubmit)="addTable()">
+                <div class="form-group">
+                    <label>Table Number</label>
+                    <input type="number" formControlName="tableNumber" class="form-control" placeholder="e.g. 101">
+                </div>
+
+                <div class="form-group">
+                    <label>Seating Capacity</label>
+                    <input type="number" formControlName="capacity" class="form-control" placeholder="No. of Persons">
+                </div>
+
+                <div class="form-group">
+                    <label>Location Area</label>
+                    <select formControlName="location" class="form-control">
+                        <option value="Indoor">Indoor (Main Hall)</option>
+                        <option value="Outdoor">Outdoor (Garden)</option>
+                        <option value="Rooftop">Rooftop Terrace</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit" [disabled]="tableForm.invalid">
+                    Add Table to System
+                </button>
+            </form>
+        </div>
+
+        <!-- Grid Side -->
+        <div class="tables-list-card">
+            <div class="section-header">
+                <h3>Existing Tables ({{ tables.length }})</h3>
+            </div>
+
+            <div class="tables-grid">
+                <div *ngFor="let table of tables" class="table-item">
+                    <span class="table-number">#{{ table.tableNumber }}</span>
+                    <div class="table-meta">
+                        <strong>{{ table.capacity }}</strong> Seats<br>
+                        <small>{{ table.location }}</small><br>
+                        <span [style.color]="table.isAvailable ? '#27ae60' : '#e74c3c'">
+                            {{ table.isAvailable ? 'Available' : 'Maintenance' }}
+                        </span>
+                    </div>
+                    <div class="table-actions">
+                        <button (click)="toggleAvailability(table)" class="btn-delete" [style.borderColor]="'#2c3e50'"
+                            [style.color]="'#2c3e50'">
+                            Toggle
+                        </button>
+                        <button (click)="deleteTable(table._id!)" class="btn-delete">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="tables.length === 0" class="empty-state">
+                <p>No tables added yet. Use the form to the left to start.</p>
+            </div>
+        </div>
+    </div>
+</div>

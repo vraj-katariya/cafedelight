@@ -1,0 +1,108 @@
+<div class="dashboard-page">
+    <h1>My <span class="highlight">Dashboard</span></h1>
+
+    @if (user) {
+    <div class="profile-card">
+        <div class="profile-avatar">
+            {{ user.name.charAt(0).toUpperCase() }}
+        </div>
+        <div class="profile-info">
+            <h2>{{ user.name }}</h2>
+            <span class="role-badge" [class.admin]="user.role === 'admin'">
+                {{ user.role | titlecase }}
+            </span>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3>Account Information</h3>
+        <div class="info-table">
+            <div class="info-row">
+                <span class="label">Full Name</span>
+                <span class="value">{{ user.name }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Email Address</span>
+                <span class="value">{{ user.email }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Role</span>
+                <span class="value">
+                    <span class="role-badge" [class.admin]="user.role === 'admin'">
+                        {{ user.role | titlecase }}
+                    </span>
+                </span>
+            </div>
+            <div class="info-row">
+                <span class="label">Phone</span>
+                <span class="value">{{ user.phone || 'Not provided' }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Address</span>
+                <span class="value">{{ user.address || 'Not provided' }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Member Since</span>
+                <span class="value">{{ formatDate(user.createdAt) }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h3>Quick Actions</h3>
+        <div class="actions-grid">
+            <a routerLink="/menu" class="action-card">
+                <span class="action-icon">🍽️</span>
+                <span class="action-text">Browse Menu</span>
+            </a>
+            <a routerLink="/cart" class="action-card">
+                <span class="action-icon">🛒</span>
+                <span class="action-text">View Cart</span>
+            </a>
+            <a routerLink="/orders" class="action-card">
+                <span class="action-icon">📦</span>
+                <span class="action-text">My Orders</span>
+            </a>
+            <!-- Removed Book Table from here as it's part of the login flow -->
+            @if (user.role === 'admin') {
+            <a routerLink="/admin" class="action-card admin">
+                <span class="action-icon">⚙️</span>
+                <span class="action-text">Admin Panel</span>
+            </a>
+            }
+        </div>
+    </div>
+
+    <!-- My Bookings Section -->
+    <div class="my-bookings-section" *ngIf="myBookings.length > 0">
+        <div class="section-header">
+            <h3>My Bookings</h3>
+        </div>
+        <div class="bookings-grid">
+            <div *ngFor="let booking of myBookings" class="booking-card">
+                <div class="booking-details">
+                    <span class="booking-date">
+                        {{ booking.date | date:'mediumDate' }} at {{ booking.timeSlot }}
+                    </span>
+                    <span class="booking-meta">
+                        Table {{ booking.table?.tableNumber }} ({{ booking.guests }} Guests)
+                    </span>
+                    <span class="booking-meta">
+                        Location: {{ booking.table?.location }}
+                    </span>
+                </div>
+
+                <div class="booking-actions">
+                    <span class="status-badge" [class]="'status-' + booking.status.toLowerCase()">
+                        {{ booking.status }}
+                    </span>
+                    <button *ngIf="booking.status !== 'Cancelled' && booking.status !== 'Completed'" class="btn-cancel"
+                        (click)="cancelBooking(booking._id!)">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>
