@@ -67,17 +67,6 @@
                 <span>{{ formatPrice(cart.total) }}</span>
             </div>
 
-            <div class="checkout-form">
-                <div class="form-group">
-                    <label>Delivery Address (Optional)</label>
-                    <textarea [(ngModel)]="deliveryAddress" placeholder="Enter delivery address" rows="2"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Notes (Optional)</label>
-                    <textarea [(ngModel)]="notes" placeholder="Any special instructions?" rows="2"></textarea>
-                </div>
-            </div>
-
             <button class="btn-checkout" (click)="checkout()" [disabled]="isCheckingOut">
                 @if (isCheckingOut) {
                 <span class="spinner"></span> Processing...
