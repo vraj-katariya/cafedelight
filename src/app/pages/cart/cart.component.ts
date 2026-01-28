@@ -17,8 +17,6 @@ export class CartComponent implements OnInit {
     cart: Cart | null = null;
     isLoading = true;
     isCheckingOut = false;
-    deliveryAddress = '';
-    notes = '';
 
     constructor(
         private cartService: CartService,
@@ -75,7 +73,7 @@ export class CartComponent implements OnInit {
         if (!this.cart || this.cart.items.length === 0) return;
 
         this.isCheckingOut = true;
-        this.orderService.createOrder(this.deliveryAddress, this.notes).subscribe({
+        this.orderService.createOrder('', '').subscribe({
             next: (response) => {
                 if (response.success && response.order) {
                     this.router.navigate(['/orders', response.order._id]);
