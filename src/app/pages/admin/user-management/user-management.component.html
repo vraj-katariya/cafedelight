@@ -2,9 +2,11 @@
     <div class="admin-header">
         <h1>User <span class="highlight">Management</span></h1>
         <div class="admin-nav">
-            <a routerLink="/admin">Overview</a>
-            <a routerLink="/admin/users" class="active">Users</a>
-            <a routerLink="/admin/menu">Menu</a>
+            <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Overview</a>
+            <a routerLink="/admin/users" routerLinkActive="active">Users</a>
+            <a routerLink="/admin/menu" routerLinkActive="active">Menu</a>
+            <a routerLink="/admin/tables" routerLinkActive="active">Tables</a>
+            <a routerLink="/admin/bookings" routerLinkActive="active">Bookings</a>
         </div>
     </div>
 

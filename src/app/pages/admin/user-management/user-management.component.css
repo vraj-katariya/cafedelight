@@ -9,8 +9,9 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
 }
 
 .admin-header h1 {
@@ -325,5 +326,46 @@ form {
 @media (max-width: 768px) {
     .users-table-container {
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .user-management {
+        padding: 1rem;
+    }
+
+    .admin-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .admin-nav {
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        width: 100%;
+        display: flex;
+    }
+
+    .admin-nav a {
+        white-space: nowrap;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        margin: 1rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
     }
 }

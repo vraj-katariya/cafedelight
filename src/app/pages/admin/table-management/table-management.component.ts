@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TableService, Table } from '../../../services/table.service';
 
 @Component({
     selector: 'app-table-management',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule],
+    imports: [CommonModule, RouterModule, ReactiveFormsModule],
     templateUrl: './table-management.component.html',
     styleUrls: ['./table-management.component.css']
 })

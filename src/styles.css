@@ -89,3 +89,26 @@ select {
 .animate-pulse {
     animation: pulse 2s ease-in-out infinite;
 }
+
+/* Base Responsive Styles */
+@media (max-width: 600px) {
+    html {
+        font-size: 14px; /* Slightly smaller base font for mobile */
+    }
+    
+    .container {
+        padding: 0 1rem;
+    }
+}
+
+/* Ensure images are responsive by default */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Horizontal scroll for containers with tables or wide content */
+.scroll-x {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
