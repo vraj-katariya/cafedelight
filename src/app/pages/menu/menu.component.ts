@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuService } from '../../services/menu.service';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
@@ -26,7 +26,8 @@ export class MenuComponent implements OnInit {
         private menuService: MenuService,
         private cartService: CartService,
         public authService: AuthService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private router: Router
     ) { }
 
     ngOnInit(): void {
@@ -71,6 +72,7 @@ export class MenuComponent implements OnInit {
     addToCart(item: MenuItem): void {
         if (!this.authService.isLoggedIn) {
             alert('Please login to add items to cart');
+            this.router.navigate(['/login']);
             return;
         }
 

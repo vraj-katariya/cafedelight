@@ -24,6 +24,7 @@
     color: #fff;
     font-size: 1.5rem;
     font-weight: 700;
+    max-width: 70%;
 }
 
 .logo-icon {
@@ -166,6 +167,25 @@
     .btn-logout {
         width: 100%;
         text-align: center;
-        padding: 1rem;
+        padding: 0.85rem;
+        font-size: 1.1rem;
+    }
+
+    .logo-text {
+        font-size: 1.25rem;
+    }
+
+    .logo-icon {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .logo-text {
+        font-size: 1.1rem;
+    }
+
+    .header-container {
+        padding: 0 0.75rem;
     }
 }

@@ -167,3 +167,17 @@
     font-size: 0.85rem;
     margin: 0.25rem 0;
 }
+
+@media (max-width: 600px) {
+    .auth-container {
+        padding: 1rem;
+    }
+
+    .auth-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .auth-header h1 {
+        font-size: 1.75rem;
+    }
+}
