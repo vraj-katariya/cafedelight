@@ -1,0 +1,115 @@
+<div class="bill-container" id="billPrint">
+  <div class="bill-header">
+    <div class="cafe-info">
+      <h1>Cafe Delight</h1>
+      <p>Your Premium Cafe Experience</p>
+      <p>123 Cafe Street, Ahmedabad, Gujarat</p>
+      <p>Phone: +91 98765 43210 | Email: info@cafedelight.com</p>
+    </div>
+    <div class="bill-info">
+      <h2>ORDER BILL</h2>
+      <div class="bill-details">
+        <p><strong>Bill No:</strong> {{ billNumber }}</p>
+        <p><strong>Date:</strong> {{ currentDate | date: 'full' }}</p>
+        <p><strong>Table:</strong> {{ tableNumber || 'Takeaway' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="customer-info">
+    <h3>Customer Information</h3>
+    <div class="customer-details">
+      <p><strong>Name:</strong> {{ customerName }}</p>
+      <p><strong>Phone:</strong> {{ customerPhone }}</p>
+      <p><strong>Order Type:</strong> {{ orderType }}</p>
+    </div>
+  </div>
+
+  <div class="order-items">
+    <h3>Order Details</h3>
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of orderItems; track item.id) {
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>₹{{ item.price | number: '2.0-2' }}</td>
+          <td>₹{{ (item.price * item.quantity) | number: '2.0-2' }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="bill-summary">
+    <div class="summary-row">
+      <span>Subtotal:</span>
+      <span>₹{{ subtotal | number: '2.0-2' }}</span>
+    </div>
+    <div class="summary-row">
+      <span>CGST (9%):</span>
+      <span>₹{{ cgst | number: '2.0-2' }}</span>
+    </div>
+    <div class="summary-row">
+      <span>SGST (9%):</span>
+      <span>₹{{ sgst | number: '2.0-2' }}</span>
+    </div>
+    <div class="summary-row discount" *ngIf="discount > 0">
+      <span>Discount:</span>
+      <span>-₹{{ discount | number: '2.0-2' }}</span>
+    </div>
+    <div class="summary-row total">
+      <span><strong>TOTAL:</strong></span>
+      <span><strong>₹{{ totalAmount | number: '2.0-2' }}</strong></span>
+    </div>
+  </div>
+
+  <div class="payment-info">
+    <h3>Payment Information</h3>
+    <div class="payment-details">
+      <p><strong>Payment Method:</strong> {{ paymentMethod }}</p>
+      <p><strong>Payment Status:</strong> <span class="status-paid">PAID</span></p>
+      <p><strong>Transaction ID:</strong> {{ transactionId }}</p>
+    </div>
+  </div>
+
+  <div class="bill-footer">
+    <div class="terms">
+      <h4>Terms & Conditions</h4>
+      <ul>
+        <li>All prices are inclusive of taxes</li>
+        <li>Please check your order before payment</li>
+        <li>No refunds after payment confirmation</li>
+        <li>Thank you for visiting Cafe Delight!</li>
+      </ul>
+    </div>
+    <div class="thank-you">
+      <h3>Thank You!</h3>
+      <p>Visit us again soon</p>
+      <div class="contact-info">
+        <p>Follow us on: @cafedelight</p>
+        <p>Rate your experience at: www.cafedelight.com/reviews</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bill-actions">
+    <button class="btn btn-primary" (click)="printBill()">
+      🖨️ Print Bill
+    </button>
+    <button class="btn btn-secondary" (click)="downloadBill()">
+      📥 Download PDF
+    </button>
+    <button class="btn btn-info" (click)="shareBill()">
+      📤 Share Bill
+    </button>
+  </div>
+</div>
