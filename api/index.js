@@ -30,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 let cachedDb = null;
 
 async function connectToDatabase() {
+
     if (cachedDb && mongoose.connection.readyState === 1) {
         console.log('Using cached database connection');
         return cachedDb;
