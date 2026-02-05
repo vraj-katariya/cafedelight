@@ -118,6 +118,12 @@ app.use((err, req, res, next) => {
 
 // Vercel serverless function handler
 module.exports = async (req, res) => {
+    // Bypass DB connection for health check and root endpoint
+    // This allows verifying the API is up even if DB is down
+    if (req.url.includes('/api/health') || (req.url === '/api' && !req.body)) {
+        return app(req, res);
+    }
+
     try {
         // Connect to database
         await connectToDatabase();
