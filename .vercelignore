@@ -25,7 +25,7 @@ dist
 Thumbs.db
 
 # Backend (if deploying only frontend)
-backend
+
 
 # Temporary files
 tmp

@@ -17,6 +17,7 @@ export class MenuService {
         if (category) {
             params = params.set('category', category);
         }
+
         return this.http.get<MenuResponse>(this.apiUrl, { params });
     }
 
