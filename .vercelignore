@@ -1,0 +1,32 @@
+# Node modules
+node_modules
+
+# Build artifacts
+.angular
+dist
+
+# Environment files
+.env
+.env.local
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backend (if deploying only frontend)
+backend
+
+# Temporary files
+tmp
+temp
