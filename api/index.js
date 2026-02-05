@@ -67,7 +67,13 @@ app.get('/api/health', (req, res) => {
         success: true,
         message: 'Cafe Delight API is running',
         timestamp: new Date().toISOString(),
-        dbStatus: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+        env: {
+            node_env: process.env.NODE_ENV,
+            mongo_defined: !!process.env.MONGODB_URI,
+            mongo_prefix: process.env.MONGODB_URI ? process.env.MONGODB_URI.substring(0, 20) + '...' : 'N/A'
+        },
+        dbStatus: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+        dbState: mongoose.connection.readyState
     });
 });
 
@@ -112,10 +118,16 @@ app.use((err, req, res, next) => {
 
 // Vercel serverless function handler
 module.exports = async (req, res) => {
+    // Bypass DB connection for health check and root endpoint
+    // This allows verifying the API is up even if DB is down
+    if (req.url.includes('/api/health') || (req.url === '/api' && !req.body)) {
+        return app(req, res);
+    }
+
     try {
         // Connect to database
         await connectToDatabase();
-        
+
         // Handle the request with Express
         return app(req, res);
     } catch (error) {
