@@ -1,0 +1,32 @@
+# Node Modules
+node_modules/
+
+# Build Output
+dist/
+build/
+
+# Environment Files
+.env
+
+# Angular Cache
+.angular/
+
+# Logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary Files
+tmp/
+temp/
+
+# Coverage
+coverage/
