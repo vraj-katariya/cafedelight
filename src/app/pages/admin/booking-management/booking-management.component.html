@@ -10,8 +10,47 @@
         </div>
     </div>
 
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <span class="stat-value">{{ stats.total }}</span>
+            <span class="stat-label">Total Bookings</span>
+        </div>
+        <div class="stat-card pending">
+            <span class="stat-value">{{ stats.pending }}</span>
+            <span class="stat-label">Pending</span>
+        </div>
+        <div class="stat-card confirmed">
+            <span class="stat-value">{{ stats.confirmed }}</span>
+            <span class="stat-label">Confirmed</span>
+        </div>
+        <div class="stat-card cancelled">
+            <span class="stat-value">{{ stats.cancelled }}</span>
+            <span class="stat-label">Cancelled</span>
+        </div>
+    </div>
+
     <div class="management-card">
-        <div *ngIf="bookings.length > 0; else emptyState">
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label>Filter by Date:</label>
+                <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()" class="filter-input">
+            </div>
+            <div class="filter-group">
+                <label>Status:</label>
+                <select [(ngModel)]="filterStatus" (change)="applyFilters()" class="filter-input">
+                    <option value="">All Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Cancelled">Cancelled</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+            <button class="btn-clear" (click)="clearFilters()" *ngIf="filterDate || filterStatus">
+                Clear Filters
+            </button>
+        </div>
+
+        <div *ngIf="filteredBookings.length > 0; else emptyState">
             <table class="data-table">
                 <thead>
                     <tr>
@@ -24,7 +63,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let booking of bookings">
+                    <tr *ngFor="let booking of filteredBookings">
                         <td>
                             <strong>{{ booking.date | date:'mediumDate' }}</strong><br>
                             <small>{{ booking.timeSlot }}</small>

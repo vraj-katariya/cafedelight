@@ -18,6 +18,7 @@ export class BookingComponent {
     availableTables: Table[] = [];
     selectedTable: Table | null = null;
     timeSlots: string[] = ['10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '18:00-19:00', '19:00-20:00', '20:00-21:00'];
+    availableTimeSlots: string[] = [];
     minDate: string = new Date().toISOString().split('T')[0];
     loading = false;
     searched = false;
@@ -31,13 +32,44 @@ export class BookingComponent {
         private tableService: TableService,
         private router: Router
     ) {
+        this.availableTimeSlots = [...this.timeSlots]; // Default all
         this.bookingForm = this.fb.group({
             date: ['', Validators.required],
             timeSlot: ['', Validators.required],
             guests: [2, [Validators.required, Validators.min(1)]],
             notes: ['']
         });
+
+        // Listen to date changes
+        this.bookingForm.get('date')?.valueChanges.subscribe(date => {
+            this.updateTimeSlots(date);
+        });
+
         this.checkInitialTables();
+    }
+
+    updateTimeSlots(dateStr: string) {
+        if (!dateStr) return;
+
+        const selectedDate = new Date(dateStr);
+        const now = new Date();
+
+        // If today, filter past slots
+        if (selectedDate.toDateString() === now.toDateString()) {
+            const currentHour = now.getHours();
+            this.availableTimeSlots = this.timeSlots.filter(slot => {
+                const startHour = parseInt(slot.split(':')[0]);
+                return startHour > currentHour;
+            });
+        } else {
+            this.availableTimeSlots = [...this.timeSlots];
+        }
+
+        // Reset selected slot if it's no longer available
+        const currentSlot = this.bookingForm.get('timeSlot')?.value;
+        if (currentSlot && !this.availableTimeSlots.includes(currentSlot)) {
+            this.bookingForm.patchValue({ timeSlot: '' });
+        }
     }
 
     checkInitialTables() {
@@ -96,9 +128,7 @@ export class BookingComponent {
 
         this.bookingService.createBooking(bookingData).subscribe({
             next: (res) => {
-                alert('Booking Confirmed!');
-                this.authService.setHasBooking(true);
-                this.router.navigate(['/menu']);
+                this.router.navigate(['/booking-success']);
             },
             error: (err) => {
                 this.message = err.error.message || 'Booking Failed';

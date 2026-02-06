@@ -51,10 +51,102 @@
     border-color: transparent;
 }
 
+/* Dashboard Stats */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card.pending {
+    border-bottom: 3px solid #f39c12;
+}
+
+.stat-card.confirmed {
+    border-bottom: 3px solid #2ecc71;
+}
+
+.stat-card.cancelled {
+    border-bottom: 3px solid #e74c3c;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #888;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Filters bar */
+.filters-bar {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+.filter-input {
+    padding: 0.6rem 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #fff;
+    min-width: 150px;
+}
+
+.btn-clear {
+    padding: 0.6rem 1.2rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-clear:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
 .management-card {
     background: linear-gradient(135deg, #1a1a2e, #16213e);
     border-radius: 16px;
-    padding: 1rem;
+    padding: 1.5rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;

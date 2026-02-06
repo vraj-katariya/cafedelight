@@ -25,6 +25,11 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {
+        path: 'booking-success',
+        loadComponent: () => import('./pages/booking/booking-success/booking-success.component').then(m => m.BookingSuccessComponent),
+        canActivate: [authGuard]
+    },
+    {
         path: 'cart',
         loadComponent: () => import('./pages/cart/cart.component').then(m => m.CartComponent),
         canActivate: [authGuard]
@@ -76,6 +81,6 @@ export const routes: Routes = [
     },
     {
         path: '**',
-        redirectTo: ''
+        loadComponent: () => import('./pages/error-pages/not-found.component').then(m => m.NotFoundComponent)
     }
 ];

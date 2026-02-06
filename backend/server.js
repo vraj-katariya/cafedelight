@@ -1,7 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const logger = require('./utils/logger');
 const connectDB = require('./config/db');
+const { apiLimiter } = require('./middleware/rateLimit');
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
@@ -20,7 +24,13 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(helmet()); // Set security headers
+app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL : '*',
+    credentials: true
+}));
+app.use(apiLimiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -70,15 +80,10 @@ app.use((req, res) => {
     });
 });
 
+const errorMiddleware = require('./middleware/errorMiddleware');
+
 // Error handler
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({
-        success: false,
-        message: 'Something went wrong!',
-        error: process.env.NODE_ENV === 'development' ? err.message : undefined
-    });
-});
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 5000;
 

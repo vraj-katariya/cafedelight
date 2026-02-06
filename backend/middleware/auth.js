@@ -7,6 +7,13 @@ const protect = async (req, res, next) => {
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies?.token) { // If using cookie-parser
+        token = req.cookies.token;
+    } else if (req.headers.cookie) { // Manual parsing fallback
+        const cookie = req.headers.cookie.split(';').find(c => c.trim().startsWith('token='));
+        if (cookie) {
+            token = cookie.split('=')[1];
+        }
     }
 
     if (!token) {
