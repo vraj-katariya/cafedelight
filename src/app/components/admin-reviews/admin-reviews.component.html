@@ -1,30 +1,12 @@
 <div class="admin-reviews-container">
   <div class="admin-header">
     <h2>Review Management</h2>
-    <div class="admin-stats">
-      <div class="stat-card">
-        <h3>{{ totalReviews }}</h3>
-        <p>Total Reviews</p>
-      </div>
-      <div class="stat-card">
-        <h3>{{ averageRating | number: '1.1' }}</h3>
-        <p>Average Rating</p>
-      </div>
-      <div class="stat-card">
-        <h3>{{ todayReviews }}</h3>
-        <p>Today's Reviews</p>
-      </div>
-    </div>
   </div>
 
   <div class="reviews-controls">
     <div class="search-filter">
-      <input 
-        type="text" 
-        [(ngModel)]="searchTerm" 
-        placeholder="Search reviews..."
-        class="search-input">
-      
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search reviews..." class="search-input">
+
       <select [(ngModel)]="filterRating" class="filter-select">
         <option value="">All Ratings</option>
         <option value="5">5 Stars</option>
@@ -34,7 +16,7 @@
         <option value="1">1 Star</option>
       </select>
     </div>
-    
+
     <div class="bulk-actions">
       <button class="btn btn-danger" (click)="deleteSelectedReviews()" [disabled]="selectedReviews.length === 0">
         Delete Selected ({{ selectedReviews.length }})
@@ -50,10 +32,7 @@
       <thead>
         <tr>
           <th>
-            <input 
-              type="checkbox" 
-              [(ngModel)]="selectAll" 
-              (change)="toggleSelectAll()">
+            <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()">
           </th>
           <th>Customer</th>
           <th>Rating</th>
@@ -62,12 +41,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let review of filteredReviews" [class.selected]="selectedReviews.includes(review.id)">
+        <tr *ngFor="let review of filteredReviews" [class.selected]="selectedReviews.includes(review._id!)">
           <td>
-            <input 
-              type="checkbox" 
-              [(ngModel)]="selectedReviews" 
-              [value]="review.id">
+            <input type="checkbox" [(ngModel)]="selectedReviews" [value]="review._id!">
           </td>
           <td>
             <div class="customer-info">
@@ -109,25 +85,22 @@
           <label>Customer Name</label>
           <input type="text" [(ngModel)]="editingReview.customerName" name="customerName" required>
         </div>
-        
+
         <div class="form-group">
           <label>Rating</label>
           <div class="star-rating">
-            <span 
-              *ngFor="let star of [1,2,3,4,5]" 
-              class="star"
-              [class.active]="star <= editingReview.rating"
+            <span *ngFor="let star of [1,2,3,4,5]" class="star" [class.active]="star <= editingReview.rating"
               (click)="setEditRating(star)">
               ⭐
             </span>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label>Review</label>
           <textarea [(ngModel)]="editingReview.comment" name="comment" rows="4" required></textarea>
         </div>
-        
+
         <div class="modal-actions">
           <button type="submit" class="btn btn-primary">Update</button>
           <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancel</button>
@@ -145,7 +118,7 @@
           <strong>Customer:</strong> {{ viewingReview.customerName }}
         </div>
         <div class="detail-row">
-          <strong>Rating:</strong> 
+          <strong>Rating:</strong>
           <span class="stars">{{ getStarDisplay(viewingReview.rating) }}</span>
         </div>
         <div class="detail-row">

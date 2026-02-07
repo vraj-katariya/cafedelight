@@ -101,7 +101,13 @@
 }
 
 .btn-register {
+    border: 1px solid transparent !important;
+    background: transparent !important;
+}
+
+.btn-register.active {
     background: linear-gradient(135deg, #f39c12, #e74c3c) !important;
+    border-color: transparent !important;
 }
 
 .menu-toggle {

@@ -25,6 +25,11 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {
+        path: 'booking-success',
+        loadComponent: () => import('./pages/booking/booking-success/booking-success.component').then(m => m.BookingSuccessComponent),
+        canActivate: [authGuard]
+    },
+    {
         path: 'cart',
         loadComponent: () => import('./pages/cart/cart.component').then(m => m.CartComponent),
         canActivate: [authGuard]
@@ -51,31 +56,37 @@ export const routes: Routes = [
     },
     {
         path: 'admin',
-        loadComponent: () => import('./pages/admin/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent),
-        canActivate: [adminGuard]
-    },
-    {
-        path: 'admin/users',
-        loadComponent: () => import('./pages/admin/user-management/user-management.component').then(m => m.UserManagementComponent),
-        canActivate: [adminGuard]
-    },
-    {
-        path: 'admin/menu',
-        loadComponent: () => import('./pages/admin/menu-management/menu-management.component').then(m => m.MenuManagementComponent),
-        canActivate: [adminGuard]
-    },
-    {
-        path: 'admin/tables',
-        loadComponent: () => import('./pages/admin/table-management/table-management.component').then(m => m.TableManagementComponent),
-        canActivate: [adminGuard]
-    },
-    {
-        path: 'admin/bookings',
-        loadComponent: () => import('./pages/admin/booking-management/booking-management.component').then(m => m.BookingManagementComponent),
-        canActivate: [adminGuard]
+        loadComponent: () => import('./pages/admin/admin-layout/admin-layout.component').then(m => m.AdminLayoutComponent),
+        canActivate: [adminGuard],
+        children: [
+            {
+                path: '',
+                loadComponent: () => import('./pages/admin/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent)
+            },
+            {
+                path: 'users',
+                loadComponent: () => import('./pages/admin/user-management/user-management.component').then(m => m.UserManagementComponent)
+            },
+            {
+                path: 'menu',
+                loadComponent: () => import('./pages/admin/menu-management/menu-management.component').then(m => m.MenuManagementComponent)
+            },
+            {
+                path: 'tables',
+                loadComponent: () => import('./pages/admin/table-management/table-management.component').then(m => m.TableManagementComponent)
+            },
+            {
+                path: 'bookings',
+                loadComponent: () => import('./pages/admin/booking-management/booking-management.component').then(m => m.BookingManagementComponent)
+            },
+            {
+                path: 'reviews',
+                loadComponent: () => import('./pages/admin/review-management/review-management.component').then(m => m.ReviewManagementComponent)
+            }
+        ]
     },
     {
         path: '**',
-        redirectTo: ''
+        loadComponent: () => import('./pages/error-pages/not-found.component').then(m => m.NotFoundComponent)
     }
 ];

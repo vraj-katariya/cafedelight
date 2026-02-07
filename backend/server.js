@@ -1,7 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const logger = require('./utils/logger');
 const connectDB = require('./config/db');
+const { apiLimiter } = require('./middleware/rateLimit');
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
@@ -13,6 +17,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const tableRoutes = require('./routes/tableRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 // Connect to database
 connectDB();
@@ -20,7 +25,13 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(helmet()); // Set security headers
+app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL : '*',
+    credentials: true
+}));
+app.use(apiLimiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -34,6 +45,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/tables', tableRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', dashboardRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
@@ -70,15 +82,10 @@ app.use((req, res) => {
     });
 });
 
+const errorMiddleware = require('./middleware/errorMiddleware');
+
 // Error handler
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({
-        success: false,
-        message: 'Something went wrong!',
-        error: process.env.NODE_ENV === 'development' ? err.message : undefined
-    });
-});
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 5000;
 

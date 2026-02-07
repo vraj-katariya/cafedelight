@@ -1,0 +1,76 @@
+<div class="admin-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" [class.open]="isSidebarOpen">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">☕</span>
+                <span class="logo-text">Cafe Delight</span>
+            </div>
+            <p class="role-badge">ADMIN PANEL</p>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                (click)="isSidebarOpen = false">
+                <span class="nav-icon">📊</span>
+                Dashboard
+            </a>
+            <a routerLink="/admin/users" routerLinkActive="active" (click)="isSidebarOpen = false">
+                <span class="nav-icon">👥</span>
+                User Management
+            </a>
+            <a routerLink="/admin/menu" routerLinkActive="active" (click)="isSidebarOpen = false">
+                <span class="nav-icon">🍽️</span>
+                Menu Management
+            </a>
+            <a routerLink="/admin/tables" routerLinkActive="active" (click)="isSidebarOpen = false">
+                <span class="nav-icon">🪑</span>
+                Table Management
+            </a>
+            <a routerLink="/admin/bookings" routerLinkActive="active" (click)="isSidebarOpen = false">
+                <span class="nav-icon">📅</span>
+                Booking Management
+            </a>
+            <a routerLink="/admin/reviews" routerLinkActive="active" (click)="isSidebarOpen = false">
+                <span class="nav-icon">⭐</span>
+                Reviews
+            </a>
+            <a class="logout-link" (click)="logout(); isSidebarOpen = false">
+                <span class="nav-icon">🚪</span>
+                Logout
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="avatar">{{ authService.currentUserValue?.name?.charAt(0) || 'A' }}</div>
+                <div class="details">
+                    <span class="name">{{ authService.currentUserValue?.name || 'Admin' }}</span>
+                    <span class="role">Manager</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Overlay for mobile -->
+    <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="isSidebarOpen = false"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="content-header">
+            <div class="top-bar">
+                <button class="mobile-toggle" (click)="toggleSidebar()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="top-actions">
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+</div>

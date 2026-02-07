@@ -1,14 +1,4 @@
 <div class="admin-dashboard">
-    <div class="admin-header">
-        <h1>Admin <span class="highlight">Dashboard</span></h1>
-        <div class="admin-nav">
-            <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Overview</a>
-            <a routerLink="/admin/users" routerLinkActive="active">Users</a>
-            <a routerLink="/admin/menu" routerLinkActive="active">Menu</a>
-            <a routerLink="/admin/tables" routerLinkActive="active">Tables</a>
-            <a routerLink="/admin/bookings" routerLinkActive="active">Bookings</a>
-        </div>
-    </div>
 
     @if (isLoading) {
     <div class="loading">
@@ -139,7 +129,30 @@
             }
         </div>
 
-        <!-- Recent Orders -->
+        <!-- Recent Reviews -->
+        <div class="section-card reviews-card">
+            <div class="section-header">
+                <h2>Recent Customer Reviews</h2>
+                <a routerLink="/admin/reviews" class="view-all">View All</a>
+            </div>
+            @if (recentReviews.length === 0) {
+            <p class="empty-text">No reviews yet</p>
+            } @else {
+            <div class="recent-reviews-list">
+                @for (review of recentReviews; track review._id) {
+                <div class="recent-review-item">
+                    <div class="review-meta">
+                        <strong>{{ review.customerName }}</strong>
+                        <span class="stars">{{ '⭐'.repeat(review.rating) }}</span>
+                    </div>
+                    <p class="review-text">{{ review.comment | slice:0:80 }}{{ review.comment.length > 80 ? '...' : ''
+                        }}</p>
+                    <span class="review-date">{{ review.date! | date:'short' }}</span>
+                </div>
+                }
+            </div>
+            }
+        </div>
 
         <!-- Top Items & Recent Users -->
         <div class="side-sections">
@@ -165,7 +178,7 @@
                 <p class="empty-text">No users yet</p>
                 } @else {
                 <div class="users-list">
-                    @for (user of recentUsers; track user) {
+                    @for (user of recentUsers; track user._id) {
                     <div class="user-item">
                         <div class="user-avatar">{{ user.name.charAt(0) }}</div>
                         <div class="user-info">

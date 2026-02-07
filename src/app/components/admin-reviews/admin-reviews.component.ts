@@ -2,19 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
-
-export interface Review {
-  id: string;
-  customerName: string;
-  rating: number;
-  comment: string;
-  date: Date;
-}
+import { ReviewService, Review } from '../../services/review.service';
 
 @Component({
   selector: 'app-admin-reviews',
   standalone: true,
-  imports: [CommonModule, FormsModule, DecimalPipe, DatePipe, TruncatePipe],
+  imports: [CommonModule, FormsModule, DatePipe, TruncatePipe],
   templateUrl: './admin-reviews.component.html',
   styleUrls: ['./admin-reviews.component.css']
 })
@@ -27,34 +20,37 @@ export class AdminReviewsComponent implements OnInit {
   filterRating = '';
   editingReview: Review | null = null;
   viewingReview: Review | null = null;
+  isLoading = false;
+
+  constructor(private reviewService: ReviewService) { }
 
   ngOnInit(): void {
     this.loadReviews();
   }
 
   loadReviews(): void {
-    const savedReviews = localStorage.getItem('cafeReviews');
-    if (savedReviews) {
-      this.reviews = JSON.parse(savedReviews);
-    } else {
-      this.reviews = [];
-    }
-    this.applyFilters();
-  }
-
-  saveReviews(): void {
-    localStorage.setItem('cafeReviews', JSON.stringify(this.reviews));
-    this.applyFilters();
+    this.isLoading = true;
+    this.reviewService.getReviews().subscribe({
+      next: (data) => {
+        this.reviews = data;
+        this.applyFilters();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error loading reviews:', err);
+        this.isLoading = false;
+      }
+    });
   }
 
   applyFilters(): void {
     this.filteredReviews = this.reviews.filter(review => {
-      const matchesSearch = !this.searchTerm || 
+      const matchesSearch = !this.searchTerm ||
         review.customerName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         review.comment.toLowerCase().includes(this.searchTerm.toLowerCase());
-      
+
       const matchesRating = !this.filterRating || review.rating === parseInt(this.filterRating);
-      
+
       return matchesSearch && matchesRating;
     });
   }
@@ -73,6 +69,7 @@ export class AdminReviewsComponent implements OnInit {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return this.reviews.filter(review => {
+      if (!review.date) return false;
       const reviewDate = new Date(review.date);
       reviewDate.setHours(0, 0, 0, 0);
       return reviewDate.getTime() === today.getTime();
@@ -85,7 +82,7 @@ export class AdminReviewsComponent implements OnInit {
 
   toggleSelectAll(): void {
     if (this.selectAll) {
-      this.selectedReviews = this.filteredReviews.map(review => review.id);
+      this.selectedReviews = this.filteredReviews.map(review => review._id!);
     } else {
       this.selectedReviews = [];
     }
@@ -93,18 +90,34 @@ export class AdminReviewsComponent implements OnInit {
 
   deleteReview(reviewId: string): void {
     if (confirm('Are you sure you want to delete this review?')) {
-      this.reviews = this.reviews.filter(review => review.id !== reviewId);
-      this.saveReviews();
-      this.selectedReviews = this.selectedReviews.filter(id => id !== reviewId);
+      this.reviewService.deleteReview(reviewId).subscribe({
+        next: () => {
+          this.reviews = this.reviews.filter(review => review._id !== reviewId);
+          this.applyFilters();
+          this.selectedReviews = this.selectedReviews.filter(id => id !== reviewId);
+        },
+        error: (err) => {
+          console.error('Error deleting review:', err);
+          alert('Failed to delete review.');
+        }
+      });
     }
   }
 
   deleteSelectedReviews(): void {
     if (confirm(`Are you sure you want to delete ${this.selectedReviews.length} reviews?`)) {
-      this.reviews = this.reviews.filter(review => !this.selectedReviews.includes(review.id));
-      this.saveReviews();
-      this.selectedReviews = [];
-      this.selectAll = false;
+      // For simplicity, deleting one by one. In a real app, a bulk delete API would be better.
+      const deletePromises = this.selectedReviews.map(id => this.reviewService.deleteReview(id).toPromise());
+      Promise.all(deletePromises).then(() => {
+        this.reviews = this.reviews.filter(review => !this.selectedReviews.includes(review._id!));
+        this.applyFilters();
+        this.selectedReviews = [];
+        this.selectAll = false;
+      }).catch(err => {
+        console.error('Error deleting some reviews:', err);
+        alert('Some reviews could not be deleted.');
+        this.loadReviews(); // Reload to sync state
+      });
     }
   }
 
@@ -113,13 +126,21 @@ export class AdminReviewsComponent implements OnInit {
   }
 
   updateReview(): void {
-    if (this.editingReview) {
-      const index = this.reviews.findIndex(r => r.id === this.editingReview!.id);
-      if (index !== -1) {
-        this.reviews[index] = { ...this.editingReview };
-        this.saveReviews();
-        this.closeEditModal();
-      }
+    if (this.editingReview && this.editingReview._id) {
+      this.reviewService.updateReview(this.editingReview._id, this.editingReview).subscribe({
+        next: (updatedReview) => {
+          const index = this.reviews.findIndex(r => r._id === updatedReview._id);
+          if (index !== -1) {
+            this.reviews[index] = { ...updatedReview };
+            this.applyFilters();
+            this.closeEditModal();
+          }
+        },
+        error: (err) => {
+          console.error('Error updating review:', err);
+          alert('Failed to update review.');
+        }
+      });
     }
   }
 
@@ -158,16 +179,16 @@ export class AdminReviewsComponent implements OnInit {
       review.customerName,
       review.rating,
       review.comment.replace(/"/g, '""'),
-      new Date(review.date).toISOString()
+      review.date ? new Date(review.date).toISOString() : ''
     ]);
-    
+
     const csvContent = [
       headers.join(','),
-      ...rows.map(row => 
+      ...rows.map(row =>
         row.map(cell => `"${cell}"`).join(',')
       )
     ].join('\n');
-    
+
     return csvContent;
   }
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CartService } from '../../services/cart.service';
 
@@ -16,7 +16,8 @@ export class HeaderComponent {
 
     constructor(
         public authService: AuthService,
-        public cartService: CartService
+        public cartService: CartService,
+        private router: Router
     ) { }
 
     toggleMenu(): void {
@@ -24,8 +25,11 @@ export class HeaderComponent {
     }
 
     logout(): void {
-        this.authService.logout();
-        this.cartService.resetCart();
-        this.isMenuOpen = false;
+        if (window.confirm('Are you sure you want to log out?')) {
+            this.authService.logout();
+            this.cartService.resetCart();
+            this.isMenuOpen = false;
+            this.router.navigate(['/']);
+        }
     }
 }

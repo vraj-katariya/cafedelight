@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AuthService } from './services/auth.service';
 import { CartService } from './services/cart.service';
 import { BookingService } from './services/booking.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,15 @@ import { BookingService } from './services/booking.service';
   imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent],
   template: `
         <div class="app-container">
-            <app-header></app-header>
+            @if (!isAdminPage) {
+                <app-header></app-header>
+            }
             <main class="main-content">
                 <router-outlet></router-outlet>
             </main>
-            <app-footer></app-footer>
+            @if (!isAdminPage) {
+                <app-footer></app-footer>
+            }
         </div>
     `,
   styles: [`
@@ -32,13 +37,25 @@ import { BookingService } from './services/booking.service';
     `]
 })
 export class AppComponent implements OnInit {
+  isAdminPage = false;
+
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private cartService: CartService,
-    private bookingService: BookingService
-  ) { }
+    private bookingService: BookingService,
+    private router: Router
+  ) {
+    // Listen to route changes to hide/show header/footer
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.isAdminPage = event.urlAfterRedirects.startsWith('/admin');
+    });
+  }
 
   ngOnInit(): void {
+    // Initialize once in case of initial load
+    this.isAdminPage = this.router.url.startsWith('/admin');
     if (this.authService.isLoggedIn) {
       this.cartService.getCart().subscribe();
       this.checkUserBookings();
