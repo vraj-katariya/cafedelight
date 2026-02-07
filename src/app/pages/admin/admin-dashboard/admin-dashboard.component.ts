@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AdminService, DashboardStats } from '../../../services/admin.service';
+import { ReviewService, Review } from '../../../services/review.service';
 import { Order } from '../../../models/order.model';
 import { User } from '../../../models/user.model';
 
@@ -17,10 +18,14 @@ export class AdminDashboardComponent implements OnInit {
     recentOrders: Order[] = [];
     recentUsers: User[] = [];
     recentBookings: any[] = [];
+    recentReviews: Review[] = [];
     topItems: any[] = [];
     isLoading = true;
 
-    constructor(private adminService: AdminService) { }
+    constructor(
+        private adminService: AdminService,
+        private reviewService: ReviewService
+    ) { }
 
     ngOnInit(): void {
         this.loadDashboard();
@@ -28,6 +33,8 @@ export class AdminDashboardComponent implements OnInit {
 
     loadDashboard(): void {
         this.isLoading = true;
+
+        // Load main dashboard stats
         this.adminService.getDashboard().subscribe({
             next: (response) => {
                 if (response.success) {
@@ -37,12 +44,27 @@ export class AdminDashboardComponent implements OnInit {
                     this.recentBookings = response.dashboard.recentBookings;
                     this.topItems = response.dashboard.topItems;
                 }
-                this.isLoading = false;
+                this.checkLoadingComplete();
             },
-            error: () => {
-                this.isLoading = false;
-            }
+            error: () => this.checkLoadingComplete()
         });
+
+        // Load recent reviews separately
+        this.reviewService.getReviews().subscribe({
+            next: (reviews) => {
+                this.recentReviews = reviews.slice(0, 5);
+                this.checkLoadingComplete();
+            },
+            error: () => this.checkLoadingComplete()
+        });
+    }
+
+    private loadingCount = 0;
+    private checkLoadingComplete(): void {
+        this.loadingCount++;
+        if (this.loadingCount >= 2) {
+            this.isLoading = false;
+        }
     }
 
     formatPrice(price: number): string {

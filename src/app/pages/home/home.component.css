@@ -259,6 +259,20 @@
     font-size: 1.1rem;
 }
 
+/* Reviews Section */
+.reviews-section {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.reviews-section h2 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 3rem;
+}
+
 @media (max-width: 768px) {
     .hero {
         flex-direction: column;
@@ -321,5 +335,37 @@
 
     .hero-buttons {
         flex-direction: column;
+    }
+}
+
+/* Specific optimization for 360px devices */
+@media (max-width: 400px) {
+    .hero {
+        padding: 2rem 1rem;
+    }
+
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        font-size: 0.95rem;
+    }
+
+    .features-section {
+        padding: 2rem 1rem;
+    }
+
+    .features-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .feature-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .feature-card p {
+        font-size: 0.85rem;
     }
 }

@@ -22,9 +22,8 @@
             @if (authService.isAdmin) {
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                 (click)="isMenuOpen = false">Home</a>
-            <a routerLink="/admin" routerLinkActive="active" (click)="isMenuOpen = false" class="admin-link">Admin
-                Panel</a>
             <a routerLink="/menu" routerLinkActive="active" (click)="isMenuOpen = false">Menu</a>
+            <a routerLink="/admin" routerLinkActive="active" (click)="isMenuOpen = false">Admin Panel</a>
             <button class="btn-logout" (click)="logout()">Logout</button>
             } @else {
             <!-- Client View -->

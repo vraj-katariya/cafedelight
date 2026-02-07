@@ -110,7 +110,7 @@ export class UserManagementComponent implements OnInit {
         }
 
         if (this.editingUser) {
-            this.adminService.updateUser(this.editingUser.id, formData).subscribe({
+            this.adminService.updateUser(this.editingUser._id, formData).subscribe({
                 next: () => {
                     this.loadUsers();
                     this.closeModal();
@@ -138,7 +138,7 @@ export class UserManagementComponent implements OnInit {
 
     deleteUser(user: User): void {
         if (confirm(`Are you sure you want to delete ${user.name}?`)) {
-            this.adminService.deleteUser(user.id).subscribe({
+            this.adminService.deleteUser(user._id).subscribe({
                 next: () => {
                     this.loadUsers();
                 },

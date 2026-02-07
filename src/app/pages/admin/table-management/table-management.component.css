@@ -1,54 +1,5 @@
 .user-management {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.admin-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
-}
-
-.admin-header h1 {
-    font-size: 2rem;
-    color: #fff;
-    margin: 0;
-}
-
-.highlight {
-    background: linear-gradient(135deg, #9b59b6, #8e44ad);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.admin-nav {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.admin-nav a {
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: #fff;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.admin-nav a:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.admin-nav a.active {
-    background: linear-gradient(135deg, #9b59b6, #8e44ad);
-    border-color: transparent;
+    padding: 0;
 }
 
 .management-wrapper {
@@ -58,17 +9,19 @@
 }
 
 .form-card {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    background: #141625;
     padding: 2rem;
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     height: fit-content;
 }
 
 .form-card h3 {
     margin-top: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     color: #fff;
+    font-weight: 700;
 }
 
 .form-group {
@@ -79,7 +32,8 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #aaa;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
 }
 
 .form-control {
@@ -87,32 +41,40 @@
     padding: 0.8rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    border-radius: 10px;
     color: #fff;
-    font-size: 1rem;
+    font-size: 0.95rem;
+}
+
+.form-control option {
+    background-color: #1a1c2d;
+    color: #fff;
 }
 
 .btn-submit {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    background: #4e73df;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-weight: 600;
+    border-radius: 12px;
+    font-weight: 700;
     cursor: pointer;
-    transition: background 0.3s;
+    box-shadow: 0 4px 6px rgba(78, 115, 223, 0.2);
+    transition: all 0.3s;
 }
 
 .btn-submit:hover {
-    opacity: 0.9;
+    background: #2e59d9;
+    transform: translateY(-2px);
 }
 
 .tables-list-card {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    background: #141625;
     padding: 2rem;
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .tables-grid {
@@ -122,87 +84,68 @@
 }
 
 .table-item {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
     text-align: center;
-    position: relative;
+    transition: all 0.3s;
+}
+
+.table-item:hover {
+    border-color: #4e73df;
+    transform: translateY(-5px);
 }
 
 .table-number {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 2rem;
+    font-weight: 800;
     color: #fff;
     display: block;
+    margin-bottom: 0.5rem;
 }
 
 .table-meta {
-    font-size: 0.9rem;
-    color: #888;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
     margin: 0.5rem 0;
+    font-weight: 500;
 }
 
 .table-actions {
     display: flex;
     gap: 0.5rem;
     justify-content: center;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 }
 
 .btn-delete {
-    flex: 1;
-    color: #e74c3c;
-    background: rgba(231, 76, 60, 0.1);
-    border: 1px solid #e74c3c;
-    padding: 0.4rem 0.6rem;
-    border-radius: 6px;
+    width: 100%;
+    color: #e53e3e;
+    background: rgba(229, 62, 62, 0.1);
+    border: 1px solid rgba(229, 62, 62, 0.2);
+    padding: 0.6rem;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.2s;
 }
 
 .btn-delete:hover {
-    background: #e74c3c;
+    background: #e53e3e;
     color: white;
+    border-color: #e53e3e;
 }
 
 .empty-state {
     text-align: center;
     padding: 4rem;
-    color: #888;
+    color: rgba(255, 255, 255, 0.3);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
     .management-wrapper {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .user-management {
-        padding: 1rem;
-    }
-
-    .admin-nav {
-        overflow-x: auto;
-        padding-bottom: 0.5rem;
-        width: 100%;
-        display: flex;
-    }
-
-    .admin-nav a {
-        white-space: nowrap;
-        font-size: 0.85rem;
-        padding: 0.4rem 0.8rem;
-    }
-
-    .admin-header h1 {
-        font-size: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .tables-grid {
         grid-template-columns: 1fr;
     }
 }

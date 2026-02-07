@@ -159,11 +159,8 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
             message: 'User deleted successfully'
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            success: false,
-            message: 'Server error'
-        });
+        console.error('Error deleting user:', error);
+        next(error);
     }
 });
 
