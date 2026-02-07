@@ -128,6 +128,7 @@ export class BookingComponent {
 
         this.bookingService.createBooking(bookingData).subscribe({
             next: (res) => {
+                this.authService.setHasBooking(true);
                 this.router.navigate(['/booking-success']);
             },
             error: (err) => {

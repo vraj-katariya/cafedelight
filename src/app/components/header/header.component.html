@@ -27,12 +27,6 @@
             <button class="btn-logout" (click)="logout()">Logout</button>
             } @else {
             <!-- Client View -->
-            @if (!authService.hasBooking) {
-            <!-- Restricted View (No Booking Yet) -->
-            <a routerLink="/booking" routerLinkActive="active" (click)="isMenuOpen = false">Book the Table</a>
-            <button class="btn-logout" (click)="logout()">Logout</button>
-            } @else {
-            <!-- Full View (After Booking) -->
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                 (click)="isMenuOpen = false">Home</a>
             <a routerLink="/menu" routerLinkActive="active" (click)="isMenuOpen = false">Menu</a>
@@ -44,8 +38,8 @@
             </a>
             <a routerLink="/orders" routerLinkActive="active" (click)="isMenuOpen = false">Orders</a>
             <a routerLink="/dashboard" routerLinkActive="active" (click)="isMenuOpen = false">Dashboard</a>
+            <a routerLink="/booking" routerLinkActive="active" (click)="isMenuOpen = false">Book the Table</a>
             <button class="btn-logout" (click)="logout()">Logout</button>
-            }
             }
             }
         </nav>
