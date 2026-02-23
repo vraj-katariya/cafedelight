@@ -49,9 +49,23 @@ app.use('/api/reviews', reviewRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
+    const mongoose = require('mongoose');
+    const dbStatus = {
+        0: 'disconnected',
+        1: 'connected',
+        2: 'connecting',
+        3: 'disconnecting',
+    };
+
     res.json({
         success: true,
         message: 'Cafe Delight API is running',
+        dbStatus: dbStatus[mongoose.connection.readyState] || 'unknown',
+        env: {
+            nodeEnv: process.env.NODE_ENV,
+            isVercel: !!process.env.VERCEL,
+            hasMongoUri: !!process.env.MONGODB_URI
+        },
         timestamp: new Date().toISOString()
     });
 });
