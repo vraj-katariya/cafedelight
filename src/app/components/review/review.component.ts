@@ -65,7 +65,8 @@ export class ReviewComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error submitting review:', err);
-        alert('Failed to submit review. Please try again.');
+        const errorMsg = err.error?.message || 'Failed to submit review. Please try again.';
+        alert(errorMsg);
       }
     });
   }

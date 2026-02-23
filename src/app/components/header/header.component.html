@@ -5,11 +5,18 @@
             <span class="logo-text">Cafe Delight</span>
         </a>
 
-        <button class="menu-toggle" (click)="toggleMenu()">
+        <button class="menu-toggle" [class.open]="isMenuOpen" (click)="toggleMenu()" aria-label="Toggle menu">
             <span class="hamburger"></span>
         </button>
 
+        <!-- Overlay for closing menu -->
+        <div class="menu-overlay" [class.show]="isMenuOpen" (click)="isMenuOpen = false"></div>
+
         <nav class="nav" [class.open]="isMenuOpen">
+            <div class="nav-header" *ngIf="isMenuOpen">
+                <span class="logo-text">Navigation</span>
+                <button class="close-sidebar" (click)="isMenuOpen = false">×</button>
+            </div>
             @if (!authService.isLoggedIn) {
             <!-- Guest View -->
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"

@@ -17,7 +17,12 @@ export class BookingComponent {
     bookingForm: FormGroup;
     availableTables: Table[] = [];
     selectedTable: Table | null = null;
-    timeSlots: string[] = ['10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '18:00-19:00', '19:00-20:00', '20:00-21:00'];
+    timeSlots: string[] = [
+        '09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00',
+        '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00',
+        '17:00-18:00', '18:00-19:00', '19:00-20:00', '20:00-21:00',
+        '21:00-22:00'
+    ];
     availableTimeSlots: string[] = [];
     minDate: string = new Date().toISOString().split('T')[0];
     loading = false;
@@ -69,6 +74,14 @@ export class BookingComponent {
         const currentSlot = this.bookingForm.get('timeSlot')?.value;
         if (currentSlot && !this.availableTimeSlots.includes(currentSlot)) {
             this.bookingForm.patchValue({ timeSlot: '' });
+        }
+    }
+
+    selectTimeSlot(slot: string) {
+        this.bookingForm.patchValue({ timeSlot: slot });
+        // After selecting slot, automatically trigger availability check if date and guests are valid
+        if (this.bookingForm.get('date')?.valid && this.bookingForm.get('guests')?.valid) {
+            this.checkAvailability();
         }
     }
 

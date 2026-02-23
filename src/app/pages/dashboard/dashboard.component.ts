@@ -23,6 +23,12 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit(): void {
         this.user = this.authService.currentUserValue;
+        this.authService.getProfile().subscribe({
+            next: (res) => {
+                if (res.user) this.user = res.user;
+            },
+            error: (err) => console.error('Error fetching profile:', err)
+        });
         this.loadMyBookings();
     }
 

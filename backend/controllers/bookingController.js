@@ -1,5 +1,6 @@
 const Booking = require('../models/Booking');
 const Table = require('../models/Table');
+const logger = require('../utils/logger');
 
 // @desc    Check availability
 // @route   GET /api/bookings/availability
@@ -90,7 +91,6 @@ exports.createBooking = async (req, res, next) => {
             notes
         });
 
-        const logger = require('../utils/logger');
         logger.info(`📧 Mock Email Sent: Booking confirmed for ${req.user.id} at ${bookingDate}`);
 
         res.status(201).json({ success: true, data: booking });
