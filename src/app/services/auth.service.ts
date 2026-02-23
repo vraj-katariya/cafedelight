@@ -71,7 +71,13 @@ export class AuthService {
     }
 
     getProfile(): Observable<AuthResponse> {
-        return this.http.get<AuthResponse>(`${this.apiUrl}/me`);
+        return this.http.get<AuthResponse>(`${this.apiUrl}/me`).pipe(
+            tap(response => {
+                if (response.success && response.user) {
+                    this.updateCurrentUser(response.user);
+                }
+            })
+        );
     }
 
     private setSession(token: string, user: User): void {

@@ -76,6 +76,7 @@ export class CartComponent implements OnInit {
         this.orderService.createOrder('', '').subscribe({
             next: (response) => {
                 if (response.success && response.order) {
+                    this.cartService.resetCart();
                     this.router.navigate(['/orders', response.order._id]);
                 }
                 this.isCheckingOut = false;
