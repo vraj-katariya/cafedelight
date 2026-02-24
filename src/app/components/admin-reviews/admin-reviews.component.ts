@@ -7,7 +7,7 @@ import { ReviewService, Review } from '../../services/review.service';
 @Component({
   selector: 'app-admin-reviews',
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePipe, TruncatePipe],
+  imports: [CommonModule, FormsModule, DatePipe, DecimalPipe, TruncatePipe],
   templateUrl: './admin-reviews.component.html',
   styleUrls: ['./admin-reviews.component.css']
 })
@@ -18,7 +18,6 @@ export class AdminReviewsComponent implements OnInit {
   selectAll = false;
   searchTerm = '';
   filterRating = '';
-  editingReview: Review | null = null;
   viewingReview: Review | null = null;
   isLoading = false;
 
@@ -119,39 +118,6 @@ export class AdminReviewsComponent implements OnInit {
         this.loadReviews(); // Reload to sync state
       });
     }
-  }
-
-  editReview(review: Review): void {
-    this.editingReview = { ...review };
-  }
-
-  updateReview(): void {
-    if (this.editingReview && this.editingReview._id) {
-      this.reviewService.updateReview(this.editingReview._id, this.editingReview).subscribe({
-        next: (updatedReview) => {
-          const index = this.reviews.findIndex(r => r._id === updatedReview._id);
-          if (index !== -1) {
-            this.reviews[index] = { ...updatedReview };
-            this.applyFilters();
-            this.closeEditModal();
-          }
-        },
-        error: (err) => {
-          console.error('Error updating review:', err);
-          alert('Failed to update review.');
-        }
-      });
-    }
-  }
-
-  setEditRating(rating: number): void {
-    if (this.editingReview) {
-      this.editingReview.rating = rating;
-    }
-  }
-
-  closeEditModal(): void {
-    this.editingReview = null;
   }
 
   showFullReview(review: Review): void {

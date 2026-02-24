@@ -17,10 +17,11 @@ export class UserManagementComponent implements OnInit {
     filteredUsers: User[] = [];
     isLoading = true;
     showModal = false;
-    editingUser: User | null = null;
     userForm: FormGroup;
     searchTerm = '';
     isSubmitting = false;
+    showPassword = false;
+    showConfirmPassword = false;
 
     constructor(
         private adminService: AdminService,
@@ -29,11 +30,17 @@ export class UserManagementComponent implements OnInit {
         this.userForm = this.fb.group({
             name: ['', [Validators.required, Validators.minLength(2)]],
             email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.minLength(6)]],
+            password: ['', [Validators.required, Validators.minLength(6)]],
+            confirmPassword: ['', Validators.required],
             role: ['user', Validators.required],
             phone: [''],
             address: ['']
-        });
+        }, { validators: this.passwordMatchValidator });
+    }
+
+    passwordMatchValidator(g: FormGroup) {
+        return g.get('password')?.value === g.get('confirmPassword')?.value
+            ? null : { mismatch: true };
     }
 
     ngOnInit(): void {
@@ -69,31 +76,27 @@ export class UserManagementComponent implements OnInit {
     }
 
     openAddModal(): void {
-        this.editingUser = null;
         this.userForm.reset({ role: 'user' });
+        this.showPassword = false;
+        this.showConfirmPassword = false;
         this.userForm.get('password')?.setValidators([Validators.required, Validators.minLength(6)]);
+        this.userForm.get('confirmPassword')?.setValidators([Validators.required]);
         this.userForm.get('password')?.updateValueAndValidity();
-        this.showModal = true;
-    }
-
-    openEditModal(user: User): void {
-        this.editingUser = user;
-        this.userForm.patchValue({
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            phone: user.phone || '',
-            address: user.address || ''
-        });
-        this.userForm.get('password')?.clearValidators();
-        this.userForm.get('password')?.updateValueAndValidity();
+        this.userForm.get('confirmPassword')?.updateValueAndValidity();
         this.showModal = true;
     }
 
     closeModal(): void {
         this.showModal = false;
-        this.editingUser = null;
         this.userForm.reset();
+    }
+
+    togglePasswordVisibility(): void {
+        this.showPassword = !this.showPassword;
+    }
+
+    toggleConfirmPasswordVisibility(): void {
+        this.showConfirmPassword = !this.showConfirmPassword;
     }
 
     onSubmit(): void {
@@ -104,36 +107,19 @@ export class UserManagementComponent implements OnInit {
 
         this.isSubmitting = true;
         const formData = { ...this.userForm.value };
+        delete formData.confirmPassword;
 
-        if (!formData.password) {
-            delete formData.password;
-        }
-
-        if (this.editingUser) {
-            this.adminService.updateUser(this.editingUser._id, formData).subscribe({
-                next: () => {
-                    this.loadUsers();
-                    this.closeModal();
-                    this.isSubmitting = false;
-                },
-                error: () => {
-                    this.isSubmitting = false;
-                    alert('Failed to update user');
-                }
-            });
-        } else {
-            this.adminService.createUser(formData).subscribe({
-                next: () => {
-                    this.loadUsers();
-                    this.closeModal();
-                    this.isSubmitting = false;
-                },
-                error: (err) => {
-                    this.isSubmitting = false;
-                    alert(err.error?.message || 'Failed to create user');
-                }
-            });
-        }
+        this.adminService.createUser(formData).subscribe({
+            next: () => {
+                this.loadUsers();
+                this.closeModal();
+                this.isSubmitting = false;
+            },
+            error: (err) => {
+                this.isSubmitting = false;
+                alert(err.error?.message || 'Failed to create user');
+            }
+        });
     }
 
     deleteUser(user: User): void {

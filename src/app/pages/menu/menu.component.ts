@@ -18,6 +18,7 @@ export class MenuComponent implements OnInit {
     filteredItems: MenuItem[] = [];
     categories = ['All', 'Coffee', 'Beverages', 'Snacks', 'Waffle', 'Cakes'];
     selectedCategory = 'All';
+    searchQuery = '';
     isLoading = true;
     addingToCart: string | null = null;
     failedImages = new Set<string>();
@@ -57,11 +58,24 @@ export class MenuComponent implements OnInit {
     }
 
     filterItems(): void {
-        if (this.selectedCategory === 'All') {
-            this.filteredItems = this.menuItems;
-        } else {
-            this.filteredItems = this.menuItems.filter(item => item.category === this.selectedCategory);
-        }
+        const query = this.searchQuery.toLowerCase().trim();
+        this.filteredItems = this.menuItems.filter(item => {
+            const matchesCategory = this.selectedCategory === 'All' || item.category === this.selectedCategory;
+            const matchesSearch = !query ||
+                item.name.toLowerCase().includes(query) ||
+                item.description.toLowerCase().includes(query);
+            return matchesCategory && matchesSearch;
+        });
+    }
+
+    onSearchChange(event: any): void {
+        this.searchQuery = event.target.value;
+        this.filterItems();
+    }
+
+    onCategoryChange(event: any): void {
+        this.selectedCategory = event.target.value;
+        this.filterItems();
     }
 
     selectCategory(category: string): void {

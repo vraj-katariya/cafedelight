@@ -4,13 +4,22 @@
         <p>Explore our delicious selection of coffees, beverages, snacks, and desserts</p>
     </div>
 
-    <!-- Category Filter -->
-    <div class="category-filter">
-        @for (category of categories; track category) {
-        <button class="category-btn" [class.active]="selectedCategory === category" (click)="selectCategory(category)">
-            {{ category }}
-        </button>
-        }
+    <!-- Menu Search & Category Filter -->
+    <div class="menu-search-container">
+        <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="Search for coffee, snacks..."
+                (input)="onSearchChange($event)" [value]="searchQuery">
+        </div>
+
+        <div class="category-dropdown-wrapper">
+            <select class="category-select" [value]="selectedCategory" (change)="onCategoryChange($event)">
+                @for (category of categories; track category) {
+                <option [value]="category">{{ category }}</option>
+                }
+            </select>
+            <span class="dropdown-arrow">▼</span>
+        </div>
     </div>
 
     <!-- Loading State -->

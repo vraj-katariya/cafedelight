@@ -3,27 +3,55 @@
     <h2>Review Management</h2>
   </div>
 
-  <div class="reviews-controls">
-    <div class="search-filter">
-      <input type="text" [(ngModel)]="searchTerm" placeholder="Search reviews..." class="search-input">
+  <!-- Stats Cards -->
+  <div class="admin-stats">
+    <div class="stat-card">
+      <h3>{{ totalReviews }}</h3>
+      <p>Total Reviews</p>
+    </div>
+    <div class="stat-card">
+      <h3>{{ averageRating | number: '1.1-1' }}</h3>
+      <p>Average Rating</p>
+    </div>
+    <div class="stat-card">
+      <h3>{{ todayReviews }}</h3>
+      <p>Today's Reviews</p>
+    </div>
+  </div>
 
-      <select [(ngModel)]="filterRating" class="filter-select">
-        <option value="">All Ratings</option>
-        <option value="5">5 Stars</option>
-        <option value="4">4 Stars</option>
-        <option value="3">3 Stars</option>
-        <option value="2">2 Stars</option>
-        <option value="1">1 Star</option>
-      </select>
+  <div class="reviews-controls">
+    <div class="search-filter-grid">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()"
+          placeholder="Search review text or customer..." class="search-input">
+      </div>
+
+      <div class="filter-group">
+        <label>Filter by Rating</label>
+        <select [(ngModel)]="filterRating" (ngModelChange)="applyFilters()" class="filter-select">
+          <option value="">All Ratings</option>
+          <option value="5">5 Stars</option>
+          <option value="4">4 Stars</option>
+          <option value="3">3 Stars</option>
+          <option value="2">2 Stars</option>
+          <option value="1">1 Star</option>
+        </select>
+      </div>
     </div>
 
-    <div class="bulk-actions">
-      <button class="btn btn-danger" (click)="deleteSelectedReviews()" [disabled]="selectedReviews.length === 0">
-        Delete Selected ({{ selectedReviews.length }})
-      </button>
-      <button class="btn btn-secondary" (click)="exportReviews()">
-        Export Reviews
-      </button>
+    <div class="actions-bar">
+      <div class="selected-count" *ngIf="selectedReviews.length > 0">
+        <span>{{ selectedReviews.length }} reviews selected</span>
+      </div>
+      <div class="action-buttons">
+        <button class="btn-bulk-delete" (click)="deleteSelectedReviews()" [disabled]="selectedReviews.length === 0">
+          Delete Selected
+        </button>
+        <button class="btn-export" (click)="exportReviews()">
+          Export CSV
+        </button>
+      </div>
     </div>
   </div>
 
@@ -31,13 +59,14 @@
     <table class="reviews-table">
       <thead>
         <tr>
-          <th>
+          <th class="col-checkbox">
             <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()">
           </th>
-          <th>Customer</th>
-          <th>Rating</th>
-          <th>Review</th>
-          <th>Date</th>
+          <th class="col-customer">Customer</th>
+          <th class="col-rating">Rating</th>
+          <th class="col-review">Review</th>
+          <th class="col-date">Date</th>
+          <th class="col-actions">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -45,67 +74,36 @@
           <td>
             <input type="checkbox" [(ngModel)]="selectedReviews" [value]="review._id!">
           </td>
+          <td class="customer-name">{{ review.customerName }}</td>
           <td>
-            <div class="customer-info">
-              <strong>{{ review.customerName }}</strong>
-            </div>
-          </td>
-          <td>
-            <div class="rating-display">
+            <div class="rating-badge">
               <span class="stars">
                 {{ getStarDisplay(review.rating) }}
               </span>
-              <span class="rating-number">{{ review.rating }}/5</span>
+              <span class="rating-num">{{ review.rating }}</span>
             </div>
           </td>
           <td>
-            <div class="review-text">
-              {{ review.comment | truncate: 100 }}
-              <button class="btn-link" (click)="showFullReview(review)" *ngIf="review.comment.length > 100">
-                Read more
+            <div class="review-content">
+              <span class="comment">{{ review.comment | truncate: 80 }}</span>
+              <button class="btn-view-more" (click)="showFullReview(review)" *ngIf="review.comment.length > 80">
+                View All
               </button>
             </div>
           </td>
-          <td>{{ review.date | date: 'short' }}</td>
+          <td class="review-date">{{ review.date | date: 'MMM dd, yyyy' }}</td>
+          <td>
+            <button class="btn-delete-row" (click)="deleteReview(review._id!)">
+              Delete
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
 
-    <div class="no-reviews" *ngIf="filteredReviews.length === 0">
-      <p>No reviews found matching your criteria.</p>
-    </div>
-  </div>
-
-  <!-- Edit Review Modal -->
-  <div class="modal-overlay" *ngIf="editingReview" (click)="closeEditModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <h3>Edit Review</h3>
-      <form (ngSubmit)="updateReview()">
-        <div class="form-group">
-          <label>Customer Name</label>
-          <input type="text" [(ngModel)]="editingReview.customerName" name="customerName" required>
-        </div>
-
-        <div class="form-group">
-          <label>Rating</label>
-          <div class="star-rating">
-            <span *ngFor="let star of [1,2,3,4,5]" class="star" [class.active]="star <= editingReview.rating"
-              (click)="setEditRating(star)">
-              ⭐
-            </span>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Review</label>
-          <textarea [(ngModel)]="editingReview.comment" name="comment" rows="4" required></textarea>
-        </div>
-
-        <div class="modal-actions">
-          <button type="submit" class="btn btn-primary">Update</button>
-          <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancel</button>
-        </div>
-      </form>
+    <div class="empty-results" *ngIf="filteredReviews.length === 0">
+      <div class="empty-icon">📂</div>
+      <p>No reviews found matching your filters.</p>
     </div>
   </div>
 

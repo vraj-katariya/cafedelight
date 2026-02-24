@@ -15,6 +15,7 @@ export class LoginComponent {
     loginForm: FormGroup;
     isLoading = false;
     errorMessage = '';
+    showPassword = false;
 
     constructor(
         private fb: FormBuilder,
@@ -52,6 +53,10 @@ export class LoginComponent {
                 this.errorMessage = error.error?.message || 'Login failed. Please try again.';
             }
         });
+    }
+
+    togglePasswordVisibility(): void {
+        this.showPassword = !this.showPassword;
     }
 
     get f() {

@@ -1,27 +1,37 @@
 <div class="home">
-    <!-- Hero Section -->
+
+    <!-- Hero Section with Food Background -->
     <section class="hero">
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Welcome to <span class="highlight">Cafe Delight</span></h1>
+            <div class="hero-badge">☕ Est. 2026</div>
+            <h1>Welcome to <span class="highlight">The Coffee Culture</span></h1>
             <p>Experience the perfect blend of quality coffee, delicious food, and cozy ambiance. Your favorite cafe
                 destination in the heart of the city.</p>
             <div class="hero-buttons">
-                <a routerLink="/menu" class="btn btn-primary">Explore Menu</a>
+                <a routerLink="/menu" class="btn btn-primary">
+                    <span>🍽️</span> Explore Menu
+                </a>
                 @if (!authService.isLoggedIn) {
-                <a routerLink="/register" class="btn btn-secondary">Join Us</a>
+                <a routerLink="/register" class="btn btn-secondary">
+                    <span>✨</span> Join Us
+                </a>
                 }
             </div>
+
         </div>
-        <div class="hero-image">
-            <div class="floating-card card-1">☕</div>
-            <div class="floating-card card-2">🍰</div>
-            <div class="floating-card card-3">🧇</div>
+        <div class="hero-scroll-indicator">
+            <div class="scroll-dot"></div>
         </div>
     </section>
 
     <!-- Categories Section -->
     <section class="categories-section">
-        <h2>Our <span class="highlight">Categories</span></h2>
+        <div class="section-header">
+            <span class="section-badge">Our Menu</span>
+            <h2>Our <span class="highlight">Categories</span></h2>
+            <p>Explore our wide range of carefully crafted dishes and beverages</p>
+        </div>
         <div class="categories-grid">
             @for (category of categories; track category.name) {
             <a [routerLink]="['/menu']" [queryParams]="{category: category.name}" class="category-card"
@@ -30,6 +40,7 @@
                     <span class="category-icon">{{ category.icon }}</span>
                     <h3>{{ category.name }}</h3>
                     <p>{{ category.description }}</p>
+                    <span class="explore-btn">Explore →</span>
                 </div>
             </a>
             }
@@ -38,38 +49,53 @@
 
     <!-- Features Section -->
     <section class="features-section">
-        <h2>Why Choose <span class="highlight">Us</span></h2>
+        <div class="section-header">
+            <span class="section-badge">Why Us</span>
+            <h2>Why Choose <span class="highlight">Us</span></h2>
+            <p>We take pride in delivering exceptional experiences every time</p>
+        </div>
         <div class="features-grid">
             <div class="feature-card">
-                <span class="feature-icon">🌟</span>
+                <div class="feature-icon-wrap">🌟</div>
                 <h3>Premium Quality</h3>
                 <p>Only the finest ingredients in every cup and every bite</p>
             </div>
             <div class="feature-card">
-                <span class="feature-icon">⚡</span>
+                <div class="feature-icon-wrap">⚡</div>
                 <h3>Fast Service</h3>
                 <p>Quick preparation without compromising on quality</p>
             </div>
             <div class="feature-card">
-                <span class="feature-icon">💝</span>
+                <div class="feature-icon-wrap">💝</div>
                 <h3>Made with Love</h3>
                 <p>Every dish crafted with passion and care</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-wrap">🌿</div>
+                <h3>Fresh Ingredients</h3>
+                <p>Farm-to-table freshness in every meal we serve</p>
             </div>
         </div>
     </section>
 
     <!-- Reviews Section -->
     <section class="reviews-section">
-        <h2>Customer <span class="highlight">Reviews</span></h2>
-        <app-review></app-review>
+        <div class="section-header">
+            <h2>Customer <span class="highlight">Reviews</span></h2>
+            <p>See what our beloved customers say about us</p>
+        </div>
+        <app-review [allowWrite]="false" [showHeader]="false"></app-review>
     </section>
 
     <!-- CTA Section -->
     <section class="cta-section">
+        <div class="cta-bg-overlay"></div>
         <div class="cta-content">
+            <span class="cta-badge">🍽️ Fresh & Delicious</span>
             <h2>Ready to Order?</h2>
             <p>Browse our menu and treat yourself to something delicious today!</p>
-            <a routerLink="/menu" class="btn btn-primary btn-large">View Full Menu</a>
+            <a routerLink="/menu" class="btn btn-primary btn-large">View Full Menu →</a>
         </div>
     </section>
+
 </div>

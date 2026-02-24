@@ -96,7 +96,7 @@
                     <span class="status-badge" [class]="'status-' + booking.status.toLowerCase()">
                         {{ booking.status }}
                     </span>
-                    <button *ngIf="booking.status !== 'Cancelled' && booking.status !== 'Completed'" class="btn-cancel"
+                    <button *ngIf="booking.status === 'Pending'" class="btn-cancel"
                         (click)="cancelBooking(booking._id!)">
                         Cancel
                     </button>

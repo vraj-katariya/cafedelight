@@ -1,9 +1,9 @@
 <div class="review-wrapper">
   <div class="review-container">
-    <h2 class="section-title">Customer <span>Reviews</span></h2>
+    <h2 class="section-title" *ngIf="showHeader">Customer <span>Reviews</span></h2>
 
     <!-- Add Review Form -->
-    <div class="add-review-section" *ngIf="showReviewForm">
+    <div class="add-review-section" *ngIf="allowWrite && showReviewForm">
       <div class="glass-card form-card">
         <h4>Share Your Experience</h4>
         <form (ngSubmit)="submitReview()">
@@ -40,13 +40,13 @@
     </div>
 
     <!-- Reviews List -->
-    <div class="reviews-list">
+    <div class="reviews-list" *ngIf="showList">
       <div class="list-header">
         <div>
           <h3>What our customers say</h3>
           <p class="subtitle" *ngIf="reviews.length > 0">Based on {{ reviews.length }} reviews</p>
         </div>
-        <button class="btn-write" (click)="showReviewForm = true" *ngIf="!showReviewForm">
+        <button class="btn-write" (click)="showReviewForm = true" *ngIf="allowWrite && !showReviewForm">
           Write a Review
         </button>
       </div>

@@ -84,7 +84,7 @@ export class OrderBillComponent implements OnInit {
     document.body.innerHTML = printStyles + printContent.innerHTML;
     window.print();
     document.body.innerHTML = originalContent;
-    
+
     // Reinitialize the component
     window.location.reload();
   }
@@ -102,10 +102,10 @@ export class OrderBillComponent implements OnInit {
 
   shareBill(): void {
     const billContent = this.generateBillText();
-    
+
     if (navigator.share) {
       navigator.share({
-        title: `Cafe Delight - Bill ${this.billNumber}`,
+        title: `The Coffee Culture - Bill ${this.billNumber}`,
         text: billContent
       }).catch(err => console.log('Share failed:', err));
     } else {
@@ -120,24 +120,24 @@ export class OrderBillComponent implements OnInit {
   }
 
   generateBillText(): string {
-    let text = `CAFE DELIGHT - ORDER BILL\n`;
+    let text = `THE COFFEE CULTURE - ORDER BILL\n`;
     text += `${'='.repeat(50)}\n\n`;
     text += `Bill No: ${this.billNumber}\n`;
     text += `Date: ${this.currentDate.toLocaleDateString()}\n`;
     text += `Table: ${this.tableNumber || 'Takeaway'}\n\n`;
-    
+
     text += `CUSTOMER INFORMATION\n`;
     text += `${'-'.repeat(25)}\n`;
     text += `Name: ${this.customerName}\n`;
     text += `Phone: ${this.customerPhone}\n`;
     text += `Order Type: ${this.orderType}\n\n`;
-    
+
     text += `ORDER DETAILS\n`;
     text += `${'-'.repeat(25)}\n`;
     this.orderItems.forEach(item => {
       text += `${item.name} x${item.quantity} = ₹${(item.price * item.quantity).toFixed(2)}\n`;
     });
-    
+
     text += `\nBILL SUMMARY\n`;
     text += `${'-'.repeat(25)}\n`;
     text += `Subtotal: ₹${this.subtotal.toFixed(2)}\n`;
@@ -147,16 +147,16 @@ export class OrderBillComponent implements OnInit {
       text += `Discount: -₹${this.discount.toFixed(2)}\n`;
     }
     text += `TOTAL: ₹${this.totalAmount.toFixed(2)}\n\n`;
-    
+
     text += `PAYMENT INFORMATION\n`;
     text += `${'-'.repeat(25)}\n`;
     text += `Payment Method: ${this.paymentMethod}\n`;
     text += `Status: PAID\n`;
     text += `Transaction ID: ${this.transactionId}\n\n`;
-    
-    text += `Thank you for visiting Cafe Delight!\n`;
+
+    text += `Thank you for visiting The Coffee Culture!\n`;
     text += `Visit us again soon!\n`;
-    
+
     return text;
   }
 }

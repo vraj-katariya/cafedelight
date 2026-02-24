@@ -2,7 +2,7 @@
     <div class="auth-card">
         <div class="auth-header">
             <h1>Create Account</h1>
-            <p>Join Cafe Delight today ok </p>
+            <p>Join The Coffee Culture today</p>
         </div>
 
         @if (errorMessage) {
@@ -45,8 +45,14 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" formControlName="password" placeholder="Create password"
-                        [class.error]="f['password'].touched && f['password'].invalid">
+                    <div class="password-input-wrapper">
+                        <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+                            placeholder="Create password"
+                            [class.error]="f['password'].touched && f['password'].invalid">
+                        <button type="button" class="btn-visibility" (click)="togglePasswordVisibility()">
+                            {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+                        </button>
+                    </div>
                     @if (f['password'].touched && f['password'].invalid) {
                     <span class="error-text">
                         @if (f['password'].errors?.['required']) { Password is required }
@@ -58,9 +64,14 @@
 
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" formControlName="confirmPassword"
-                        placeholder="Confirm password"
-                        [class.error]="f['confirmPassword'].touched && f['confirmPassword'].invalid">
+                    <div class="password-input-wrapper">
+                        <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword"
+                            formControlName="confirmPassword" placeholder="Confirm password"
+                            [class.error]="f['confirmPassword'].touched && f['confirmPassword'].invalid">
+                        <button type="button" class="btn-visibility" (click)="toggleConfirmPasswordVisibility()">
+                            {{ showConfirmPassword ? '👁️' : '👁️‍🗨️' }}
+                        </button>
+                    </div>
                     @if (f['confirmPassword'].touched && f['confirmPassword'].invalid) {
                     <span class="error-text">
                         @if (f['confirmPassword'].errors?.['required']) { Confirm password }

@@ -11,10 +11,10 @@ import { OrderService } from '../../services/order.service';
     imports: [CommonModule, ReactiveFormsModule],
     templateUrl: './payment.component.html',
     styles: [`
-    .container { max-width: 600px; margin: 2rem auto; padding: 2rem; border: 1px solid #eee; border-radius: 8px; }
-    .method-card { border: 1px solid #ddd; padding: 1rem; margin: 0.5rem 0; cursor: pointer; border-radius: 4px; }
-    .selected { background-color: #e3f2fd; border-color: #2196f3; }
-    .order-summary { background: #f9f9f9; padding: 1rem; margin-bottom: 2rem; }
+    .container { max-width: 600px; margin: 4rem auto; padding: 3rem; border: 1px solid #000000; border-radius: 0; background: #fff; box-shadow: 10px 10px 0 #000; }
+    .method-card { border: 1px solid #eee; padding: 1.5rem; margin: 1rem 0; cursor: pointer; border-radius: 0; font-weight: 700; transition: all 0.2s; }
+    .selected { background-color: #000000; border-color: #000000; color: #fff; }
+    .order-summary { background: #f9f9f9; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid #eee; }
   `]
 })
 export class PaymentComponent implements OnInit {
