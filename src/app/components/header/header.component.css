@@ -1,3 +1,4 @@
+/* Existing header styles */
 .header {
     background: #ffffff;
     padding: 1.2rem 0;
@@ -164,7 +165,8 @@
 
     .menu-toggle {
         display: block;
-        z-index: 1001;
+        z-index: 1100;
+        position: relative;
     }
 
     .menu-toggle.open .hamburger {
@@ -179,25 +181,66 @@
         transform: rotate(-45deg) translate(5px, -6px);
     }
 
-    .menu-overlay {
+    .nav {
         position: fixed;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 999;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: #ffffff;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px 2rem 2rem;
+        z-index: 1050;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.05);
+        gap: 0;
     }
 
-    .nav {
-        background: #ffffff;
-        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.05);
+    .nav.open {
+        right: 0;
     }
 
     .nav a {
-        color: #1a1a1a;
-        border-radius: 0;
+        width: 100%;
+        padding: 1.2rem 0;
         border-bottom: 1px solid #f0f0f0;
+        border-radius: 0;
+        color: #1a1a1a;
+        font-size: 0.95rem;
+    }
+
+    .nav a.active {
+        border-bottom: 2px solid #1a1a1a;
+        color: #000;
+        background: transparent;
+    }
+
+    .btn-logout {
+        width: 100%;
+        margin-top: 1.5rem;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .menu-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 1040;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .menu-overlay.show {
+        opacity: 1;
+        visibility: visible;
     }
 
     .nav-header {
-        border-bottom: 2px solid #1a1a1a;
+        display: none;
     }
 
     .close-sidebar {
