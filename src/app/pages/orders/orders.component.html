@@ -68,6 +68,9 @@
                     @if (order.paymentStatus === 'pending' && order.status !== 'cancelled') {
                     <button class="btn-pay" (click)="openPaymentModal(order)">Pay Now</button>
                     }
+                    @if (order.paymentStatus === 'paid') {
+                    <button class="btn-review" (click)="openReviewModal(order)">Rate & Review</button>
+                    }
                     @if (order.status === 'pending') {
                     <button class="btn-cancel" (click)="cancelOrder(order._id)">Cancel</button>
                     }
@@ -132,6 +135,26 @@
                     Pay {{ formatPrice(selectedOrder.total) }}
                     }
                 </button>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- Review Modal -->
+    @if (showReviewModal && selectedOrder) {
+    <div class="modal-overlay" (click)="closeReviewModal()">
+        <div class="modal-content review-modal" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Rate & Review</h2>
+                <button class="close-btn" (click)="closeReviewModal()">✕</button>
+            </div>
+
+            <div class="modal-body">
+                <p class="order-ref">Reviewing Order: {{ selectedOrder._id.slice(-8).toUpperCase() }}</p>
+                <div class="review-form-container">
+                    <app-review [showHeader]="false" [showList]="false" [showForm]="true"
+                        (reviewSubmitted)="closeReviewModal()"></app-review>
+                </div>
             </div>
         </div>
     </div>

@@ -1,15 +1,15 @@
 .admin-container {
     display: flex;
     min-height: 100vh;
-    background-color: #1a1c2d;
-    color: #fff;
+    background-color: #ffffff;
+    color: #1a1a1a;
 }
 
 /* Sidebar Styling */
 .sidebar {
-    width: 260px;
-    background-color: #141625;
-    color: #fff;
+    width: 280px;
+    background-color: #000000;
+    color: #ffffff;
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -18,90 +18,108 @@
 }
 
 .sidebar-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 3rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
 }
 
 .logo-icon {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    filter: grayscale(1);
 }
 
 .logo-text {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    line-height: 1.2;
 }
 
 .role-badge {
-    font-size: 0.7rem;
-    color: #4e73df;
+    font-size: 0.6rem;
+    color: #ffffff;
+    background: #1a1a1a;
+    padding: 4px 10px;
+    display: inline-block;
     font-weight: 800;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-nav {
     flex: 1;
-    padding: 1rem 0;
+    padding: 2rem 0;
 }
 
 .sidebar-nav a {
     display: flex;
     align-items: center;
-    padding: 0.85rem 1.5rem;
-    color: rgba(255, 255, 255, 0.7);
+    padding: 1rem 2rem;
+    color: #777777;
     text-decoration: none;
-    transition: all 0.3s;
-    font-size: 0.95rem;
-    gap: 0.75rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    font-size: 0.75rem;
+    gap: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 800;
 }
 
 .sidebar-nav a:hover {
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.03);
+    padding-left: 2.25rem;
 }
 
 .sidebar-nav a.active {
-    color: #fff;
-    background-color: #4e73df;
-    font-weight: 600;
+    color: #000000;
+    background-color: #ffffff;
+    padding-left: 2.25rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .nav-icon {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     width: 24px;
     text-align: center;
+    filter: grayscale(1);
+}
+
+.sidebar-nav a.active .nav-icon {
+    filter: none;
 }
 
 .sidebar-footer {
-    padding: 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .avatar {
     width: 40px;
     height: 40px;
-    background: #4e73df;
-    border-radius: 50%;
+    background: #ffffff;
+    color: #000000;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    color: #fff;
+    font-weight: 900;
+    font-size: 1.1rem;
 }
 
 .details {
@@ -110,34 +128,41 @@
 }
 
 .name {
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .role {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.65rem;
+    color: #555;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .logout-link {
     display: flex;
     align-items: center;
-    padding: 0.85rem 1.5rem;
-    color: rgba(255, 255, 255, 0.7);
+    padding: 0.75rem 0;
+    color: #555555;
     text-decoration: none;
     transition: all 0.3s;
-    font-size: 0.95rem;
-    gap: 0.75rem;
+    font-size: 0.75rem;
+    gap: 1rem;
     cursor: pointer;
     border: none;
     background: transparent;
     width: 100%;
     text-align: left;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 1.5px;
 }
 
 .logout-link:hover {
-    color: #fff;
-    background-color: rgba(231, 74, 59, 0.1);
+    color: #e74c3c;
 }
 
 
@@ -150,16 +175,15 @@
 }
 
 .content-header {
-    background: #1a1c2d;
+    background: #ffffff;
     height: 70px;
     display: flex;
     align-items: center;
     padding: 0 2rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 0 #eeeeee;
     position: sticky;
     top: 0;
     z-index: 90;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .top-bar {
@@ -172,15 +196,15 @@
 .search-bar {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.05);
+    background: #f5f5f5;
     padding: 0.5rem 1rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    border: 1px solid #eeeeee;
     width: 300px;
 }
 
 .search-bar .icon {
-    color: rgba(255, 255, 255, 0.5);
+    color: #999999;
 }
 
 .search-bar input {
@@ -188,58 +212,39 @@
     border: none;
     outline: none;
     margin-left: 0.5rem;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     width: 100%;
-    color: #fff;
-}
-
-.search-bar input::placeholder {
-    color: rgba(255, 255, 255, 0.3);
+    color: #1a1a1a;
 }
 
 .page-content {
     padding: 2rem;
     flex: 1;
+    background-color: #ffffff;
 }
 
 /* Mobile Toggle Button */
 .mobile-toggle {
     display: none;
     flex-direction: column;
-    gap: 5px;
+    gap: 4px;
     background: transparent;
     border: none;
     cursor: pointer;
     padding: 0.5rem;
-    z-index: 1001;
 }
 
 .mobile-toggle span {
     display: block;
-    width: 25px;
+    width: 20px;
     height: 2px;
-    background: #fff;
-    border-radius: 2px;
+    background: #1a1a1a;
     transition: all 0.3s;
-}
-
-/* Sidebar Overlay */
-.sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 95;
-    backdrop-filter: blur(4px);
 }
 
 @media (max-width: 992px) {
     .sidebar {
-        width: 260px;
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
     }
 
     .sidebar.open {
@@ -254,78 +259,11 @@
         margin-left: 0;
     }
 
-    .logo-text,
-    .role-badge,
-    .details {
-        display: block;
-    }
-}
-
-@media (max-width: 576px) {
-    .sidebar {
-        width: 80%;
-    }
-
     .content-header {
         padding: 0 1rem;
-        height: 60px;
     }
 
     .page-content {
-        padding: 1rem;
-    }
-
-    .logo-text {
-        font-size: 1.1rem;
-    }
-
-    .role-badge {
-        font-size: 0.6rem;
-    }
-}
-
-/* Specific optimization for logical width ~360px (720px physical) */
-@media (max-width: 400px) {
-    .sidebar {
-        width: 85%;
-    }
-
-    .sidebar-nav a {
-        padding: 0.75rem 1rem;
-        font-size: 0.9rem;
-    }
-
-    .sidebar-header {
-        padding: 1rem;
-    }
-
-    .sidebar-footer {
-        padding: 1rem;
-    }
-
-    .logo-text {
-        font-size: 1rem;
-    }
-
-    .avatar {
-        width: 32px;
-        height: 32px;
-        font-size: 0.9rem;
-    }
-
-    .details .name {
-        font-size: 0.8rem;
-    }
-
-    .details .role {
-        font-size: 0.65rem;
-    }
-
-    .mobile-toggle {
-        padding: 0.25rem;
-    }
-
-    .mobile-toggle span {
-        width: 22px;
+        padding: 1.5rem 1rem;
     }
 }

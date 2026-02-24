@@ -6,19 +6,16 @@ import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../services/order.service';
 import { PaymentService } from '../../services/payment.service';
 import { Order } from '../../models/order.model';
+import { ReviewComponent } from '../../components/review/review.component';
 
 @Component({
     selector: 'app-orders',
     standalone: true,
-
-    // 🔴 IMPORTANT FIX: FormsModule ADD કરેલું
-    imports: [CommonModule, RouterModule, FormsModule],
-
+    imports: [CommonModule, RouterModule, FormsModule, ReviewComponent],
     templateUrl: './orders.component.html',
-    styleUrls: ['./orders.component.css']
+    styleUrls: ['./orders.component.css'],
 })
 export class OrdersComponent implements OnInit {
-
     orders: Order[] = [];
     selectedOrder: Order | null = null;
 
@@ -27,6 +24,7 @@ export class OrdersComponent implements OnInit {
     showPaymentModal = false;
 
     paymentMethod: string = '';
+    showReviewModal = false;
 
     constructor(
         private orderService: OrderService,
@@ -38,7 +36,7 @@ export class OrdersComponent implements OnInit {
     ngOnInit(): void {
         this.loadOrders();
 
-        this.route.params.subscribe(params => {
+        this.route.params.subscribe((params) => {
             if (params['id']) {
                 this.loadOrderDetails(params['id']);
             }
@@ -59,7 +57,7 @@ export class OrdersComponent implements OnInit {
             },
             error: () => {
                 this.isLoading = false;
-            }
+            },
         });
     }
 
@@ -70,7 +68,7 @@ export class OrdersComponent implements OnInit {
                     this.selectedOrder = response.order;
                     this.showPaymentModal = response.order.paymentStatus === 'pending';
                 }
-            }
+            },
         });
     }
 
@@ -89,24 +87,41 @@ export class OrdersComponent implements OnInit {
     processPayment(): void {
         if (!this.selectedOrder || !this.paymentMethod) return;
 
+        const orderId = this.selectedOrder._id;
+        const method = this.paymentMethod;
+
         this.isProcessingPayment = true;
 
-        this.paymentService
-            .createPayment(this.selectedOrder._id, this.paymentMethod)
-            .subscribe({
-                next: (response: any) => {
-                    if (response.success) {
-                        this.loadOrders();
-                        this.closePaymentModal();
-                        alert('Payment successful!');
+        this.paymentService.createPayment(orderId, method).subscribe({
+            next: (response: any) => {
+                if (response.success) {
+                    const currentOrder = this.selectedOrder;
+                    this.loadOrders();
+                    this.closePaymentModal();
+                    alert('Payment successful!');
+                    if (currentOrder) {
+                        this.openReviewModal(currentOrder);
                     }
-                    this.isProcessingPayment = false;
-                },
-                error: () => {
-                    this.isProcessingPayment = false;
-                    alert('Payment failed. Please try again.');
                 }
-            });
+                this.isProcessingPayment = false;
+            },
+            error: () => {
+                this.isProcessingPayment = false;
+                alert('Payment failed. Please try again.');
+            },
+        });
+    }
+
+    // ================= REVIEWS =================
+
+    openReviewModal(order: Order): void {
+        this.selectedOrder = order;
+        this.showReviewModal = true;
+    }
+
+    closeReviewModal(): void {
+        this.showReviewModal = false;
+        this.selectedOrder = null;
     }
 
     // ================= CANCEL =================
@@ -119,7 +134,7 @@ export class OrdersComponent implements OnInit {
                 },
                 error: () => {
                     alert('Failed to cancel order');
-                }
+                },
             });
         }
     }
@@ -133,7 +148,7 @@ export class OrdersComponent implements OnInit {
             preparing: 'status-preparing',
             ready: 'status-ready',
             delivered: 'status-delivered',
-            cancelled: 'status-cancelled'
+            cancelled: 'status-cancelled',
         };
         return classes[status] || '';
     }
@@ -142,13 +157,13 @@ export class OrdersComponent implements OnInit {
         return '₹' + price.toFixed(2);
     }
 
-    formatDate(date: Date): string {
+    formatDate(date: any): string {
         return new Date(date).toLocaleDateString('en-IN', {
             day: 'numeric',
             month: 'short',
             year: 'numeric',
             hour: '2-digit',
-            minute: '2-digit'
+            minute: '2-digit',
         });
     }
 }

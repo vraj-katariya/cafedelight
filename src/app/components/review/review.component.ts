@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReviewService, Review } from '../../services/review.service';
@@ -11,6 +11,12 @@ import { ReviewService, Review } from '../../services/review.service';
   styleUrls: ['./review.component.css']
 })
 export class ReviewComponent implements OnInit {
+  @Input() allowWrite = true;
+  @Input() showHeader = true;
+  @Input() showList = true;
+  @Input() showForm = false;
+  @Output() reviewSubmitted = new EventEmitter<void>();
+
   reviews: Review[] = [];
   showReviewForm = false;
   isLoading = false;
@@ -25,6 +31,9 @@ export class ReviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadReviews();
+    if (this.showForm) {
+      this.showReviewForm = true;
+    }
   }
 
   loadReviews(): void {
@@ -62,6 +71,7 @@ export class ReviewComponent implements OnInit {
         this.reviews.unshift(savedReview);
         this.resetForm();
         this.showReviewForm = false;
+        this.reviewSubmitted.emit();
       },
       error: (err) => {
         console.error('Error submitting review:', err);
