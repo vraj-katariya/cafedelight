@@ -13,6 +13,7 @@ const paymentRoutes = require('../backend/routes/paymentRoutes');
 const dashboardRoutes = require('../backend/routes/dashboardRoutes');
 const tableRoutes = require('../backend/routes/tableRoutes');
 const bookingRoutes = require('../backend/routes/bookingRoutes');
+const reviewRoutes = require('../backend/routes/reviewRoutes');
 
 const app = express();
 
@@ -61,6 +62,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/tables', tableRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', dashboardRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
