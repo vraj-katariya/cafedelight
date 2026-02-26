@@ -378,3 +378,38 @@
         font-size: 2.2rem;
     }
 }
+
+@media (max-width: 480px) {
+    .menu-page {
+        padding: 1rem;
+    }
+
+    .menu-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .category-filter {
+        gap: 0.5rem;
+    }
+
+    .category-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .menu-search-container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .category-dropdown-wrapper,
+    .diet-dropdown-wrapper {
+        min-width: 100%;
+    }
+}

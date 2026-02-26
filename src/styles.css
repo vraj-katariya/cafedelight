@@ -101,6 +101,16 @@ select {
     }
 }
 
+@media (max-width: 380px) {
+    html {
+        font-size: 13px;
+    }
+
+    .container {
+        padding: 0 0.8rem;
+    }
+}
+
 /* Ensure images are responsive by default */
 img {
     max-width: 100%;

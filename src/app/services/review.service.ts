@@ -9,6 +9,7 @@ export interface Review {
     rating: number;
     comment: string;
     user?: string;
+    orderId?: string;
     date?: Date;
     isApproved?: boolean;
 }

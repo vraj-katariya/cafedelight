@@ -30,6 +30,12 @@ export class OrdersComponent implements OnInit {
         expiry: '',
         cvv: ''
     };
+    paymentErrors = {
+        upiId: '',
+        cardNumber: '',
+        expiry: '',
+        cvv: ''
+    };
     showReviewModal = false;
 
     constructor(
@@ -94,21 +100,79 @@ export class OrdersComponent implements OnInit {
             expiry: '',
             cvv: ''
         };
+        this.paymentErrors = { upiId: '', cardNumber: '', expiry: '', cvv: '' };
+    }
+
+    validatePayment(): boolean {
+        let isValid = true;
+        this.paymentErrors = { upiId: '', cardNumber: '', expiry: '', cvv: '' };
+
+        if (!this.paymentMethod) return false;
+
+        if (this.paymentMethod === 'upi') {
+            const upiRegex = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/;
+            if (!this.paymentData.upiId) {
+                this.paymentErrors.upiId = 'UPI ID is required';
+                isValid = false;
+            } else if (!upiRegex.test(this.paymentData.upiId)) {
+                this.paymentErrors.upiId = 'Please enter a valid UPI ID (e.g. name@bank)';
+                isValid = false;
+            }
+        }
+
+        if (this.paymentMethod === 'card') {
+            // Card Number Validation (16 digits)
+            const cardSanitized = this.paymentData.cardNumber.replace(/\s+/g, '');
+            const cardRegex = /^\d{16}$/;
+            if (!this.paymentData.cardNumber) {
+                this.paymentErrors.cardNumber = 'Card number is required';
+                isValid = false;
+            } else if (!cardRegex.test(cardSanitized)) {
+                this.paymentErrors.cardNumber = 'Please enter a valid 16-digit card number';
+                isValid = false;
+            }
+
+            // Expiry Validation (MM/YY format and future date)
+            const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+            if (!this.paymentData.expiry) {
+                this.paymentErrors.expiry = 'Expiry date is required';
+                isValid = false;
+            } else if (!expiryRegex.test(this.paymentData.expiry)) {
+                this.paymentErrors.expiry = 'Format must be MM/YY';
+                isValid = false;
+            } else {
+                const parts = this.paymentData.expiry.split('/');
+                const month = parseInt(parts[0], 10);
+                const year = parseInt(parts[1], 10);
+                const expiryDate = new Date(2000 + year, month - 1);
+                const today = new Date();
+                today.setDate(1); // Compare only month/year
+                today.setHours(0, 0, 0, 0);
+                if (expiryDate < today) {
+                    this.paymentErrors.expiry = 'Card has expired';
+                    isValid = false;
+                }
+            }
+
+            // CVV Validation (3 or 4 digits)
+            const cvvRegex = /^\d{3,4}$/;
+            if (!this.paymentData.cvv) {
+                this.paymentErrors.cvv = 'CVV is required';
+                isValid = false;
+            } else if (!cvvRegex.test(this.paymentData.cvv)) {
+                this.paymentErrors.cvv = 'Invalid CVV';
+                isValid = false;
+            }
+        }
+
+        return isValid;
     }
 
     processPayment(): void {
         if (!this.selectedOrder || !this.paymentMethod) return;
 
-        // Basic Validation
-        if (this.paymentMethod === 'upi' && !this.paymentData.upiId) {
-            alert('Please enter your UPI ID');
+        if (!this.validatePayment()) {
             return;
-        }
-        if (this.paymentMethod === 'card') {
-            if (!this.paymentData.cardNumber || !this.paymentData.expiry || !this.paymentData.cvv) {
-                alert('Please fill in all card details');
-                return;
-            }
         }
 
         const orderId = this.selectedOrder._id;
@@ -146,6 +210,11 @@ export class OrdersComponent implements OnInit {
     closeReviewModal(): void {
         this.showReviewModal = false;
         this.selectedOrder = null;
+    }
+
+    onReviewSubmitted(): void {
+        this.closeReviewModal();
+        this.loadOrders(); // Reload to get updated isReviewed flag
     }
 
     // ================= CANCEL =================
