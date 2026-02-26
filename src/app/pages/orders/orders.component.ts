@@ -24,6 +24,12 @@ export class OrdersComponent implements OnInit {
     showPaymentModal = false;
 
     paymentMethod: string = '';
+    paymentData = {
+        upiId: '',
+        cardNumber: '',
+        expiry: '',
+        cvv: ''
+    };
     showReviewModal = false;
 
     constructor(
@@ -82,10 +88,28 @@ export class OrdersComponent implements OnInit {
     closePaymentModal(): void {
         this.showPaymentModal = false;
         this.paymentMethod = '';
+        this.paymentData = {
+            upiId: '',
+            cardNumber: '',
+            expiry: '',
+            cvv: ''
+        };
     }
 
     processPayment(): void {
         if (!this.selectedOrder || !this.paymentMethod) return;
+
+        // Basic Validation
+        if (this.paymentMethod === 'upi' && !this.paymentData.upiId) {
+            alert('Please enter your UPI ID');
+            return;
+        }
+        if (this.paymentMethod === 'card') {
+            if (!this.paymentData.cardNumber || !this.paymentData.expiry || !this.paymentData.cvv) {
+                alert('Please fill in all card details');
+                return;
+            }
+        }
 
         const orderId = this.selectedOrder._id;
         const method = this.paymentMethod;

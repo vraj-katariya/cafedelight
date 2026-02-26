@@ -20,7 +20,7 @@ export class TableManagementComponent implements OnInit {
         private fb: FormBuilder
     ) {
         this.tableForm = this.fb.group({
-            tableNumber: ['', Validators.required],
+            tableNumber: ['', [Validators.required, Validators.min(1)]],
             capacity: ['', [Validators.required, Validators.min(1)]],
             location: ['Indoor', Validators.required]
         });

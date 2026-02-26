@@ -4,17 +4,17 @@
     <section class="hero">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <div class="hero-badge">☕ Est. 2026</div>
+
             <h1>Welcome to <span class="highlight">The Coffee Culture</span></h1>
             <p>Experience the perfect blend of quality coffee, delicious food, and cozy ambiance. Your favorite cafe
                 destination in the heart of the city.</p>
             <div class="hero-buttons">
                 <a routerLink="/menu" class="btn btn-primary">
-                    <span>🍽️</span> Explore Menu
+                    Explore Menu
                 </a>
                 @if (!authService.isLoggedIn) {
                 <a routerLink="/register" class="btn btn-secondary">
-                    <span>✨</span> Join Us
+                    Join Us
                 </a>
                 }
             </div>
@@ -28,7 +28,6 @@
     <!-- Categories Section -->
     <section class="categories-section">
         <div class="section-header">
-            <span class="section-badge">Our Menu</span>
             <h2>Our <span class="highlight">Categories</span></h2>
             <p>Explore our wide range of carefully crafted dishes and beverages</p>
         </div>
@@ -37,7 +36,7 @@
             <a [routerLink]="['/menu']" [queryParams]="{category: category.name}" class="category-card"
                 [style.background-image]="'url(' + category.image + ')'">
                 <div class="category-overlay">
-                    <span class="category-icon">{{ category.icon }}</span>
+
                     <h3>{{ category.name }}</h3>
                     <p>{{ category.description }}</p>
                     <span class="explore-btn">Explore →</span>
@@ -50,28 +49,27 @@
     <!-- Features Section -->
     <section class="features-section">
         <div class="section-header">
-            <span class="section-badge">Why Us</span>
             <h2>Why Choose <span class="highlight">Us</span></h2>
             <p>We take pride in delivering exceptional experiences every time</p>
         </div>
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon-wrap">🌟</div>
+
                 <h3>Premium Quality</h3>
                 <p>Only the finest ingredients in every cup and every bite</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon-wrap">⚡</div>
+
                 <h3>Fast Service</h3>
                 <p>Quick preparation without compromising on quality</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon-wrap">💝</div>
+
                 <h3>Made with Love</h3>
                 <p>Every dish crafted with passion and care</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon-wrap">🌿</div>
+
                 <h3>Fresh Ingredients</h3>
                 <p>Farm-to-table freshness in every meal we serve</p>
             </div>
@@ -84,14 +82,14 @@
             <h2>Customer <span class="highlight">Reviews</span></h2>
             <p>See what our beloved customers say about us</p>
         </div>
-        <app-review [allowWrite]="false" [showHeader]="false"></app-review>
+        <app-review [allowWrite]="false" [showHeader]="false" [limit]="2"></app-review>
     </section>
 
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="cta-bg-overlay"></div>
         <div class="cta-content">
-            <span class="cta-badge">🍽️ Fresh & Delicious</span>
+
             <h2>Ready to Order?</h2>
             <p>Browse our menu and treat yourself to something delicious today!</p>
             <a routerLink="/menu" class="btn btn-primary btn-large">View Full Menu →</a>

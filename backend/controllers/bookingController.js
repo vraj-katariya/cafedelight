@@ -7,13 +7,17 @@ const logger = require('../utils/logger');
 // @access  Public
 exports.checkAvailability = async (req, res, next) => {
     try {
-        const { date, timeSlot } = req.query;
+        const { date, timeSlot, guests } = req.query;
+        console.log('--- Availability Check ---');
+        console.log(`Date: ${date}, TimeSlot: ${timeSlot}, Guests: ${guests}`);
 
         if (!date || !timeSlot) {
             return res.status(400).json({ success: false, message: 'Please provide date and timeSlot' });
         }
 
         const queryDate = new Date(date);
+        const guestsNum = parseInt(guests) || 1;
+        console.log(`Parsed Guests: ${guestsNum}, Capacity Filter: ${guestsNum} to ${guestsNum + 2}`);
 
         // Validate date (must be today or future)
         const today = new Date();
@@ -31,11 +35,15 @@ exports.checkAvailability = async (req, res, next) => {
             status: { $ne: 'Cancelled' }
         }).distinct('table');
 
-        // Find tables that are NOT in the bookedTableIds and are generally available
+        // and match the guest size (min capacity = guests, max capacity = guests + 2)
         const availableTables = await Table.find({
             _id: { $nin: bookedTableIds },
-            isAvailable: true
+            isAvailable: true,
+            capacity: { $gte: guestsNum, $lte: guestsNum + 2 }
         });
+
+        console.log(`Found ${availableTables.length} tables matching criteria.`);
+        console.log('--------------------------');
 
         res.json({ success: true, count: availableTables.length, data: availableTables });
     } catch (err) {
