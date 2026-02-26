@@ -28,7 +28,18 @@ exports.createReview = async (req, res, next) => {
             req.body.user = req.user.id;
         }
 
+        // Link review to order if orderId is provided
+        if (req.body.orderId) {
+            req.body.order = req.body.orderId;
+        }
+
         const review = await Review.create(req.body);
+
+        // Update order status if orderId is provided
+        if (req.body.orderId) {
+            const Order = require('../models/Order');
+            await Order.findByIdAndUpdate(req.body.orderId, { isReviewed: true });
+        }
 
         res.status(201).json({
             success: true,

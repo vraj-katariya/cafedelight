@@ -22,6 +22,11 @@ const reviewSchema = new mongoose.Schema({
         ref: 'User',
         required: false // Optional, can be anonymous
     },
+    order: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Order',
+        required: false
+    },
     date: {
         type: Date,
         default: Date.now

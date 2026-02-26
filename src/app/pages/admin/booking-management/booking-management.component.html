@@ -77,8 +77,8 @@
                                 (click)="confirmBooking(booking._id!)">
                                 Approve
                             </button>
-                            <button *ngIf="booking.status !== 'Cancelled' && booking.status !== 'Completed'"
-                                class="btn-action btn-cancel" (click)="cancelBooking(booking._id!)">
+                            <button *ngIf="booking.status === 'Pending'" class="btn-action btn-cancel"
+                                (click)="cancelBooking(booking._id!)">
                                 Cancel
                             </button>
                         </td>

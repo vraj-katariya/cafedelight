@@ -16,6 +16,7 @@ export class ReviewComponent implements OnInit {
   @Input() showList = true;
   @Input() showForm = false;
   @Input() limit = 0;
+  @Input() orderId?: string;
   @Output() reviewSubmitted = new EventEmitter<void>();
 
   reviews: Review[] = [];
@@ -65,7 +66,8 @@ export class ReviewComponent implements OnInit {
     const newReview: Review = {
       customerName: this.review.customerName.trim(),
       rating: this.review.rating,
-      comment: this.review.comment.trim()
+      comment: this.review.comment.trim(),
+      ...(this.orderId && { orderId: this.orderId })
     };
 
     this.reviewService.submitReview(newReview).subscribe({

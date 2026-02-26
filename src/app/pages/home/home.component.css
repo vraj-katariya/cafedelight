@@ -511,3 +511,18 @@
         font-size: 0.95rem;
     }
 }
+
+@media (max-width: 380px) {
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-buttons {
+        gap: 0.5rem;
+    }
+
+    .cta-content h2,
+    .section-header h2 {
+        font-size: 1.4rem;
+    }
+}

@@ -68,7 +68,7 @@
                     @if (order.paymentStatus === 'pending' && order.status !== 'cancelled') {
                     <button class="btn-pay" (click)="openPaymentModal(order)">Pay Now</button>
                     }
-                    @if (order.paymentStatus === 'paid') {
+                    @if (order.paymentStatus === 'paid' && !order.isReviewed) {
                     <button class="btn-review" (click)="openReviewModal(order)">Rate & Review</button>
                     }
                     @if (order.status === 'pending') {
@@ -126,7 +126,8 @@
                     <div class="form-group" *ngIf="paymentMethod === 'upi'">
                         <label>UPI ID</label>
                         <input type="text" [(ngModel)]="paymentData.upiId" class="form-control"
-                            placeholder="e.g. username@upi">
+                            [class.is-invalid]="paymentErrors.upiId" placeholder="e.g. username@upi">
+                        <div class="error-text" *ngIf="paymentErrors.upiId">{{ paymentErrors.upiId }}</div>
                     </div>
 
                     <!-- Card Details -->
@@ -134,17 +135,22 @@
                         <div class="form-group full-width">
                             <label>Card Number</label>
                             <input type="text" [(ngModel)]="paymentData.cardNumber" class="form-control"
-                                placeholder="0000 0000 0000 0000">
+                                [class.is-invalid]="paymentErrors.cardNumber" placeholder="0000 0000 0000 0000"
+                                maxlength="19">
+                            <div class="error-text" *ngIf="paymentErrors.cardNumber">{{ paymentErrors.cardNumber }}
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Expiry Date</label>
                             <input type="text" [(ngModel)]="paymentData.expiry" class="form-control"
-                                placeholder="MM/YY">
+                                [class.is-invalid]="paymentErrors.expiry" placeholder="MM/YY" maxlength="5">
+                            <div class="error-text" *ngIf="paymentErrors.expiry">{{ paymentErrors.expiry }}</div>
                         </div>
                         <div class="form-group">
                             <label>CVV</label>
                             <input type="password" [(ngModel)]="paymentData.cvv" class="form-control" placeholder="***"
-                                maxlength="3">
+                                [class.is-invalid]="paymentErrors.cvv" maxlength="4">
+                            <div class="error-text" *ngIf="paymentErrors.cvv">{{ paymentErrors.cvv }}</div>
                         </div>
                     </div>
                 </div>
@@ -174,8 +180,8 @@
             <div class="modal-body">
                 <p class="order-ref">Reviewing Order: {{ selectedOrder._id.slice(-8).toUpperCase() }}</p>
                 <div class="review-form-container">
-                    <app-review [showHeader]="false" [showList]="false" [showForm]="true"
-                        (reviewSubmitted)="closeReviewModal()"></app-review>
+                    <app-review [showHeader]="false" [showList]="false" [showForm]="true" [orderId]="selectedOrder._id"
+                        (reviewSubmitted)="onReviewSubmitted()"></app-review>
                 </div>
             </div>
         </div>

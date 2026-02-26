@@ -20,6 +20,7 @@ export interface Order {
     deliveryAddress?: string;
     notes?: string;
     createdAt: Date;
+    isReviewed?: boolean;
 }
 
 export interface OrderResponse {
