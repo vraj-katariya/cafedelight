@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../../services/admin.service';
 import { User } from '../../../models/user.model';
 
 @Component({
     selector: 'app-user-management',
     standalone: true,
-    imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, RouterModule, FormsModule],
     templateUrl: './user-management.component.html',
     styleUrls: ['./user-management.component.css']
 })
@@ -16,32 +16,11 @@ export class UserManagementComponent implements OnInit {
     users: User[] = [];
     filteredUsers: User[] = [];
     isLoading = true;
-    showModal = false;
-    userForm: FormGroup;
     searchTerm = '';
-    isSubmitting = false;
-    showPassword = false;
-    showConfirmPassword = false;
 
     constructor(
-        private adminService: AdminService,
-        private fb: FormBuilder
-    ) {
-        this.userForm = this.fb.group({
-            name: ['', [Validators.required, Validators.minLength(2)]],
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.minLength(6)]],
-            confirmPassword: ['', Validators.required],
-            role: ['user', Validators.required],
-            phone: [''],
-            address: ['']
-        }, { validators: this.passwordMatchValidator });
-    }
-
-    passwordMatchValidator(g: FormGroup) {
-        return g.get('password')?.value === g.get('confirmPassword')?.value
-            ? null : { mismatch: true };
-    }
+        private adminService: AdminService
+    ) { }
 
     ngOnInit(): void {
         this.loadUsers();
@@ -75,53 +54,6 @@ export class UserManagementComponent implements OnInit {
         }
     }
 
-    openAddModal(): void {
-        this.userForm.reset({ role: 'user' });
-        this.showPassword = false;
-        this.showConfirmPassword = false;
-        this.userForm.get('password')?.setValidators([Validators.required, Validators.minLength(6)]);
-        this.userForm.get('confirmPassword')?.setValidators([Validators.required]);
-        this.userForm.get('password')?.updateValueAndValidity();
-        this.userForm.get('confirmPassword')?.updateValueAndValidity();
-        this.showModal = true;
-    }
-
-    closeModal(): void {
-        this.showModal = false;
-        this.userForm.reset();
-    }
-
-    togglePasswordVisibility(): void {
-        this.showPassword = !this.showPassword;
-    }
-
-    toggleConfirmPasswordVisibility(): void {
-        this.showConfirmPassword = !this.showConfirmPassword;
-    }
-
-    onSubmit(): void {
-        if (this.userForm.invalid) {
-            this.userForm.markAllAsTouched();
-            return;
-        }
-
-        this.isSubmitting = true;
-        const formData = { ...this.userForm.value };
-        delete formData.confirmPassword;
-
-        this.adminService.createUser(formData).subscribe({
-            next: () => {
-                this.loadUsers();
-                this.closeModal();
-                this.isSubmitting = false;
-            },
-            error: (err) => {
-                this.isSubmitting = false;
-                alert(err.error?.message || 'Failed to create user');
-            }
-        });
-    }
-
     deleteUser(user: User): void {
         if (confirm(`Are you sure you want to delete ${user.name}?`)) {
             this.adminService.deleteUser(user._id).subscribe({
@@ -141,9 +73,5 @@ export class UserManagementComponent implements OnInit {
             month: 'short',
             year: 'numeric'
         });
-    }
-
-    get f() {
-        return this.userForm.controls;
     }
 }

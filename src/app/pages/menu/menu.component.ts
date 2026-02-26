@@ -18,6 +18,7 @@ export class MenuComponent implements OnInit {
     filteredItems: MenuItem[] = [];
     categories = ['All', 'Coffee', 'Beverages', 'Snacks', 'Waffle', 'Cakes'];
     selectedCategory = 'All';
+    selectedDiet = 'All'; // 'All' | 'Veg' | 'Non-Veg'
     searchQuery = '';
     isLoading = true;
     addingToCart: string | null = null;
@@ -61,10 +62,12 @@ export class MenuComponent implements OnInit {
         const query = this.searchQuery.toLowerCase().trim();
         this.filteredItems = this.menuItems.filter(item => {
             const matchesCategory = this.selectedCategory === 'All' || item.category === this.selectedCategory;
+            const matchesDiet = this.selectedDiet === 'All' ||
+                (this.selectedDiet === 'Veg' && item.isVeg) ||
+                (this.selectedDiet === 'Non-Veg' && !item.isVeg);
             const matchesSearch = !query ||
-                item.name.toLowerCase().includes(query) ||
-                item.description.toLowerCase().includes(query);
-            return matchesCategory && matchesSearch;
+                item.name.toLowerCase().includes(query);
+            return matchesCategory && matchesDiet && matchesSearch;
         });
     }
 
@@ -75,6 +78,11 @@ export class MenuComponent implements OnInit {
 
     onCategoryChange(event: any): void {
         this.selectedCategory = event.target.value;
+        this.filterItems();
+    }
+
+    onDietChange(event: any): void {
+        this.selectedDiet = event.target.value;
         this.filterItems();
     }
 

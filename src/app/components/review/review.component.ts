@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
+import { CommonModule, DecimalPipe, DatePipe, SlicePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReviewService, Review } from '../../services/review.service';
 
 @Component({
   selector: 'app-review',
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePipe],
+  imports: [CommonModule, FormsModule, DatePipe, SlicePipe],
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.css']
 })
@@ -15,11 +15,13 @@ export class ReviewComponent implements OnInit {
   @Input() showHeader = true;
   @Input() showList = true;
   @Input() showForm = false;
+  @Input() limit = 0;
   @Output() reviewSubmitted = new EventEmitter<void>();
 
   reviews: Review[] = [];
   showReviewForm = false;
   isLoading = false;
+  isExpanded = false;
 
   review = {
     customerName: '',
@@ -98,5 +100,9 @@ export class ReviewComponent implements OnInit {
     if (this.reviews.length === 0) return 0;
     const total = this.reviews.reduce((sum, review) => sum + review.rating, 0);
     return total / this.reviews.length;
+  }
+
+  toggleExpanded(): void {
+    this.isExpanded = !this.isExpanded;
   }
 }

@@ -17,7 +17,7 @@ const tableSchema = new mongoose.Schema({
     },
     location: {
         type: String,
-        enum: ['Indoor', 'Outdoor', 'Rooftop'],
+        enum: ['Indoor', 'Outdoor', 'Rooftop', 'Private Cabin', 'Window Side', 'Lounge Area', 'Poolside'],
         default: 'Indoor'
     }
 }, { timestamps: true });

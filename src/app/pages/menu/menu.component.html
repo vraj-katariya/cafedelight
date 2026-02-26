@@ -20,6 +20,15 @@
             </select>
             <span class="dropdown-arrow">▼</span>
         </div>
+
+        <div class="diet-dropdown-wrapper">
+            <select class="diet-select" [value]="selectedDiet" (change)="onDietChange($event)">
+                <option value="All">All Types</option>
+                <option value="Veg">Veg Only</option>
+                <option value="Non-Veg">Non-Veg Only</option>
+            </select>
+            <span class="dropdown-arrow">▼</span>
+        </div>
     </div>
 
     <!-- Loading State -->

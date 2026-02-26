@@ -52,7 +52,8 @@
       </div>
 
       <div class="reviews-grid">
-        <div class="review-card glass-card" *ngFor="let review of reviews">
+        <div class="review-card glass-card"
+          *ngFor="let review of (limit > 0 && !isExpanded ? (reviews | slice:0:limit) : reviews)">
           <div class="card-top">
             <div class="user-meta">
               <div class="user-avatar">
@@ -73,6 +74,12 @@
             <p>{{ review.comment }}</p>
           </div>
         </div>
+      </div>
+
+      <div class="explore-reviews" *ngIf="limit > 0 && reviews.length > limit">
+        <button class="btn-explore" (click)="toggleExpanded()">
+          {{ isExpanded ? 'Show Less' : 'Explore All Reviews →' }}
+        </button>
       </div>
 
       <div class="no-reviews-state glass-card" *ngIf="reviews.length === 0">

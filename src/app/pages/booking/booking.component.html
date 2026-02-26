@@ -1,72 +1,103 @@
 <div class="booking-container fade-in">
     <h2 class="page-title">Book the <span>Table</span></h2>
 
-    <div *ngIf="message" class="alert" [class.alert-danger]="true">
-        {{ message }}
-    </div>
-
-    <!-- Booking Form -->
-    <form [formGroup]="bookingForm" (ngSubmit)="checkAvailability()" class="booking-form">
-        <div class="form-group">
-            <label>Select Date</label>
-            <input type="date" formControlName="date" class="form-control" [min]="minDate">
+    <div class="booking-wrapper fadeInUp delay-1">
+        <!-- Left Side: Visual -->
+        <div class="booking-visual">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80"
+                alt="Cafe Interior" class="visual-img">
+            <div class="visual-overlay"></div>
+            <div class="visual-content">
+                <h3>Reserved for You</h3>
+                <p>Experience the culture in every sip and every seat.</p>
+            </div>
         </div>
 
-        <div class="form-group full-width">
-            <label>Select Time Slot</label>
-            <div class="time-slots-grid">
-                <button type="button" *ngFor="let slot of availableTimeSlots" class="time-slot-btn"
-                    [class.active]="bookingForm.get('timeSlot')?.value === slot" (click)="selectTimeSlot(slot)">
-                    {{ slot }}
+        <!-- Right Side: Form -->
+        <div class="booking-content">
+            <div *ngIf="message" class="booking-alert zoom-in">
+                <span class="alert-icon">⚠️</span>
+                <p>{{ message }}</p>
+            </div>
+
+            <form [formGroup]="bookingForm" (ngSubmit)="checkAvailability()" class="booking-form">
+                <div class="booking-grid">
+                    <div class="form-group">
+                        <label>Select Date</label>
+                        <div class="input-with-icon">
+                            <input type="date" formControlName="date" class="form-control" [min]="minDate">
+                            <span class="input-icon">📅</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Number of Guests</label>
+                        <div class="input-with-icon">
+                            <input type="number" formControlName="guests" class="form-control" min="1" max="20"
+                                placeholder="e.g. 2">
+                            <span class="input-icon">👥</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Time Slot (10 AM - 10 PM)</label>
+                        <div class="custom-dropdown" [class.open]="isDropdownOpen">
+                            <div class="dropdown-header" (click)="toggleDropdown()">
+                                <span class="selected-value">
+                                    {{ bookingForm.get('timeSlot')?.value || '-- Choose a Time Slot --' }}
+                                </span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-item" *ngFor="let slot of availableTimeSlots"
+                                    (click)="selectTimeSlot(slot)"
+                                    [class.active]="bookingForm.get('timeSlot')?.value === slot">
+                                    {{ slot }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="availableTimeSlots.length === 0 && bookingForm.get('date')?.value" class="no-slots-msg">
+                    No slots available for this date.
+                </div>
+
+                <button type="submit" class="btn-check" [disabled]="loading">
+                    {{ loading ? 'Checking...' : 'Check Availability' }}
                 </button>
-            </div>
-            <div *ngIf="availableTimeSlots.length === 0 && bookingForm.get('date')?.value" class="no-slots-msg">
-                No slots available for this date.
-            </div>
-        </div>
+            </form>
 
-        <div class="form-group">
-            <label>Number of Guests</label>
-            <input type="number" formControlName="guests" class="form-control" min="1" max="20" placeholder="e.g. 2">
-        </div>
-
-        <button type="submit" class="btn-check" [disabled]="bookingForm.invalid || loading">
-            {{ loading ? 'Checking...' : 'Check Availability' }}
-        </button>
-    </form>
-
-    <!-- Available Tables -->
-    <div *ngIf="availableTables.length > 0; else noTables" class="tables-section">
-        <h3>Available Tables for Selected Slot</h3>
-        <div class="tables-grid">
-            <div *ngFor="let table of availableTables" class="table-card"
-                [class.selected]="selectedTable?._id === table._id" (click)="selectTable(table)">
-
-                <span class="table-badge">{{ table.location }}</span>
-                <span class="table-icon">🪑</span>
-
-                <div class="table-info">
-                    <h4>Table {{ table.tableNumber }}</h4>
-                    <p>Capacity: {{ table.capacity }} People</p>
+            <!-- Available Tables (shown inside the content area) -->
+            <div *ngIf="availableTables.length > 0; else noTables" class="tables-section fadeInUp">
+                <h3>Available Tables</h3>
+                <div class="tables-grid">
+                    <div *ngFor="let table of availableTables" class="table-card"
+                        [class.selected]="selectedTable?._id === table._id" (click)="selectTable(table)">
+                        <span class="table-badge">{{ table.location }}</span>
+                        <span class="table-icon">🪑</span>
+                        <div class="table-info">
+                            <h4>Table {{ table.tableNumber }}</h4>
+                            <p>Capacity: {{ table.capacity }} People</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-area" *ngIf="selectedTable">
+                    <button (click)="confirmBooking()" class="btn-confirm">
+                        Confirm Reservation ➔
+                    </button>
                 </div>
             </div>
-        </div>
 
-        <div class="action-area" *ngIf="selectedTable">
-            <button (click)="confirmBooking()" class="btn-confirm">
-                Confirm Reservation ➔
-            </button>
+            <ng-template #noTables>
+                <div *ngIf="!loading && searched && availableTables.length === 0" class="alert-no-tables zoom-in">
+                    <span *ngIf="totalTablesCount === 0">No tables setup by Admin yet.</span>
+                    <span *ngIf="totalTablesCount > 0">No tables available for this slot.</span>
+                </div>
+                <div *ngIf="loading" class="loading-spinner">
+                    Finding your perfect table...
+                </div>
+            </ng-template>
         </div>
     </div>
-
-    <ng-template #noTables>
-        <div *ngIf="!loading && searched && availableTables.length === 0" class="alert alert-danger">
-            <span *ngIf="totalTablesCount === 0">System Error: No tables have been setup by the Admin yet.</span>
-            <span *ngIf="totalTablesCount > 0">No tables available for this date and time. Please try a different
-                slot.</span>
-        </div>
-        <div *ngIf="loading" class="loading-spinner">
-            Searching for best tables...
-        </div>
-    </ng-template>
 </div>

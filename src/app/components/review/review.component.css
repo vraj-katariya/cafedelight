@@ -211,3 +211,35 @@
     font-size: 2rem;
   }
 }
+
+.explore-reviews {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  padding-bottom: 2rem;
+}
+
+.btn-explore {
+  background: #1a1a1a;
+  color: #ffffff;
+  border: 1px solid #1a1a1a;
+  padding: 1.2rem 3rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.btn-explore:hover {
+  background: #000000;
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.btn-explore:active {
+  transform: translateY(-2px);
+}

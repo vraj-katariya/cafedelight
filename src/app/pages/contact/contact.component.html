@@ -1,0 +1,66 @@
+<div class="contact-page">
+    <div class="contact-hero">
+        <div class="hero-bg-zoom"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="fadeInUp">Connect with <span>The Culture</span></h1>
+            <p class="fadeInUp delay-1">We'd love to hear from you. Visit us for the perfect brew or drop a message
+                below.</p>
+        </div>
+    </div>
+
+    <div class="contact-section">
+        <div class="contact-container">
+            <div class="contact-grid">
+                <!-- Left: Details & Form -->
+                <div class="contact-details fadeInUp delay-2">
+                    <div class="info-block">
+                        <span class="label">Location</span>
+                        <p>Surat District, Gujarat,<br>India - 395004</p>
+                    </div>
+
+                    <div class="info-block">
+                        <span class="label">Hours</span>
+                        <ul class="hours-list">
+                            <li><span>Mon - Sun</span> <span>10am - 10pm</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="info-block">
+                        <span class="label">Inquiries</span>
+                        <a href="mailto:contacts@thecoffeeculture.com" class="link">contacts@thecoffeeculture.com</a>
+                    </div>
+
+                    <form class="premium-form" (ngSubmit)="submitForm()">
+                        <div class="input-group">
+                            <input type="text" [(ngModel)]="contact.name" name="name" required placeholder=" ">
+                            <label>Full Name</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="email" [(ngModel)]="contact.email" name="email" required placeholder=" ">
+                            <label>Email Address</label>
+                        </div>
+                        <div class="input-group">
+                            <textarea [(ngModel)]="contact.message" name="message" required placeholder=" "
+                                rows="4"></textarea>
+                            <label>How can we help?</label>
+                        </div>
+                        <button type="submit" class="btn-primary">Send Message</button>
+                    </form>
+                </div>
+
+                <!-- Right: Decorative Image -->
+                <div class="contact-visual fadeInUp delay-3">
+                    <div class="image-frame">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80"
+                            alt="Cafe Decoration" class="cafe-img">
+                        <div class="frame-accent"></div>
+                    </div>
+                    <div class="visual-badge">
+                        <span class="badge-text">Est. 2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

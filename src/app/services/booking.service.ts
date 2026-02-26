@@ -27,8 +27,8 @@ export class BookingService {
         return this.http.post(this.apiUrl, booking);
     }
 
-    checkAvailability(date: string, timeSlot: string): Observable<any> {
-        return this.http.get(`${this.apiUrl}/availability?date=${date}&timeSlot=${timeSlot}`);
+    checkAvailability(date: string, timeSlot: string, guests: number): Observable<any> {
+        return this.http.get(`${this.apiUrl}/availability?date=${date}&timeSlot=${timeSlot}&guests=${guests}`);
     }
 
     getMyBookings(): Observable<any> {

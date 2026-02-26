@@ -7,12 +7,14 @@
             <form [formGroup]="tableForm" (ngSubmit)="addTable()">
                 <div class="form-group">
                     <label>Table Number</label>
-                    <input type="number" formControlName="tableNumber" class="form-control" placeholder="e.g. 101">
+                    <input type="number" formControlName="tableNumber" class="form-control" placeholder="e.g. 101"
+                        min="1">
                 </div>
 
                 <div class="form-group">
                     <label>Seating Capacity</label>
-                    <input type="number" formControlName="capacity" class="form-control" placeholder="No. of Persons">
+                    <input type="number" formControlName="capacity" class="form-control" placeholder="No. of Persons"
+                        min="1">
                 </div>
 
                 <div class="form-group">
@@ -21,6 +23,10 @@
                         <option value="Indoor">Indoor (Main Hall)</option>
                         <option value="Outdoor">Outdoor (Garden)</option>
                         <option value="Rooftop">Rooftop Terrace</option>
+                        <option value="Private Cabin">Private Cabin</option>
+                        <option value="Window Side">Window Side</option>
+                        <option value="Lounge Area">Lounge Area</option>
+                        <option value="Poolside">Poolside View</option>
                     </select>
                 </div>
 
@@ -42,8 +48,8 @@
                     <div class="table-meta">
                         <strong>{{ table.capacity }}</strong> Seats<br>
                         <small>{{ table.location }}</small><br>
-                        <span [style.color]="table.isAvailable ? '#27ae60' : '#e74c3c'">
-                            {{ table.isAvailable ? 'Available' : 'Maintenance' }}
+                        <span class="status-badge" [class.available]="table.isAvailable">
+                            {{ table.isAvailable ? 'Yes' : 'No' }}
                         </span>
                     </div>
                     <div class="table-actions">
