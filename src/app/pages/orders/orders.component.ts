@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { OrderService } from '../../services/order.service';
 import { PaymentService } from '../../services/payment.service';
+import { BookingService, Booking } from '../../services/booking.service';
 import { Order } from '../../models/order.model';
 import { ReviewComponent } from '../../components/review/review.component';
 
@@ -17,6 +18,7 @@ import { ReviewComponent } from '../../components/review/review.component';
 })
 export class OrdersComponent implements OnInit {
     orders: Order[] = [];
+    myBookings: Booking[] = [];
     selectedOrder: Order | null = null;
 
     isLoading = true;
@@ -41,12 +43,14 @@ export class OrdersComponent implements OnInit {
     constructor(
         private orderService: OrderService,
         private paymentService: PaymentService,
+        private bookingService: BookingService,
         private route: ActivatedRoute,
         private router: Router
     ) { }
 
     ngOnInit(): void {
         this.loadOrders();
+        this.loadBookings();
 
         this.route.params.subscribe((params) => {
             if (params['id']) {
@@ -71,6 +75,48 @@ export class OrdersComponent implements OnInit {
                 this.isLoading = false;
             },
         });
+    }
+
+    loadBookings(): void {
+        this.bookingService.getMyBookings().subscribe({
+            next: (res) => {
+                if (res.success) {
+                    this.myBookings = res.data;
+                }
+            }
+        });
+    }
+
+    getDisplayedBooking(order: any): any {
+        if (order.booking) {
+            return order.booking;
+        }
+
+        // Fallback matching logic
+        if (this.myBookings && this.myBookings.length > 0) {
+            const orderTime = new Date(order.createdAt).getTime();
+
+            // Find bookings created within 10 minutes before the order
+            // or the most recent booking overall if the order was just placed.
+            const candidates = this.myBookings
+                .filter(b => b.status !== 'Cancelled')
+                .filter(b => {
+                    if (!b.createdAt) return false;
+                    const bTime = new Date(b.createdAt).getTime();
+                    // Booking should be created before or very shortly after (e.g. 1 min) the order
+                    return bTime <= orderTime + 60000;
+                })
+                .sort((a, b) => {
+                    const timeA = new Date(a.createdAt!).getTime();
+                    const timeB = new Date(b.createdAt!).getTime();
+                    return timeB - timeA; // Newest first
+                });
+
+            if (candidates.length > 0) {
+                return candidates[0];
+            }
+        }
+        return null;
     }
 
     loadOrderDetails(id: string): void {

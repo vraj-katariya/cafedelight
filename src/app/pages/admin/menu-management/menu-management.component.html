@@ -76,12 +76,24 @@
             <form [formGroup]="menuForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
                     <label>Name *</label>
-                    <input type="text" formControlName="name" placeholder="Item name">
+                    <input type="text" formControlName="name" placeholder="Item name"
+                        [class.error]="f['name'].touched && f['name'].invalid">
+                    @if (f['name'].touched && f['name'].invalid) {
+                    <span class="error-text" style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                        @if (f['name'].errors?.['required']) { Name is required }
+                    </span>
+                    }
                 </div>
 
                 <div class="form-group">
                     <label>Description *</label>
-                    <textarea formControlName="description" placeholder="Description" rows="3"></textarea>
+                    <textarea formControlName="description" placeholder="Description" rows="3"
+                        [class.error]="f['description'].touched && f['description'].invalid"></textarea>
+                    @if (f['description'].touched && f['description'].invalid) {
+                    <span class="error-text" style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                        @if (f['description'].errors?.['required']) { Description is required }
+                    </span>
+                    }
                 </div>
 
                 <div class="form-row preview-section">
@@ -103,15 +115,30 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Price (₹) *</label>
-                        <input type="number" formControlName="price" placeholder="0.00">
+                        <input type="number" formControlName="price" placeholder="0.00"
+                            [class.error]="f['price'].touched && f['price'].invalid">
+                        @if (f['price'].touched && f['price'].invalid) {
+                        <span class="error-text"
+                            style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                            @if (f['price'].errors?.['required']) { Price is required }
+                            @else if (f['price'].errors?.['min']) { Price cannot be negative }
+                        </span>
+                        }
                     </div>
                     <div class="form-group">
                         <label>Category *</label>
-                        <select formControlName="category">
+                        <select formControlName="category"
+                            [class.error]="f['category'].touched && f['category'].invalid">
                             @for (cat of categories; track cat) {
                             <option [value]="cat">{{ cat }}</option>
                             }
                         </select>
+                        @if (f['category'].touched && f['category'].invalid) {
+                        <span class="error-text"
+                            style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                            @if (f['category'].errors?.['required']) { Category is required }
+                        </span>
+                        }
                     </div>
                 </div>
 

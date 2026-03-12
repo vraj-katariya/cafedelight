@@ -478,3 +478,16 @@
         width: 100%;
     }
 }
+
+/* Error Styles */
+.form-control.error,
+.custom-dropdown.error .dropdown-header {
+    border-color: #ff4d4f !important;
+}
+
+.error-text {
+    color: #ff4d4f;
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+    display: block;
+}

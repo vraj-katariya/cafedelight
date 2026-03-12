@@ -565,6 +565,28 @@
     }
 }
 
+/* Booking Info Styles */
+.booking-info {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.booking-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.booking-time {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #1a1a1a;
+}
+
 @media (max-width: 768px) {
     .orders-page {
         margin: 2rem auto;
@@ -584,6 +606,10 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+    }
+
+    .booking-info {
+        text-align: left;
     }
 
     .order-footer {

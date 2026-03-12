@@ -21,6 +21,7 @@ export interface Order {
     notes?: string;
     createdAt: Date;
     isReviewed?: boolean;
+    booking?: any;
 }
 
 export interface OrderResponse {

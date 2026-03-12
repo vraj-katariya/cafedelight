@@ -37,7 +37,10 @@ export class TableManagementComponent implements OnInit {
     }
 
     addTable() {
-        if (this.tableForm.invalid) return;
+        if (this.tableForm.invalid) {
+            this.tableForm.markAllAsTouched();
+            return;
+        }
 
         this.tableService.createTable(this.tableForm.value).subscribe({
             next: () => {
@@ -70,4 +73,5 @@ export class TableManagementComponent implements OnInit {
             this.loadTables();
         });
     }
+    get f() { return this.tableForm.controls; }
 }

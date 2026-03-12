@@ -327,3 +327,16 @@
         font-size: 2.5rem;
     }
 }
+
+/* Error Styles */
+.input-group input.error,
+.input-group textarea.error {
+    border-bottom-color: #ff4d4f !important;
+}
+
+.error-text {
+    color: #ff4d4f;
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+    display: block;
+}

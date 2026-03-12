@@ -18,7 +18,6 @@ export class HomeComponent {
         { name: 'Coffee', icon: '☕', description: 'Premium brews & espresso', image: '/assets/categories/coffee.png' },
         { name: 'Beverages', icon: '🥤', description: 'Fresh juices & smoothies', image: '/assets/categories/beverages.png' },
         { name: 'Snacks', icon: '🍟', description: 'Delicious bites & sandwiches', image: '/assets/categories/snacks.png' },
-        { name: 'Waffle', icon: '🧇', description: 'Belgian waffles & toppings', image: '/assets/categories/waffle.png' },
-        { name: 'Cakes', icon: '🍰', description: 'Fresh baked desserts', image: '/assets/categories/cakes.png' }
+        { name: 'Waffle', icon: '🧇', description: 'Belgian waffles & toppings', image: '/assets/categories/waffle.png' }
     ];
 }

@@ -106,6 +106,7 @@ export class BookingComponent {
 
     checkAvailability() {
         if (this.bookingForm.invalid) {
+            this.bookingForm.markAllAsTouched();
             const controls = this.bookingForm.controls;
             if (controls['date'].invalid) {
                 this.message = 'Please select a date for your reservation.';
