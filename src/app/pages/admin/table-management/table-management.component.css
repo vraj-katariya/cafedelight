@@ -193,3 +193,15 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Error Styles */
+.form-control.error {
+    border-color: #ff4d4f !important;
+}
+
+.error-text {
+    color: #ff4d4f;
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+    display: block;
+}

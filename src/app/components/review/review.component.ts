@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule, DecimalPipe, DatePipe, SlicePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ReviewService, Review } from '../../services/review.service';
 
 @Component({
   selector: 'app-review',
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePipe, SlicePipe],
+  imports: [CommonModule, ReactiveFormsModule, DatePipe, SlicePipe],
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.css']
 })
@@ -23,14 +23,18 @@ export class ReviewComponent implements OnInit {
   showReviewForm = false;
   isLoading = false;
   isExpanded = false;
+  reviewForm: FormGroup;
 
-  review = {
-    customerName: '',
-    rating: 0,
-    comment: ''
-  };
-
-  constructor(private reviewService: ReviewService) { }
+  constructor(
+    private reviewService: ReviewService,
+    private fb: FormBuilder
+  ) {
+    this.reviewForm = this.fb.group({
+      customerName: ['', [Validators.required, Validators.minLength(2)]],
+      rating: [0, [Validators.required, Validators.min(1)]],
+      comment: ['', [Validators.required, Validators.minLength(10)]]
+    });
+  }
 
   ngOnInit(): void {
     this.loadReviews();
@@ -54,33 +58,39 @@ export class ReviewComponent implements OnInit {
   }
 
   setRating(rating: number): void {
-    this.review.rating = rating;
+    this.reviewForm.patchValue({ rating });
+    this.reviewForm.get('rating')?.markAsTouched();
   }
 
   submitReview(): void {
-    if (this.review.rating === 0 || !this.review.customerName.trim() || !this.review.comment.trim()) {
-      alert('Please fill in all fields and select a rating');
+    if (this.reviewForm.invalid) {
+      this.reviewForm.markAllAsTouched();
       return;
     }
 
+    const { customerName, rating, comment } = this.reviewForm.value;
+
     const newReview: Review = {
-      customerName: this.review.customerName.trim(),
-      rating: this.review.rating,
-      comment: this.review.comment.trim(),
+      customerName: customerName.trim(),
+      rating,
+      comment: comment.trim(),
       ...(this.orderId && { orderId: this.orderId })
     };
 
+    this.isLoading = true;
     this.reviewService.submitReview(newReview).subscribe({
       next: (savedReview) => {
         this.reviews.unshift(savedReview);
         this.resetForm();
         this.showReviewForm = false;
         this.reviewSubmitted.emit();
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('Error submitting review:', err);
         const errorMsg = err.error?.message || 'Failed to submit review. Please try again.';
         alert(errorMsg);
+        this.isLoading = false;
       }
     });
   }
@@ -91,12 +101,12 @@ export class ReviewComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.review = {
-      customerName: '',
-      rating: 0,
-      comment: ''
-    };
+    this.reviewForm.reset({
+      rating: 0
+    });
   }
+
+  get f() { return this.reviewForm.controls; }
 
   get averageRating(): number {
     if (this.reviews.length === 0) return 0;

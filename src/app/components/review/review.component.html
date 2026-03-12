@@ -6,33 +6,52 @@
     <div class="add-review-section" *ngIf="allowWrite && showReviewForm">
       <div class="glass-card form-card">
         <h4>Share Your Experience</h4>
-        <form (ngSubmit)="submitReview()">
+        <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
           <div class="form-group">
             <label>Your Rating</label>
-            <div class="stars-input">
-              <span *ngFor="let star of [1,2,3,4,5]" class="star-btn" [class.active]="star <= review.rating"
+            <div class="stars-input" [class.error]="f['rating'].touched && f['rating'].invalid">
+              <span *ngFor="let star of [1,2,3,4,5]" class="star-btn" [class.active]="star <= f['rating'].value"
                 (click)="setRating(star)">
                 ★
               </span>
             </div>
+            @if (f['rating'].touched && f['rating'].invalid) {
+            <span class="error-text" style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+              @if (f['rating'].errors?.['required'] || f['rating'].errors?.['min']) { Please select a rating }
+            </span>
+            }
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label>Your Name</label>
-              <input type="text" [(ngModel)]="review.customerName" name="customerName" required
-                placeholder="e.g. Vraj Katariya">
+              <input type="text" formControlName="customerName" placeholder="e.g. Vraj Katariya"
+                [class.error]="f['customerName'].touched && f['customerName'].invalid">
+              @if (f['customerName'].touched && f['customerName'].invalid) {
+              <span class="error-text" style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                @if (f['customerName'].errors?.['required']) { Name is required }
+                @else if (f['customerName'].errors?.['minlength']) { Name must be at least 2 characters }
+              </span>
+              }
             </div>
           </div>
 
           <div class="form-group">
             <label>Your Message</label>
-            <textarea [(ngModel)]="review.comment" name="comment" required rows="3"
-              placeholder="How was the food and service?"></textarea>
+            <textarea formControlName="comment" rows="3" placeholder="How was the food and service?"
+              [class.error]="f['comment'].touched && f['comment'].invalid"></textarea>
+            @if (f['comment'].touched && f['comment'].invalid) {
+            <span class="error-text" style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+              @if (f['comment'].errors?.['required']) { Message is required }
+              @else if (f['comment'].errors?.['minlength']) { Message must be at least 10 characters }
+            </span>
+            }
           </div>
 
           <div class="form-actions">
-            <button type="submit" class="btn-submit">Submit Review</button>
+            <button type="submit" class="btn-submit" [disabled]="isLoading">
+              {{ isLoading ? 'Submitting...' : 'Submit Review' }}
+            </button>
             <button type="button" class="btn-cancel" (click)="cancelReview()">Cancel</button>
           </div>
         </form>

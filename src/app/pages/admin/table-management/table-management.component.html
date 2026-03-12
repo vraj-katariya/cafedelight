@@ -8,18 +8,31 @@
                 <div class="form-group">
                     <label>Table Number</label>
                     <input type="number" formControlName="tableNumber" class="form-control" placeholder="e.g. 101"
-                        min="1">
+                        min="1" [class.error]="f['tableNumber'].touched && f['tableNumber'].invalid">
+                    @if (f['tableNumber'].touched && f['tableNumber'].invalid) {
+                    <span class="error-text" style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                        @if (f['tableNumber'].errors?.['required']) { Table number is required }
+                        @else if (f['tableNumber'].errors?.['min']) { Must be at least 1 }
+                    </span>
+                    }
                 </div>
 
                 <div class="form-group">
                     <label>Seating Capacity</label>
                     <input type="number" formControlName="capacity" class="form-control" placeholder="No. of Persons"
-                        min="1">
+                        min="1" [class.error]="f['capacity'].touched && f['capacity'].invalid">
+                    @if (f['capacity'].touched && f['capacity'].invalid) {
+                    <span class="error-text" style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                        @if (f['capacity'].errors?.['required']) { Capacity is required }
+                        @else if (f['capacity'].errors?.['min']) { Must be at least 1 }
+                    </span>
+                    }
                 </div>
 
                 <div class="form-group">
                     <label>Location Area</label>
-                    <select formControlName="location" class="form-control">
+                    <select formControlName="location" class="form-control"
+                        [class.error]="f['location'].touched && f['location'].invalid">
                         <option value="Indoor">Indoor (Main Hall)</option>
                         <option value="Outdoor">Outdoor (Garden)</option>
                         <option value="Rooftop">Rooftop Terrace</option>
@@ -28,9 +41,14 @@
                         <option value="Lounge Area">Lounge Area</option>
                         <option value="Poolside">Poolside View</option>
                     </select>
+                    @if (f['location'].touched && f['location'].invalid) {
+                    <span class="error-text" style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                        @if (f['location'].errors?.['required']) { Location is required }
+                    </span>
+                    }
                 </div>
 
-                <button type="submit" class="btn-submit" [disabled]="tableForm.invalid">
+                <button type="submit" class="btn-submit">
                     Add Table to System
                 </button>
             </form>

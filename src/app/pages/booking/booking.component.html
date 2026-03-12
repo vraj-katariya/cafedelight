@@ -25,23 +25,39 @@
                     <div class="form-group">
                         <label>Select Date</label>
                         <div class="input-with-icon">
-                            <input type="date" formControlName="date" class="form-control" [min]="minDate">
+                            <input type="date" formControlName="date" class="form-control" [min]="minDate"
+                                [class.error]="bookingForm.get('date')?.touched && bookingForm.get('date')?.invalid">
                             <span class="input-icon">📅</span>
                         </div>
+                        @if (bookingForm.get('date')?.touched && bookingForm.get('date')?.invalid) {
+                        <span class="error-text"
+                            style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                            @if (bookingForm.get('date')?.errors?.['required']) { Date is required }
+                        </span>
+                        }
                     </div>
 
                     <div class="form-group">
                         <label>Number of Guests</label>
                         <div class="input-with-icon">
                             <input type="number" formControlName="guests" class="form-control" min="1" max="20"
-                                placeholder="e.g. 2">
+                                placeholder="e.g. 2"
+                                [class.error]="bookingForm.get('guests')?.touched && bookingForm.get('guests')?.invalid">
                             <span class="input-icon">👥</span>
                         </div>
+                        @if (bookingForm.get('guests')?.touched && bookingForm.get('guests')?.invalid) {
+                        <span class="error-text"
+                            style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                            @if (bookingForm.get('guests')?.errors?.['required']) { Number of guests is required }
+                            @else if (bookingForm.get('guests')?.errors?.['min']) { Minimum 1 guest }
+                        </span>
+                        }
                     </div>
 
                     <div class="form-group full-width">
                         <label>Time Slot (10 AM - 10 PM)</label>
-                        <div class="custom-dropdown" [class.open]="isDropdownOpen">
+                        <div class="custom-dropdown" [class.open]="isDropdownOpen"
+                            [class.error]="bookingForm.get('timeSlot')?.touched && bookingForm.get('timeSlot')?.invalid">
                             <div class="dropdown-header" (click)="toggleDropdown()">
                                 <span class="selected-value">
                                     {{ bookingForm.get('timeSlot')?.value || '-- Choose a Time Slot --' }}
@@ -56,6 +72,12 @@
                                 </div>
                             </div>
                         </div>
+                        @if (bookingForm.get('timeSlot')?.touched && bookingForm.get('timeSlot')?.invalid) {
+                        <span class="error-text"
+                            style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                            @if (bookingForm.get('timeSlot')?.errors?.['required']) { Time slot is required }
+                        </span>
+                        }
                     </div>
                 </div>
 

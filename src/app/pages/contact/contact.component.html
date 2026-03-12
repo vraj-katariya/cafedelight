@@ -31,19 +31,36 @@
                         <a href="mailto:contacts@thecoffeeculture.com" class="link">contacts@thecoffeeculture.com</a>
                     </div>
 
-                    <form class="premium-form" (ngSubmit)="submitForm()">
+                    <form class="premium-form" [formGroup]="contactForm" (ngSubmit)="submitForm()">
                         <div class="input-group">
-                            <input type="text" [(ngModel)]="contact.name" name="name" required placeholder=" ">
+                            <input type="text" formControlName="name" placeholder=" " [class.error]="f['name'].touched && f['name'].invalid">
                             <label>Full Name</label>
+                            @if (f['name'].touched && f['name'].invalid) {
+                            <span class="error-text" style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                                @if (f['name'].errors?.['required']) { Name is required }
+                                @else if (f['name'].errors?.['minlength']) { Name must be at least 2 characters }
+                            </span>
+                            }
                         </div>
                         <div class="input-group">
-                            <input type="email" [(ngModel)]="contact.email" name="email" required placeholder=" ">
+                            <input type="email" formControlName="email" placeholder=" " [class.error]="f['email'].touched && f['email'].invalid">
                             <label>Email Address</label>
+                            @if (f['email'].touched && f['email'].invalid) {
+                            <span class="error-text" style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                                @if (f['email'].errors?.['required']) { Email is required }
+                                @else if (f['email'].errors?.['email']) { Please enter a valid email }
+                            </span>
+                            }
                         </div>
                         <div class="input-group">
-                            <textarea [(ngModel)]="contact.message" name="message" required placeholder=" "
-                                rows="4"></textarea>
+                            <textarea formControlName="message" placeholder=" " rows="4" [class.error]="f['message'].touched && f['message'].invalid"></textarea>
                             <label>How can we help?</label>
+                            @if (f['message'].touched && f['message'].invalid) {
+                            <span class="error-text" style="color: #ff4d4f; font-size: 12px; margin-top: 4px; display: block;">
+                                @if (f['message'].errors?.['required']) { Message is required }
+                                @else if (f['message'].errors?.['minlength']) { Message must be at least 10 characters }
+                            </span>
+                            }
                         </div>
                         <button type="submit" class="btn-primary">Send Message</button>
                     </form>

@@ -487,3 +487,17 @@ form {
         flex-direction: column;
     }
 }
+
+/* Error Styles */
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+    border-color: #ff4d4f !important;
+}
+
+.error-text {
+    color: #ff4d4f;
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+    display: block;
+}

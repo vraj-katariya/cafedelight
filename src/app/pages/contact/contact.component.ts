@@ -1,28 +1,38 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-contact',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, ReactiveFormsModule],
     templateUrl: './contact.component.html',
     styleUrls: ['./contact.component.css']
 })
 export class ContactComponent {
-    contact = {
-        name: '',
-        email: '',
-        message: ''
-    };
+    contactForm: FormGroup;
+    isSubmitted = false;
+
+    constructor(private fb: FormBuilder) {
+        this.contactForm = this.fb.group({
+            name: ['', [Validators.required, Validators.minLength(2)]],
+            email: ['', [Validators.required, Validators.email]],
+            message: ['', [Validators.required, Validators.minLength(10)]]
+        });
+    }
+
+    get f() { return this.contactForm.controls; }
 
     submitForm(): void {
-        if (this.contact.name && this.contact.email && this.contact.message) {
-            console.log('Form Submitted:', this.contact);
+        this.isSubmitted = true;
+        
+        if (this.contactForm.valid) {
+            console.log('Form Submitted:', this.contactForm.value);
             alert('Thank you for contacting us! We will get back to you soon.');
-            this.contact = { name: '', email: '', message: '' };
+            this.contactForm.reset();
+            this.isSubmitted = false;
         } else {
-            alert('Please fill in all fields.');
+            this.contactForm.markAllAsTouched();
         }
     }
 }

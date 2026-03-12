@@ -1,15 +1,16 @@
 /* Existing header styles */
 .header {
     background: #ffffff;
-    padding: 1.2rem 0;
+    padding: 1rem 0;
     position: sticky;
     top: 0;
     z-index: 1000;
     border-bottom: 1px solid #eeeeee;
+    transition: all 0.3s ease;
 }
 
 .header-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     padding: 0 1.5rem;
     display: flex;
@@ -23,7 +24,7 @@
     gap: 0.6rem;
     text-decoration: none;
     color: #1a1a1a;
-    font-size: 1.3rem;
+    font-size: 1.35rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -44,27 +45,36 @@
 }
 
 .nav a {
-    color: #666666;
+    color: #555555;
     text-decoration: none;
     font-weight: 600;
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    position: relative;
 }
 
 .nav a:hover {
-    color: #000;
-    background: #f5f5f5;
+    color: #000000;
+    background: #f8f8f8;
 }
 
 .nav a.active {
-    color: #1a1a1a;
-    background: transparent;
-    border-bottom: 2px solid #1a1a1a;
-    border-radius: 0;
+    color: #000000;
+    background: #f0f0f0;
+}
+
+.nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 1rem;
+    right: 1rem;
+    height: 2px;
+    background: #000000;
 }
 
 .cart-link {
@@ -76,44 +86,43 @@
 .cart-badge {
     position: absolute;
     top: -5px;
-    right: -5px;
-    background: #000;
-    color: #fff;
-    font-size: 0.7rem;
+    right: -2px;
+    background: #000000;
+    color: #ffffff;
+    font-size: 0.6rem;
     font-weight: 700;
-    padding: 1px 5px;
+    padding: 2px 5px;
     border-radius: 50%;
     min-width: 16px;
     text-align: center;
 }
 
 .btn-logout {
-    background: transparent;
+    background: #1a1a1a;
     border: 1px solid #1a1a1a;
-    color: #1a1a1a;
+    color: #ffffff;
     padding: 0.5rem 1.2rem;
     border-radius: 4px;
     cursor: pointer;
-    font-weight: 600;
-    font-size: 0.85rem;
+    font-weight: 700;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .btn-logout:hover {
-    background: #f5f5f5;
-    color: #000;
+    background: #000000;
+    transform: translateY(-1px);
 }
 
 .btn-register {
-    border: none !important;
-    background: transparent !important;
-    margin-left: 0.5rem;
+    border: 1px solid #eeeeee !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
 }
 
 .btn-register:hover {
-    background: #f5f5f5 !important;
-    color: #000 !important;
+    background: #f8f8f8 !important;
 }
 
 .menu-toggle {
@@ -126,7 +135,7 @@
 
 .hamburger {
     display: block;
-    width: 25px;
+    width: 22px;
     height: 2px;
     background: #1a1a1a;
     position: relative;
@@ -143,11 +152,11 @@
 }
 
 .hamburger::before {
-    top: -8px;
+    top: -6px;
 }
 
 .hamburger::after {
-    top: 8px;
+    top: 6px;
 }
 
 @media (max-width: 768px) {
@@ -174,27 +183,28 @@
     }
 
     .menu-toggle.open .hamburger::before {
-        transform: rotate(45deg) translate(5px, 6px);
+        transform: rotate(45deg) translate(4px, 5px);
     }
 
     .menu-toggle.open .hamburger::after {
-        transform: rotate(-45deg) translate(5px, -6px);
+        transform: rotate(-45deg) translate(4px, -5px);
     }
 
     .nav {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 280px;
+        width: 260px;
         height: 100vh;
         background: #ffffff;
         flex-direction: column;
         align-items: flex-start;
-        padding: 80px 2rem 2rem;
+        padding: 70px 1.5rem 1.5rem;
         z-index: 1050;
-        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
         gap: 0;
+        border-left: 1px solid #f0f0f0;
     }
 
     .nav.open {
@@ -203,8 +213,8 @@
 
     .nav a {
         width: 100%;
-        padding: 1.2rem 0;
-        border-bottom: 1px solid #f0f0f0;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f8f8f8;
         border-radius: 0;
         color: #1a1a1a;
         font-size: 0.95rem;
@@ -226,8 +236,8 @@
     .menu-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(4px);
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(2px);
         z-index: 1040;
         opacity: 0;
         visibility: hidden;

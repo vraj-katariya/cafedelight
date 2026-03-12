@@ -27,7 +27,18 @@
                     <span class="value">{{ order._id.slice(-8).toUpperCase() }}</span>
                 </div>
                 <div class="order-date">
-                    {{ formatDate(order.createdAt) }}
+                    @if (getDisplayedBooking(order)) {
+                    <div class="booking-info-box">
+                        <span class="booking-badge">Table Reservation</span>
+                        <div class="booking-time-details">
+                            <span class="booking-date-val">{{ getDisplayedBooking(order).date | date:'fullDate'
+                                }}</span>
+                            <span class="booking-slot-val">Time Slot: {{ getDisplayedBooking(order).timeSlot }}</span>
+                        </div>
+                    </div>
+                    } @else {
+                    <span class="order-placed-at">Placed on: {{ formatDate(order.createdAt) }}</span>
+                    }
                 </div>
             </div>
 

@@ -18,6 +18,10 @@ router.get('/', protect, async (req, res) => {
 
         const orders = await Order.find(query)
             .populate('user', 'name email')
+            .populate({
+                path: 'booking',
+                populate: { path: 'table', select: 'tableNumber location' }
+            })
             .sort({ createdAt: -1 });
 
         res.json({
@@ -40,7 +44,11 @@ router.get('/', protect, async (req, res) => {
 router.get('/:id', protect, async (req, res) => {
     try {
         const order = await Order.findById(req.params.id)
-            .populate('user', 'name email phone');
+            .populate('user', 'name email phone')
+            .populate({
+                path: 'booking',
+                populate: { path: 'table', select: 'tableNumber location' }
+            });
 
         if (!order) {
             return res.status(404).json({
@@ -69,6 +77,8 @@ router.get('/:id', protect, async (req, res) => {
         });
     }
 });
+
+const Booking = require('../models/Booking');
 
 // @route   POST /api/orders
 // @desc    Create order from cart
@@ -105,8 +115,14 @@ router.post('/', protect, async (req, res) => {
         const gstAmount = (subtotal * gstRate) / 100;
         const total = subtotal + gstAmount;
 
+        // Find user's latest active booking to link it
+        const latestBooking = await Booking.findOne({
+            user: req.user.id,
+            status: { $in: ['Pending', 'Confirmed'] }
+        }).sort({ createdAt: -1 });
+
         // Create order
-        const order = await Order.create({
+        const orderData = {
             user: req.user.id,
             items: orderItems,
             subtotal: Math.round(subtotal * 100) / 100,
@@ -115,7 +131,13 @@ router.post('/', protect, async (req, res) => {
             total: Math.round(total * 100) / 100,
             deliveryAddress,
             notes
-        });
+        };
+
+        if (latestBooking) {
+            orderData.booking = latestBooking._id;
+        }
+
+        const order = await Order.create(orderData);
 
         // Clear cart after order
         cart.items = [];
