@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { MenuService } from '../../services/menu.service';
+import { CartService } from '../../services/cart.service';
 import { ReviewComponent } from '../../components/review/review.component';
+import { MenuItem } from '../../models/menu.model';
 
 @Component({
     selector: 'app-home',
@@ -11,13 +14,77 @@ import { ReviewComponent } from '../../components/review/review.component';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
-    constructor(public authService: AuthService) { }
+export class HomeComponent implements OnInit {
+    categories: string[] = [];
+    allProducts: MenuItem[] = [];
+    filteredProducts: MenuItem[] = [];
+    activeCategory: string = '';
+    isLoading = false;
 
-    categories = [
-        { name: 'Coffee', icon: '☕', description: 'Premium brews & espresso', image: '/assets/categories/coffee.png' },
-        { name: 'Beverages', icon: '🥤', description: 'Fresh juices & smoothies', image: '/assets/categories/beverages.png' },
-        { name: 'Snacks', icon: '🍟', description: 'Delicious bites & sandwiches', image: '/assets/categories/snacks.png' },
-        { name: 'Waffle', icon: '🧇', description: 'Belgian waffles & toppings', image: '/assets/categories/waffle.png' }
-    ];
+    constructor(
+        public authService: AuthService,
+        private menuService: MenuService,
+        private cartService: CartService,
+        private router: Router
+    ) { }
+
+    ngOnInit(): void {
+        this.loadCategories();
+        this.loadAllProducts();
+    }
+
+    loadCategories(): void {
+        this.menuService.getCategories().subscribe({
+            next: (res) => {
+                if (res.success) {
+                    this.categories = res.categories;
+                    if (this.categories.length > 0 && !this.activeCategory) {
+                        this.activeCategory = this.categories[0];
+                    }
+                }
+            }
+        });
+    }
+
+    loadAllProducts(): void {
+        this.isLoading = true;
+        this.menuService.getMenuItems().subscribe({
+            next: (res) => {
+                if (res.success && res.menuItems) {
+                    this.allProducts = res.menuItems;
+                    this.filterProducts();
+                }
+                this.isLoading = false;
+            },
+            error: () => {
+                this.isLoading = false;
+            }
+        });
+    }
+
+    setActiveCategory(category: string): void {
+        this.activeCategory = category;
+        this.filterProducts();
+    }
+
+    filterProducts(): void {
+        const featuredCategories = ['Coffee', 'Beverages', 'Snacks', 'Waffle'];
+        this.filteredProducts = [];
+
+        featuredCategories.forEach(cat => {
+            const product = this.allProducts.find(p => p.category === cat);
+            if (product) {
+                this.filteredProducts.push(product);
+            }
+        });
+    }
+
+    addToCart(product: MenuItem): void {
+        if (!this.authService.isLoggedIn) {
+            alert('Please login to add items to your cart.');
+            this.router.navigate(['/login']);
+            return;
+        }
+        this.cartService.addToCart(product._id).subscribe();
+    }
 }

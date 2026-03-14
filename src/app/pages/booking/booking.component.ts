@@ -24,6 +24,7 @@ export class BookingComponent {
     ];
     availableTimeSlots: string[] = [];
     minDate: string = new Date().toISOString().split('T')[0];
+    maxDate: string = '';
     isDropdownOpen = false;
     loading = false;
     searched = false;
@@ -38,6 +39,15 @@ export class BookingComponent {
         private router: Router
     ) {
         this.availableTimeSlots = [...this.timeSlots]; // Default all
+
+        // Set maxDate to last day of current month
+        const now = new Date();
+        const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        const y = lastDay.getFullYear();
+        const m = String(lastDay.getMonth() + 1).padStart(2, '0');
+        const d = String(lastDay.getDate()).padStart(2, '0');
+        this.maxDate = `${y}-${m}-${d}`;
+
         this.bookingForm = this.fb.group({
             date: ['', Validators.required],
             timeSlot: ['', Validators.required],

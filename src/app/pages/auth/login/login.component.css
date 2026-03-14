@@ -23,7 +23,7 @@
 }
 
 .auth-header h1 {
-    color: #1a1a1a;
+    color: var(--primary);
     font-size: 2rem;
     margin-bottom: 0.5rem;
     font-weight: 800;
@@ -129,8 +129,8 @@
 .btn-submit {
     width: 100%;
     padding: 1rem;
-    background: #000000;
-    border: 1px solid #000000;
+    background: var(--primary);
+    border: 1px solid var(--primary);
     border-radius: 4px;
     color: #fff;
     font-size: 0.9rem;
@@ -147,7 +147,7 @@
 }
 
 .btn-submit:hover:not(:disabled) {
-    background: #333333;
+    background: var(--accent);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
