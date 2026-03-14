@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { OrderService } from '../../services/order.service';
 import { Cart } from '../../models/cart.model';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
     selector: 'app-cart',
@@ -17,6 +18,7 @@ export class CartComponent implements OnInit {
     cart: Cart | null = null;
     isLoading = true;
     isCheckingOut = false;
+    private quantityUpdate$ = new Subject<{ menuItemId: string, quantity: number }>();
 
     constructor(
         private cartService: CartService,
@@ -25,11 +27,24 @@ export class CartComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        this.cartService.cart$.subscribe(cart => {
+            this.cart = cart;
+        });
+
+        // Debounce quantity updates to prevent slamming the server
+        this.quantityUpdate$.pipe(
+            debounceTime(500), // Wait for user to stop clicking
+        ).subscribe(({ menuItemId, quantity }) => {
+            this.cartService.updateQuantity(menuItemId, quantity).subscribe();
+        });
+
         this.loadCart();
     }
 
     loadCart(): void {
-        this.isLoading = true;
+        if (!this.cart) {
+            this.isLoading = true;
+        }
         this.cartService.getCart().subscribe({
             next: (response) => {
                 if (response.success && response.cart) {
@@ -43,20 +58,47 @@ export class CartComponent implements OnInit {
         });
     }
 
+    calculateTotals(): void {
+        if (!this.cart) return;
+
+        const subtotal = this.cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const gstAmount = subtotal * (this.cart.gstRate / 100);
+        const total = subtotal + gstAmount;
+
+        this.cart = {
+            ...this.cart,
+            subtotal,
+            gstAmount,
+            total
+        };
+    }
+
     updateQuantity(menuItemId: string, quantity: number): void {
         if (quantity < 1) {
             this.removeItem(menuItemId);
             return;
         }
-        this.cartService.updateQuantity(menuItemId, quantity).subscribe({
-            next: () => this.loadCart()
-        });
+
+        // Snappy local update (Optimistic)
+        if (this.cart) {
+            const item = this.cart.items.find(i => i.menuItem._id === menuItemId);
+            if (item) {
+                item.quantity = quantity;
+                this.calculateTotals();
+            }
+        }
+
+        // Trigger debounced server update
+        this.quantityUpdate$.next({ menuItemId, quantity });
     }
 
     removeItem(menuItemId: string): void {
-        this.cartService.removeFromCart(menuItemId).subscribe({
-            next: () => this.loadCart()
-        });
+        // Snappy local update (Optimistic)
+        if (this.cart) {
+            this.cart.items = this.cart.items.filter(i => i.menuItem._id !== menuItemId);
+            this.calculateTotals();
+        }
+        this.cartService.removeFromCart(menuItemId).subscribe();
     }
 
     clearCart(): void {

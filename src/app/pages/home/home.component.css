@@ -149,7 +149,7 @@
 }
 
 .btn-primary:hover {
-    background: #000;
+    background: var(--accent);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
@@ -162,91 +162,202 @@
 
 .btn-secondary:hover {
     background: #ffffff;
-    color: #1a1a1a;
+    color: var(--primary);
     transform: translateY(-2px);
 }
 
 /* =================== SECTION SHARED =================== */
-.section-header {
+/* =================== PRODUCTS SECTION =================== */
+.products-section {
+    padding: 5rem 1.5rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    background-color: #ffffff;
+}
+
+.products-header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 }
 
-.section-badge {
-    display: inline-block;
-    background: #ffffff;
-    border: 1px solid #1a1a1a;
-    color: #1a1a1a;
-    padding: 0.35rem 1.2rem;
-    border-radius: 0;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-}
-
-.section-header h2 {
-    font-size: 2.5rem;
-    color: #1a1a1a;
-    margin-bottom: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.section-header p {
-    color: #666;
+.products-subtitle {
+    display: block;
+    color: #888;
     font-size: 1rem;
-    max-width: 540px;
-    margin: 0 auto;
-    line-height: 1.6;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+    font-family: 'Playfair Display', serif;
 }
 
-/* =================== CATEGORIES SECTION =================== */
-.categories-section {
-    padding: 6rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+.products-title {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    color: var(--primary);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
-.categories-grid {
+/* Products Grid */
+.products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
+    /* Force 4 items in 1 line */
     gap: 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
 }
 
-.category-card {
-    background: #f9f9f9;
-    border-radius: 4px;
-    text-align: center;
-    text-decoration: none;
-    transition: all 0.4s ease;
-    border: 1px solid #ececec;
-    background-size: cover;
-    background-position: center;
+@media (max-width: 1024px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.product-card {
+    transition: transform 0.4s ease;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+}
+
+.product-image-box {
+    width: 100%;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
-    position: relative;
-    min-height: 250px;
-    display: flex;
+    border-radius: 0 60px 0 60px;
+    /* Reduced Leaf corner radius */
+    margin-bottom: 1.5rem;
+    background: #f0f0f0;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
 }
 
-.category-overlay {
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.9) 100%);
-    flex: 1;
-    padding: 3rem 1.5rem;
+.product-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.product-card:hover .product-image-box img {
+    transform: scale(1.1);
+}
+
+.product-info {
+    text-align: left;
+    padding: 0 0.25rem;
+}
+
+.product-meta {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+}
+
+.product-name {
+    font-size: 1.4rem;
+    color: #1a1a1a;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+}
+
+.product-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.product-rating .star-icon.filled {
+    color: #ffb800;
+}
+
+.rating-value {
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.review-count {
+    color: #888;
+}
+
+.product-desc {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    overflow: hidden;
+}
+
+.product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-price {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #1a1a1a;
+}
+
+.btn-add-cart {
+    width: 42px;
+    height: 42px;
+    background: #4b1a0e;
+    /* Brown square as requested */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    color: #1a1a1a;
-    backdrop-filter: blur(1px);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.category-card:hover .category-overlay {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(0px);
+.btn-add-cart:hover {
+    background: #2a0e08;
+    transform: scale(1.05);
+}
+
+.loading-products {
+    grid-column: 1 / -1;
+    padding: 5rem;
+    text-align: center;
+}
+
+.loading-products .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #1a1a1a;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .category-card {
@@ -299,125 +410,725 @@
     transform: translateY(0);
 }
 
-/* =================== FEATURES SECTION =================== */
-.features-section {
-    padding: 6rem 2rem;
-    background: #f8f8f8;
-}
+/* =================== FEATURES SECTION (NGOPI MATCH) =================== */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
-.features-section .section-header {
-    max-width: 1200px;
-    margin: 0 auto 4rem;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 2.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.feature-card {
-    text-align: center;
-    padding: 3rem 2rem;
-    background: #ffffff;
-    border-radius: 4px;
-    border: 1px solid #eee;
-    transition: all 0.3s ease;
-}
-
-.feature-card:hover {
-    background: #1a1a1a;
-    border-color: #1a1a1a;
-    transform: translateY(-6px);
-}
-
-.feature-card:hover h3,
-.feature-card:hover p {
-    color: #ffffff;
-}
-
-.feature-icon-wrap {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: 1.5rem;
-}
-
-.feature-card h3 {
-    color: #1a1a1a;
-    margin-bottom: 0.75rem;
-    font-size: 1.2rem;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.feature-card p {
-    color: #777;
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
-
-/* =================== REVIEWS SECTION =================== */
-.reviews-section {
-    padding: 6rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-/* =================== CTA SECTION =================== */
-.cta-section {
-    position: relative;
-    padding: 8rem 2rem;
-    text-align: center;
-    background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+.ngopi-features-section {
+    padding: 6rem 0rem;
+    background-color: #ffffff;
+    font-family: 'Inter', sans-serif;
     overflow: hidden;
 }
 
-.cta-bg-overlay {
+.ngopi-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.ngopi-text-center {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.ngopi-sub-accent {
+    display: block;
+    font-size: 1.1rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.ngopi-section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #2b3342;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: -0.5px;
+}
+
+.ngopi-features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 5rem;
+}
+
+.ngopi-feature-card {
+    background: #fbfbfb;
+    /* Light beige/grey */
+    border: 1px solid #e8e8e8;
+    padding: 3rem 1.5rem;
+    color: #2b3342;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.ngopi-feature-card.pink-card {
+    background-color: #fcebe9;
+    /* pink-ish background */
+    border-color: #fcebe9;
+}
+
+.ngopi-feature-icon {
+    margin-bottom: 1.5rem;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ngopi-feature-card h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.8rem;
+}
+
+.ngopi-feature-card p {
+    font-size: 0.95rem;
+    color: #777;
+    line-height: 1.6;
+}
+
+.ngopi-features-cta {
+    text-align: center;
+}
+
+.cta-subtitle {
+    font-size: 1.1rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+.cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #612211;
+    /* Dark brownish maroon */
+    margin-bottom: 2rem;
+}
+
+.cta-button-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 0 150px;
+    /* Room for splashes */
+}
+
+.splash-left {
     position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    left: -150px;
+    top: -120px;
+    height: 250px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+.splash-right {
+    position: absolute;
+    right: -150px;
+    top: -50px;
+    height: 200px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+.btn-ngopi-join {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem 2.8rem;
+    background-color: #612211;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Playfair Display', serif;
+    /* Or inter, but it looks elegant */
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(97, 34, 17, 0.2);
+    position: relative;
+    z-index: 2;
+}
+
+.btn-ngopi-join .arrow-down-right {
+    margin-left: 10px;
+    font-size: 1.2rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+}
+
+.btn-ngopi-join:hover {
+    background-color: #4a190c;
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+@media (max-width: 1024px) {
+    .ngopi-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .ngopi-features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-button-wrapper {
+        padding: 0;
+    }
+
+    .splash-left,
+    .splash-right {
+        display: none;
+    }
+}
+
+/* =================== REVIEWS SECTION (NGOPI MATCH) =================== */
+/* =================== PREMIUM REVIEWS SECTION (LIGHT REDESIGN) =================== */
+.premium-reviews {
+    background-color: #ffffff !important;
+    /* Pure white background */
+    padding: 6rem 0;
+    /* Vertical padding only */
+    color: #1a1a1a;
+    width: 100%;
+    margin-top: 4rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.premium-reviews .ngopi-reviews-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 3rem;
+    width: 100%;
+    max-width: 1400px;
+    /* Slightly wider to accommodate gaps comfortably */
+    margin: 0 auto !important;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    /* Center children horizontally */
+}
+
+.ngopi-reviews-carousel {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.reviews-header-centered {
+    margin-bottom: 2rem;
+}
+
+.reviews-subtitle {
+    display: block;
+    font-size: 0.85rem;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+}
+
+.reviews-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #000000;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.reviews-underline {
+    width: 50px;
+    height: 3px;
+    background: var(--primary);
+    margin: 0 auto 1.5rem;
+}
+
+.reviews-description {
+    font-size: 1.15rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Specific overrides for the light premium theme */
+::ng-deep .premium-reviews app-review .review-wrapper {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+::ng-deep .premium-reviews app-review .review-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+}
+
+::ng-deep .premium-reviews app-review .list-header {
+    display: none !important;
+    /* Hide the redundant "What our customers say" */
+}
+
+::ng-deep .premium-reviews app-review .reviews-grid {
+    display: flex !important;
+    gap: 3.5rem !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    padding: 2rem 0 4rem !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+}
+
+::ng-deep .premium-reviews app-review .review-list {
+    display: block !important;
+}
+
+::ng-deep .premium-reviews app-review .review-card {
+    background: #ffffff !important;
+    border: 1px solid #eee !important;
+    border-top: none !important;
+    padding: 2rem !important;
+    border-radius: 8px !important;
+    color: #333 !important;
+    flex: 0 1 350px;
+    /* Allow cards to shrink/grow but target 350px */
+    min-width: 320px;
+    max-width: 420px;
+    text-align: left;
+    height: auto !important;
+    margin: 0 !important;
+    /* Remove margin-top that might cause offsets */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Split Top Border: Blue on left, Gold on right */
+::ng-deep .premium-reviews app-review .review-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, #4b89ff 50%, #d4af37 50%);
+    z-index: 5;
+}
+
+::ng-deep .premium-reviews app-review .review-card .card-top {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 1.25rem !important;
+    margin-bottom: 1.5rem !important;
+    position: relative !important;
+}
+
+::ng-deep .premium-reviews app-review .review-card .user-avatar {
+    width: 55px !important;
+    height: 55px !important;
+    background: #0056b3 !important;
+    color: white !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    flex-shrink: 0 !important;
+}
+
+::ng-deep .premium-reviews app-review .review-card .user-info strong {
+    font-size: 1.15rem !important;
+    color: #1a1e26 !important;
+    font-weight: 700 !important;
+}
+
+::ng-deep .premium-reviews app-review .review-card .card-rating {
+    display: flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+}
+
+::ng-deep .premium-reviews app-review .review-card .star-icon {
+    font-size: 0.95rem !important;
+    color: #ddd !important;
+    /* Default grey for empty stars */
+}
+
+::ng-deep .premium-reviews app-review .review-card .star-icon.filled {
+    color: #ffb800 !important;
+    /* Bright yellow for filled stars */
+}
+
+::ng-deep .premium-reviews app-review .review-card .card-body p {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #4b89ff !important;
+    margin-bottom: 0.8rem !important;
+    font-style: normal !important;
+}
+
+/* NO REVIEWS STATE */
+::ng-deep .premium-reviews app-review .no-reviews-state {
+    background: #ffffff !important;
+    border: 1px dashed #ddd !important;
+    padding: 3rem !important;
+    text-align: center !important;
+    margin: 2rem auto !important;
+    max-width: 400px !important;
+    color: #888 !important;
+    box-shadow: none !important;
+}
+
+/* EXPLORE ALL REVIEWS BUTTON */
+::ng-deep .premium-reviews app-review .explore-reviews {
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 1rem !important;
+    padding-bottom: 2rem !important;
+}
+
+::ng-deep .premium-reviews app-review .btn-explore {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid #1a1a1a !important;
+    padding: 1.2rem 3rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    font-size: 0.9rem !important;
+    border-radius: 50px !important;
+    cursor: pointer !important;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    font-family: 'Playfair Display', serif !important;
+}
+
+::ng-deep .premium-reviews app-review .btn-explore:hover {
+    background: #4b89ff !important;
+    border-color: #4b89ff !important;
+    transform: translateY(-5px) !important;
+    box-shadow: 0 15px 40px rgba(75, 137, 255, 0.3) !important;
+}
+
+::ng-deep .premium-reviews app-review .review-card::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: #eee;
+    margin: 1.5rem 0 1rem;
+}
+
+
+@media (max-width: 900px) {
+    .ngopi-reviews-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 3rem;
+    }
+
+    .ngopi-reviews-text {
+        flex: 1;
+        width: 100%;
+    }
+}
+
+/* =================== PROMO SECTION (NGOPI MATCH) =================== */
+.ngopi-promo-section {
+    position: relative;
+    padding: 6rem 0;
+    overflow: hidden;
+    background-color: #ffffff;
+    /* Changed to white */
+    font-family: 'Inter', sans-serif;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ngopi-promo-background {
+    display: none;
+    /* Removed for clean white look */
+}
+
+.ngopi-promo-overlay {
+    display: none;
+    /* Removed for clean white look */
+}
+
+.ngopi-promo-container {
+    position: relative;
+    z-index: 3;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ngopi-promo-text {
+    flex: 1;
+    max-width: 600px;
+}
+
+.ngopi-promo-text h2 {
+    font-size: clamp(2.5rem, 5vw, 3.8rem);
+    color: var(--primary);
+    /* Changed to dark/black */
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+}
+
+.ngopi-promo-text p {
+    color: #666666;
+    /* Gray for light background */
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    max-width: 450px;
+}
+
+.btn-ngopi-outline {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.8rem 2.5rem;
+    border: 1px solid var(--primary);
+    border-radius: 50px;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    font-weight: 700;
+}
+
+.btn-ngopi-outline .arrow-down-right {
+    margin-left: 10px;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-ngopi-outline:hover {
+    background-color: var(--primary);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* =================== CTA SECTION (RELOCATED) =================== */
+.ngopi-cta-section {
+    position: relative;
+    padding: 4rem 0;
+    background: #ffffff;
+    text-align: center;
+    overflow: hidden;
+}
+
+.cta-splash-left {
+    position: absolute;
+    left: -100px;
+    bottom: -50px;
+    width: 400px;
+    height: 300px;
+    background-image: url('https://images.unsplash.com/photo-1517043583206-448f2174f884?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+    filter: grayscale(1);
+    transform: rotate(20deg);
+    pointer-events: none;
+}
+
+.cta-splash-right {
+    position: absolute;
+    right: -80px;
+    bottom: -60px;
+    width: 450px;
+    height: 350px;
+    background-image: url('https://images.unsplash.com/photo-1541167760496-162955ed8a9f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+    filter: grayscale(1);
+    transform: rotate(-15deg);
+    pointer-events: none;
 }
 
 .cta-content {
     position: relative;
     z-index: 2;
-    max-width: 700px;
-    margin: 0 auto;
 }
 
-.cta-badge {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+.cta-subtitle {
+    font-size: 1.15rem;
+    color: #888;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+.cta-title {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--primary);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.btn-cta-join {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 3rem;
+    background: #000000;
     color: #ffffff;
-    padding: 0.4rem 1rem;
-    border-radius: 0;
-    font-size: 0.85rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 1.5rem;
-    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-.cta-content h2 {
-    font-size: 3.2rem;
-    color: #fff;
-    margin-bottom: 1.5rem;
-    font-weight: 800;
-    text-transform: uppercase;
+.btn-cta-join:hover {
+    background: #2a2a2a;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
 }
 
-.cta-content p {
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 2.5rem;
+.btn-cta-join .arrow-down-right {
     font-size: 1.2rem;
-    line-height: 1.7;
 }
+
+.ngopi-promo-image {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* CSS 3D Coffee Cup perfectly matching image */
+.css-coffee-cup {
+    position: relative;
+    width: 200px;
+    height: 300px;
+    transform: rotate(3deg);
+    margin-right: 50px;
+    filter: drop-shadow(20px 20px 15px rgba(0, 0, 0, 0.6));
+}
+
+.cup-lid-top {
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 220px;
+    height: 25px;
+    background: linear-gradient(to right, #4a2d18, #6d472b, #3b2210);
+    border-radius: 8px 8px 2px 2px;
+    z-index: 3;
+}
+
+.cup-lid-bottom {
+    position: absolute;
+    top: 25px;
+    left: -5px;
+    width: 210px;
+    height: 10px;
+    background: linear-gradient(to right, #3b2210, #5a3721, #2d180a);
+    border-radius: 2px 2px 6px 6px;
+    z-index: 2;
+}
+
+.cup-body {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    width: 200px;
+    height: 265px;
+    background: linear-gradient(to right, #e2e2e2 0%, #ffffff 50%, #c4c4c4 100%);
+    clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%);
+    display: flex;
+    align-items: center;
+    border-radius: 0 0 15px 15px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.cup-sleeve {
+    width: 100%;
+    height: 130px;
+    background: #a67f5b;
+    background-image: repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 6px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 6px 10px rgba(0, 0, 0, 0.15), inset 0 -6px 10px rgba(0, 0, 0, 0.15);
+    padding-bottom: 10px;
+}
+
+.sleeve-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-style: italic;
+    font-weight: 700;
+    color: var(--primary);
+    transform: rotate(-8deg);
+    margin-bottom: 5px;
+    letter-spacing: -1px;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.2);
+}
+
+.sleeve-icon {
+    width: 40px;
+    height: 40px;
+    color: var(--primary);
+    transform: rotate(-5deg);
+}
+
+@media (max-width: 900px) {
+    .ngopi-promo-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .ngopi-promo-text {
+        margin-bottom: 4rem;
+    }
+
+    .ngopi-promo-text p {
+        margin: 0 auto 2rem auto;
+    }
+
+    .ngopi-promo-image {
+        justify-content: center;
+    }
+
+    .css-coffee-cup {
+        margin-right: 0;
+        transform: rotate(0deg);
+    }
+}
+
+
 
 /* =================== RESPONSIVE =================== */
 @media (max-width: 768px) {
@@ -445,9 +1156,7 @@
         font-size: 2rem;
     }
 
-    .cta-content h2 {
-        font-size: 2.4rem;
-    }
+
 }
 
 @media (max-width: 480px) {
@@ -503,13 +1212,7 @@
         grid-template-columns: 1fr;
     }
 
-    .cta-content h2 {
-        font-size: 1.6rem;
-    }
 
-    .cta-content p {
-        font-size: 0.95rem;
-    }
 }
 
 @media (max-width: 380px) {
@@ -521,7 +1224,6 @@
         gap: 0.5rem;
     }
 
-    .cta-content h2,
     .section-header h2 {
         font-size: 1.4rem;
     }

@@ -23,7 +23,7 @@
     align-items: center;
     gap: 0.6rem;
     text-decoration: none;
-    color: #1a1a1a;
+    color: var(--primary);
     font-size: 1.35rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -35,7 +35,7 @@
 }
 
 .logo-text {
-    color: #1a1a1a;
+    color: var(--primary);
 }
 
 .nav {
@@ -115,15 +115,6 @@
     transform: translateY(-1px);
 }
 
-.btn-register {
-    border: 1px solid #eeeeee !important;
-    background: #ffffff !important;
-    color: #1a1a1a !important;
-}
-
-.btn-register:hover {
-    background: #f8f8f8 !important;
-}
 
 .menu-toggle {
     display: none;

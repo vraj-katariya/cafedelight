@@ -12,11 +12,6 @@
                 <a routerLink="/menu" class="btn btn-primary">
                     Explore Menu
                 </a>
-                @if (!authService.isLoggedIn) {
-                <a routerLink="/register" class="btn btn-secondary">
-                    Join Us
-                </a>
-                }
             </div>
 
         </div>
@@ -25,83 +20,173 @@
         </div>
     </section>
 
-    <!-- Categories Section -->
-    <section class="categories-section">
-        <div class="section-header">
-            <h2>Our <span class="highlight">Categories</span></h2>
-            <p>Explore our wide range of carefully crafted dishes and beverages</p>
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="products-header">
+            <span class="products-subtitle">Our categories</span>
+            <h2 class="products-title">From Top Quality Food</h2>
         </div>
-        <div class="categories-grid">
-            @for (category of categories; track category.name) {
-            <a [routerLink]="['/menu']" [queryParams]="{category: category.name}" class="category-card"
-                [style.background-image]="'url(' + category.image + ')'">
-                <div class="category-overlay">
 
-                    <h3>{{ category.name }}</h3>
-                    <p>{{ category.description }}</p>
-                    <span class="explore-btn">Explore →</span>
+        <div class="products-grid">
+            @if (isLoading) {
+            <div class="loading-products">
+                <div class="spinner"></div>
+                <p>Developing perfection...</p>
+            </div>
+            } @else {
+            @for (product of filteredProducts; track product._id) {
+            <div class="product-card">
+                <div class="product-image-box">
+                    <img [src]="product.image" [alt]="product.name">
                 </div>
-            </a>
+                <div class="product-info">
+                    <div class="product-meta">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                    </div>
+                    <p class="product-desc">{{ product.description }}</p>
+                    <div class="product-footer">
+                        <span class="product-price">₹{{ product.price }}</span>
+                        <button class="btn-add-cart" (click)="addToCart(product)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
             }
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features-section">
-        <div class="section-header">
+    <!-- Features Section (Ngopi Style Match) -->
+    <section class="ngopi-features-section">
+        <div class="ngopi-container">
+            <div class="ngopi-text-center">
+                <span class="ngopi-sub-accent">We don't just make your coffee, we make your day!</span>
+                <h2 class="ngopi-section-title">Why are we different?</h2>
+            </div>
 
-            <h2>Why Choose <span class="highlight">Us</span></h2>
-            <p>We take pride in delivering exceptional experiences every time</p>
+            <div class="ngopi-features-grid">
+                <div class="ngopi-feature-card pink-card">
+                    <div class="ngopi-feature-icon">
+                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M10.165 6.598C9.954 7.478 9.64 8.36 9 9c-.64.64-1.521.954-2.402 1.165A6 6 0 0 0 8 22c7.732 0 14-6.268 14-14a6 6 0 0 0-11.835-1.402Z" />
+                            <path d="M5.341 10.62a4 4 0 1 0 5.279-5.28" />
+                        </svg>
+                    </div>
+                    <h4>Supreme Beans</h4>
+                    <p>Beans that provides<br>great taste</p>
+                </div>
+                <div class="ngopi-feature-card">
+                    <div class="ngopi-feature-icon">
+                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="7" />
+                            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                        </svg>
+                    </div>
+                    <h4>High Quality</h4>
+                    <p>We provide the<br>highest quality</p>
+                </div>
+                <div class="ngopi-feature-card">
+                    <div class="ngopi-feature-icon">
+                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 2v2" />
+                            <path d="M14 2v2" />
+                            <path
+                                d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1" />
+                            <path d="M6 2v2" />
+                        </svg>
+                    </div>
+                    <h4>Extraordinary</h4>
+                    <p>Coffee like you have<br>never tasted</p>
+                </div>
+                <div class="ngopi-feature-card">
+                    <div class="ngopi-feature-icon">
+                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-dollar-sign">
+                            <path
+                                d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.78 4.78 4 4 0 0 1-6.74 0 4 4 0 0 1-4.78-4.78 4 4 0 0 1 0-6.74z" />
+                            <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+                            <path d="M12 18V6" />
+                        </svg>
+                    </div>
+                    <h4>Affordable Price</h4>
+                    <p>Our Coffee prices are<br>easy to afford</p>
+                </div>
+            </div>
+
         </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon-wrap">
-                    <span class="feature-icon">✨</span>
+    </section>
+
+    <!-- Dedicated CTA Section -->
+    <section class="ngopi-cta-section">
+        <div class="cta-splash-left"></div>
+        <div class="cta-splash-right"></div>
+        <div class="ngopi-container">
+            <div class="cta-content">
+                <p class="cta-subtitle">Great ideas start with great coffee. Lets help you achieve that</p>
+                <h2 class="cta-title">Get started today.</h2>
+                <div class="cta-action">
+                    <a routerLink="/register" class="btn-cta-join">
+                        JOIN US <span class="arrow-down-right">↘</span>
+                    </a>
                 </div>
-                <h3>Premium Quality</h3>
-                <p>Only the finest ingredients in every cup and every bite</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon-wrap">
-                    <span class="feature-icon">⚡</span>
-                </div>
-                <h3>Fast Service</h3>
-                <p>Quick preparation without compromising on quality</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon-wrap">
-                    <span class="feature-icon">❤️</span>
-                </div>
-                <h3>Made with Love</h3>
-                <p>Every dish crafted with passion and care</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon-wrap">
-                    <span class="feature-icon">🌿</span>
-                </div>
-                <h3>Fresh Ingredients</h3>
-                <p>Farm-to-table freshness in every meal we serve</p>
             </div>
         </div>
     </section>
 
-    <!-- Reviews Section -->
-    <section class="reviews-section">
-        <div class="section-header">
-            <h2>Customer <span class="highlight">Reviews</span></h2>
-            <p>See what our beloved customers say about us</p>
+    <!-- Promo Banner Secton (Ngopi Match) -->
+    <section class="ngopi-promo-section">
+        <div class="ngopi-promo-overlay"></div>
+        <div class="ngopi-promo-background"></div>
+        <div class="ngopi-promo-container">
+            <div class="ngopi-promo-text">
+                <h2>Get a chance to have an<br>Amazing morning</h2>
+                <p>We are giving you are one time opportunity to<br>experience a better life with coffee.</p>
+                <div class="promo-buttons">
+                    <a routerLink="/menu" class="btn-ngopi-outline">ORDER NOW <span
+                            class="arrow-down-right">↘</span></a>
+                </div>
+            </div>
+            <div class="ngopi-promo-image">
+                <!-- Using a pure CSS 3D Coffee Cup to guarantee it never breaks and perfectly mimics the layout -->
+                <div class="css-coffee-cup">
+                    <div class="cup-lid-top"></div>
+                    <div class="cup-lid-bottom"></div>
+                    <div class="cup-body">
+                        <div class="cup-sleeve">
+                            <span class="sleeve-text">Coffee</span>
+                            <svg class="sleeve-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                <path
+                                    d="M17,8H18A4,4,0,0,1,22,12A4,4,0,0,1,18,16H17V8M3,8H17V8A0,0,0,0,1,17,8V17A4,4,0,0,1,13,21H7A4,4,0,0,1,3,17V8A0,0,0,0,1,3,8Z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <app-review [allowWrite]="false" [showHeader]="false" [limit]="2"></app-review>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="cta-bg-overlay"></div>
-        <div class="cta-content">
-
-            <h2>Ready to Order?</h2>
-            <p>Browse our menu and treat yourself to something delicious today!</p>
-            <a routerLink="/menu" class="btn btn-primary btn-large">View Full Menu →</a>
+    <!-- Reviews Section (Premium Design) -->
+    <section class="ngopi-reviews-section premium-reviews">
+        <div class="ngopi-reviews-container">
+            <div class="reviews-header-centered">
+                <span class="reviews-subtitle">WHAT OUR GUESTS SAY</span>
+                <h2 class="reviews-title">Customer Reviews</h2>
+                <div class="reviews-underline"></div>
+                <p class="reviews-description">Trusted by thousands of satisfied guests worldwide</p>
+            </div>
+            <div class="ngopi-reviews-carousel">
+                <app-review [allowWrite]="false" [showHeader]="false" [limit]="3"></app-review>
+            </div>
         </div>
     </section>
 

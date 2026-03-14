@@ -35,19 +35,31 @@ export class CartService {
 
     addToCart(menuItemId: string, quantity: number = 1): Observable<CartResponse> {
         return this.http.post<CartResponse>(`${this.apiUrl}/add`, { menuItemId, quantity }).pipe(
-            tap(() => this.getCart().subscribe())
+            tap(response => {
+                if (response.success && response.cart) {
+                    this.cartSubject.next(response.cart);
+                }
+            })
         );
     }
 
     updateQuantity(menuItemId: string, quantity: number): Observable<CartResponse> {
         return this.http.put<CartResponse>(`${this.apiUrl}/update`, { menuItemId, quantity }).pipe(
-            tap(() => this.getCart().subscribe())
+            tap(response => {
+                if (response.success && response.cart) {
+                    this.cartSubject.next(response.cart);
+                }
+            })
         );
     }
 
     removeFromCart(menuItemId: string): Observable<CartResponse> {
         return this.http.delete<CartResponse>(`${this.apiUrl}/remove/${menuItemId}`).pipe(
-            tap(() => this.getCart().subscribe())
+            tap(response => {
+                if (response.success && response.cart) {
+                    this.cartSubject.next(response.cart);
+                }
+            })
         );
     }
 

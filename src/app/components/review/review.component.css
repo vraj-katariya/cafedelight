@@ -20,8 +20,8 @@
 }
 
 .section-title span {
-  color: #1a1a1a;
-  border-bottom: 3px solid #1a1a1a;
+  color: var(--primary);
+  border-bottom: 3px solid var(--primary);
   padding-bottom: 2px;
 }
 
@@ -94,9 +94,9 @@
 }
 
 .btn-submit {
-  background: #1a1a1a;
-  color: #ffffff;
-  border: 1px solid #1a1a1a;
+  background: var(--primary);
+  color: var(--white);
+  border: 1px solid var(--primary);
   border-radius: 6px;
   font-weight: 800;
   text-transform: uppercase;
@@ -107,7 +107,7 @@
 }
 
 .btn-submit:hover {
-  background: #000000;
+  background: var(--accent);
   transform: translateY(-3px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
@@ -154,9 +154,23 @@
 .review-card {
   background: #ffffff;
   border: 1px solid #f0f0f0;
+  position: relative;
   border-radius: 8px;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
   transition: all 0.4s ease;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.review-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, #4b89ff 50%, #ffc107 50%);
+  z-index: 10;
 }
 
 .review-card:hover {
@@ -166,30 +180,33 @@
 }
 
 .user-avatar {
-  /* Fixed the "black bar" issue which might have been a square block */
-  width: 45px;
-  height: 45px;
-  background: #f5f5f5;
-  color: #1a1a1a;
+  width: 50px;
+  height: 50px;
+  background: #0056b3;
+  /* Deep Blue circle from photo */
+  color: #ffffff;
   border-radius: 50%;
-  /* Circle looks better than block */
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  border: 1px solid #eeeeee;
+  font-size: 1.25rem;
+  box-shadow: 0 5px 15px rgba(0, 86, 179, 0.3);
 }
 
 .user-info strong {
-  color: #1a1a1a;
-  font-weight: 700;
+  color: #000000;
+  /* Pure Black */
+  font-weight: 800;
+  /* Extra bolded */
   text-transform: capitalize;
-  /* Better than all-caps for names */
+  display: block;
 }
 
 .review-date {
-  color: #999;
-  font-size: 0.8rem;
+  color: #aaaaaa;
+  /* Lighter gray */
+  font-size: 0.75rem;
 }
 
 .card-rating .star-icon {
@@ -197,13 +214,16 @@
 }
 
 .card-rating .star-icon.filled {
-  color: #1a1a1a;
+  color: #ffc107;
+  /* Gold/Yellow from photo */
 }
 
 .card-body p {
-  color: #555;
-  font-weight: 400;
+  color: #4b89ff;
+  /* Bright Blue from photo */
+  font-weight: 500;
   line-height: 1.6;
+  margin-top: 1rem;
 }
 
 @media (max-width: 768px) {
@@ -254,22 +274,23 @@
 .btn-explore {
   background: #1a1a1a;
   color: #ffffff;
-  border: 1px solid #1a1a1a;
-  padding: 1.2rem 3rem;
+  border: none;
+  padding: 0.9rem 2.8rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 0.9rem;
+  letter-spacing: 1px;
+  font-size: 0.85rem;
   border-radius: 50px;
+  /* Pill shape */
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .btn-explore:hover {
   background: #000000;
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
 }
 
 .btn-explore:active {
