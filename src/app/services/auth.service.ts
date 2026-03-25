@@ -19,8 +19,8 @@ export class AuthService {
     }
 
     private loadUserFromStorage(): void {
-        const token = localStorage.getItem('token');
-        const user = localStorage.getItem('user');
+        const token = sessionStorage.getItem('token');
+        const user = sessionStorage.getItem('user');
         if (token && user) {
             this.currentUserSubject.next(JSON.parse(user));
         }
@@ -39,7 +39,7 @@ export class AuthService {
     }
 
     get token(): string | null {
-        return localStorage.getItem('token');
+        return sessionStorage.getItem('token');
     }
 
     setHasBooking(val: boolean) {
@@ -81,19 +81,19 @@ export class AuthService {
     }
 
     private setSession(token: string, user: User): void {
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);
     }
 
     logout(): void {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('user');
         this.currentUserSubject.next(null);
     }
 
     updateCurrentUser(user: User): void {
-        localStorage.setItem('user', JSON.stringify(user));
+        sessionStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);
     }
 }
