@@ -26,6 +26,7 @@
                         <label>Select Date</label>
                         <div class="input-with-icon">
                             <input type="date" formControlName="date" class="form-control" [min]="minDate"
+                                [max]="maxDate"
                                 [class.error]="bookingForm.get('date')?.touched && bookingForm.get('date')?.invalid">
                             <span class="input-icon">📅</span>
                         </div>

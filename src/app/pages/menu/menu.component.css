@@ -131,12 +131,12 @@
 }
 
 .category-select:hover {
-    background: #000;
+    background: var(--accent);
 }
 
 .category-select:focus {
     outline: none;
-    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #1a1a1a;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--primary);
 }
 
 .dropdown-arrow {
@@ -328,23 +328,23 @@
 }
 
 .btn-add {
-    padding: 0.8rem 1.5rem;
-    background: #1a1a1a;
-    border: 1px solid #1a1a1a;
-    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    background: #4b1a0e;
+    /* Brown square as requested */
+    border: none;
+    border-radius: 6px;
     color: #fff;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-add:hover:not(:disabled) {
-    background: #000000;
+    background: #2a0e08;
     transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .btn-add:disabled {

@@ -462,11 +462,24 @@
     }
 
     .visual-content h3 {
+        font-size: 1.6rem;
+    }
+
+    .page-title {
         font-size: 1.8rem;
+        margin-bottom: 1.5rem;
     }
 }
 
 @media (max-width: 380px) {
+    .visual-content h3 {
+        font-size: 1.4rem;
+    }
+
+    .visual-content p {
+        font-size: 0.9rem;
+    }
+
     .booking-visual {
         padding: 1.5rem;
         min-height: 200px;
